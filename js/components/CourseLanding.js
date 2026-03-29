@@ -37,7 +37,7 @@ function CourseLanding({courseId,user,onEnroll,showToast}){
       {/* ── Sticky Nav ── */}
       <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(12px)",borderBottom:"1px solid var(--border)",padding:"0 24px",height:60,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <a href="index.html" style={{display:"flex",alignItems:"center",gap:8,textDecoration:"none"}}>
-          <div style={{width:32,height:32,background:"var(--primary)",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:16,fontWeight:700}}>L</div>
+          <img src="assets/og/logo/learnhub-logo.png" alt="LearnHub Logo" style={{width:32,height:32,borderRadius:8,objectFit:"cover"}}/>
           <span style={{fontFamily:"'Google Sans',sans-serif",fontSize:17,fontWeight:700,color:"var(--primary)"}}>LearnHub</span>
         </a>
         <div style={{display:"flex",gap:10,alignItems:"center"}}>
@@ -56,36 +56,54 @@ function CourseLanding({courseId,user,onEnroll,showToast}){
 
       {/* ── Hero ── */}
       <div style={{background:`linear-gradient(135deg, ${accentColor}18 0%, var(--bg) 60%)`,borderBottom:"1px solid var(--border)",padding:"56px 24px 48px"}}>
-        <div style={{maxWidth:860,margin:"0 auto"}}>
-          <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:20}}>
-            <span className="chip chip-blue">{course.category}</span>
-            <span className="chip chip-purple">{course.level}</span>
-            {course.weeks&&<span style={{background:accentColor+"20",color:accentColor,border:`1px solid ${accentColor}40`,padding:"2px 12px",borderRadius:100,fontSize:11,fontWeight:700}}>{course.weeks.length} Phases</span>}
-          </div>
-          <h1 style={{fontFamily:"'Google Sans',sans-serif",fontSize:"clamp(28px,5vw,52px)",fontWeight:700,color:"var(--text)",marginBottom:16,lineHeight:1.15}}>{course.title}</h1>
-          <p style={{fontSize:"clamp(14px,2vw,18px)",color:"var(--text2)",lineHeight:1.7,marginBottom:32,maxWidth:680}}>{course.description}</p>
+        <div style={{maxWidth:980,margin:"0 auto",display:"flex",gap:40,alignItems:"flex-start",flexWrap:"wrap"}}>
+          {/* Left: text + CTA */}
+          <div style={{flex:"1 1 420px",minWidth:0}}>
+            <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:20}}>
+              <span className="chip chip-blue">{course.category}</span>
+              <span className="chip chip-purple">{course.level}</span>
+              {course.weeks&&<span style={{background:accentColor+"20",color:accentColor,border:`1px solid ${accentColor}40`,padding:"2px 12px",borderRadius:100,fontSize:11,fontWeight:700}}>{course.weeks.length} Phases</span>}
+            </div>
+            <h1 style={{fontFamily:"'Google Sans',sans-serif",fontSize:"clamp(26px,4vw,46px)",fontWeight:700,color:"var(--text)",marginBottom:16,lineHeight:1.15}}>{course.title}</h1>
+            <p style={{fontSize:"clamp(14px,2vw,17px)",color:"var(--text2)",lineHeight:1.7,marginBottom:32,maxWidth:600}}>{course.description}</p>
 
-          {/* Stats */}
-          <div style={{display:"flex",flexWrap:"wrap",gap:12,marginBottom:36}}>
-            {[["📅",course.duration,"Duration"],["⏱",course.dailyEffort,"Daily Effort"],["🎯",course.prerequisites,"Prerequisites"],["🏆",course.outcome,"Outcome"]].filter(([,v])=>v).map(([icon,value,label])=>(
-              <div key={label} style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:10,padding:"12px 18px",minWidth:130}}>
-                <div style={{fontSize:20,marginBottom:4}}>{icon}</div>
-                <div style={{fontSize:12,fontWeight:600,color:"var(--text)"}}>{value}</div>
-                <div style={{fontSize:10,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".06em",marginTop:2}}>{label}</div>
+            {/* Stats */}
+            <div style={{display:"flex",flexWrap:"wrap",gap:12,marginBottom:36}}>
+              {[["📅",course.duration,"Duration"],["⏱",course.dailyEffort,"Daily Effort"],["🎯",course.prerequisites,"Prerequisites"],["🏆",course.outcome,"Outcome"]].filter(([,v])=>v).map(([icon,value,label])=>(
+                <div key={label} style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:10,padding:"12px 18px",minWidth:130}}>
+                  <div style={{fontSize:20,marginBottom:4}}>{icon}</div>
+                  <div style={{fontSize:12,fontWeight:600,color:"var(--text)"}}>{value}</div>
+                  <div style={{fontSize:10,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".06em",marginTop:2}}>{label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <div style={{display:"flex",gap:12,flexWrap:"wrap",alignItems:"center"}}>
+              <button
+                className="btn btn-primary"
+                style={{fontSize:16,padding:"14px 32px",borderRadius:10}}
+                onClick={handleEnrollClick}
+              >
+                {user&&enrolled?"Continue Learning →":user?"Start Course — Free →":"Enroll Now — Free →"}
+              </button>
+              <span style={{fontSize:13,color:"var(--text3)"}}>No credit card required · Free forever</span>
+            </div>
+          </div>
+
+          {/* Right: course image card */}
+          <div style={{flex:"0 0 auto",width:"clamp(240px,35%,330px)",borderRadius:16,overflow:"hidden",boxShadow:"0 8px 32px rgba(0,0,0,0.15)",border:"1px solid var(--border)",alignSelf:"center"}}>
+            {course.image?(
+              <img src={course.image} alt={course.title} style={{width:"100%",height:200,objectFit:"cover",display:"block"}}/>
+            ):(
+              <div style={{width:"100%",height:330,background:`linear-gradient(135deg,${accentColor} 0%,${accentColor}88 100%)`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <span style={{fontSize:48,opacity:.5}}>📚</span>
               </div>
-            ))}
-          </div>
-
-          {/* CTA */}
-          <div style={{display:"flex",gap:12,flexWrap:"wrap",alignItems:"center"}}>
-            <button
-              className="btn btn-primary"
-              style={{fontSize:16,padding:"14px 32px",borderRadius:10}}
-              onClick={handleEnrollClick}
-            >
-              {user&&enrolled?"Continue Learning →":user?"Start Course — Free →":"Enroll Now — Free →"}
-            </button>
-            <span style={{fontSize:13,color:"var(--text3)"}}>No credit card required · Free forever</span>
+            )}
+            <div style={{background:"var(--surface)",padding:"14px 18px"}}>
+              <div style={{fontSize:13,fontWeight:700,color:"var(--text)",marginBottom:4}}>{course.title}</div>
+              <div style={{fontSize:11,color:"var(--text3)"}}>{course.duration} · {course.level}</div>
+            </div>
           </div>
         </div>
       </div>

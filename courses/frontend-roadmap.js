@@ -11,6 +11,7 @@ const FRONTEND_ROADMAP_COURSE={
   duration:"~90 Hours",dailyEffort:"2–3 Hours",prerequisites:"Basic computer literacy",
   outcome:"3 Projects + Production-ready Frontend Skills",
   category:"Frontend Development",level:"Beginner",
+  image:"assets/og/courses/frontend-card.svg",
   weeks:[
     {id:1,label:"Phase 1",title:"HTML — The Structure of the Web",color:"#E44D26",colorSoft:"rgba(228,77,38,0.1)",days:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]},
     {id:2,label:"Phase 2",title:"CSS — Styling & Layout Mastery",color:"#4B7BFF",colorSoft:"rgba(75,123,255,0.1)",days:[21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]},

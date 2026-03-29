@@ -22,9 +22,9 @@ function Sidebar({user,page,setPage,onLogout,open,onClose}){
         {/* Logo */}
         <div style={{padding:"16px 16px 14px",borderBottom:"1px solid var(--border)",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:34,height:34,background:"var(--primary)",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:17,fontWeight:700,flexShrink:0}}>L</div>
+            <img src="assets/og/logo/learnhub-logo.png" alt="LearnHub Logo" style={{width:"34px",height:"34px",borderRadius:"8px",objectFit:"cover",flexShrink:0}}/>
             <div>
-              <div style={{fontFamily:"'Google Sans',sans-serif",fontSize:15,fontWeight:700,color:"var(--text)"}}>LearnHub</div>
+              <div style={{fontFamily:"'Google Sans',sans-serif",fontSize:15,fontWeight:700,color:"var(--text)"}}>LearnHub.Dev</div>
               <div style={{fontSize:10,color:"var(--text3)"}}>{isAdmin?"Admin Panel":"Learning Platform"}</div>
             </div>
           </div>

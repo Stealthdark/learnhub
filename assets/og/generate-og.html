@@ -38,6 +38,7 @@
 
 <script>
 const W=1200,H=630;
+const logoImg=new Image();
 
 function roundRect(ctx,x,y,w,h,r){
   ctx.beginPath();
@@ -83,19 +84,16 @@ function drawBase(ctx,bgStart,bgEnd,accent){
   for(let y=0;y<=H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
 }
 
-function drawLogo(ctx,x,y,size=52){
-  // Logo background
-  ctx.fillStyle='#1a73e8';
-  roundRect(ctx,x,y,size,size,12);
-  ctx.fill();
-  // L letter
-  ctx.fillStyle='#fff';
-  ctx.font=`bold ${Math.round(size*0.55)}px 'SF Pro Display',system-ui,sans-serif`;
-  ctx.textAlign='center';
-  ctx.textBaseline='middle';
-  ctx.fillText('L',x+size/2,y+size/2+1);
-  ctx.textAlign='left';
-  ctx.textBaseline='alphabetic';
+// Draws the real LearnHub logo PNG
+function drawLogo(ctx,x,y,size=80){
+  ctx.drawImage(logoImg,x,y,size,size);
+}
+
+function drawLogoWithText(ctx,x,y,size=80){
+  ctx.drawImage(logoImg,x,y,size,size);
+  ctx.fillStyle='#ffffff';
+  ctx.font='bold 28px system-ui,sans-serif';
+  ctx.fillText('LearnHubDev.com',x+size+14,y+(size+20)/2);
 }
 
 function drawBadge(ctx,x,y,text,bg,color){
@@ -110,7 +108,7 @@ function drawBadge(ctx,x,y,text,bg,color){
 }
 
 // ── Card 0: Main Site ──────────────────────────────────────────
-(function(){
+function drawCard0(){
   const ctx=document.getElementById('c0').getContext('2d');
   drawBase(ctx,'#0d1b2e','#0f2742','#1a73e8');
 
@@ -120,14 +118,8 @@ function drawBadge(ctx,x,y,text,bg,color){
   ctx.beginPath();ctx.arc(W-80,80,160,0,Math.PI*2);ctx.stroke();
   ctx.beginPath();ctx.arc(W-80,80,260,0,Math.PI*2);ctx.stroke();
 
-  // Logo + Brand
-  drawLogo(ctx,64,60);
-  ctx.fillStyle='rgba(255,255,255,0.9)';
-  ctx.font='bold 28px system-ui,sans-serif';
-  ctx.fillText('LearnHub',128,95);
-  ctx.fillStyle='#60a5fa';
-  ctx.fillText('.Dev',128+ctx.measureText('LearnHub').width,95);
-  ctx.fillStyle='rgba(255,255,255,0.9)';
+  // Logo
+  drawLogoWithText(ctx,64,44);
 
   // Main headline
   ctx.fillStyle='#ffffff';
@@ -161,14 +153,14 @@ function drawBadge(ctx,x,y,text,bg,color){
     sx+=tw+32+12;
   });
 
-  // URL
+  // Footer
   ctx.fillStyle='rgba(255,255,255,0.25)';
   ctx.font='18px system-ui,sans-serif';
-  ctx.fillText('Crafted by Harshit | © learnhub.dev',64,598);
-})();
+  ctx.fillText('www.learnhubdev.com | 🌐 Crafted by Harshit | © learnhub.dev',64,598);
+}
 
 // ── Card 1: Node.js Course ─────────────────────────────────────
-(function(){
+function drawCard1(){
   const ctx=document.getElementById('c1').getContext('2d');
   const accent='#22c55e';
   drawBase(ctx,'#0d1f12','#0a2517',accent);
@@ -179,11 +171,8 @@ function drawBadge(ctx,x,y,text,bg,color){
   ctx.beginPath();ctx.arc(W-60,H-60,200,0,Math.PI*2);ctx.stroke();
   ctx.beginPath();ctx.arc(W-60,H-60,310,0,Math.PI*2);ctx.stroke();
 
-  // Logo + Brand
-  drawLogo(ctx,64,56);
-  ctx.fillStyle='rgba(255,255,255,0.7)';
-  ctx.font='bold 22px system-ui,sans-serif';
-  ctx.fillText('LearnHub',128,88);
+  // Logo
+  drawLogoWithText(ctx,64,40);
 
   // Course badge
   drawBadge(ctx,64,162,'30-Day Roadmap','rgba(34,197,94,0.2)','#22c55e');
@@ -227,10 +216,10 @@ function drawBadge(ctx,x,y,text,bg,color){
   ctx.fillStyle='rgba(255,255,255,0.2)';
   ctx.font='17px system-ui,sans-serif';
   ctx.fillText('learnhub.dev',64,606);
-})();
+}
 
 // ── Card 2: Frontend Roadmap ───────────────────────────────────
-(function(){
+function drawCard2(){
   const ctx=document.getElementById('c2').getContext('2d');
   const accent='#f97316';
   drawBase(ctx,'#1a0f00','#2a1500',accent);
@@ -255,11 +244,8 @@ function drawBadge(ctx,x,y,text,bg,color){
     ctx.textAlign='left';
   });
 
-  // Logo + Brand
-  drawLogo(ctx,64,56);
-  ctx.fillStyle='rgba(255,255,255,0.7)';
-  ctx.font='bold 22px system-ui,sans-serif';
-  ctx.fillText('LearnHub',128,88);
+  // Logo
+  drawLogoWithText(ctx,64,40);
 
   // Badge
   drawBadge(ctx,64,162,'60-Day Roadmap','rgba(249,115,22,0.2)','#f97316');
@@ -303,7 +289,18 @@ function drawBadge(ctx,x,y,text,bg,color){
   ctx.fillStyle='rgba(255,255,255,0.2)';
   ctx.font='17px system-ui,sans-serif';
   ctx.fillText('learnhub.dev',64,574);
-})();
+}
+
+// Load logo first, then render all canvases
+logoImg.onload=function(){
+  drawCard0();
+  drawCard1();
+  drawCard2();
+};
+logoImg.onerror=function(){
+  console.error('Failed to load logo. Make sure logo/learnhub-logo.png exists relative to this file.');
+};
+logoImg.src='logo/learnhub-logo.png';
 
 function download(id,filename){
   const a=document.createElement('a');

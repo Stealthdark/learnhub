@@ -25,13 +25,22 @@ function CoursesPage({user,setPage,updateUser,showToast}){
           const pct=isEnrolled?Math.round((prog.completed.length/(course.days?.length||1))*100):0;
           return(
             <div key={course.id} className="card" style={{overflow:"hidden",display:"flex",flexDirection:"column"}}>
-              <div style={{background:"linear-gradient(135deg,var(--primary) 0%,#4a90e2 100%)",padding:"20px 20px 16px",color:"#fff"}}>
-                <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:6,marginBottom:10}}>
-                  <span style={{background:"rgba(255,255,255,.2)",padding:"2px 10px",borderRadius:100,fontSize:11,fontWeight:600}}>{course.level}</span>
-                  <span style={{background:"rgba(255,255,255,.2)",padding:"2px 10px",borderRadius:100,fontSize:11,fontWeight:600}}>{course.category}</span>
+              {/* Image section — pure visual, no text overlay */}
+              {course.image?(
+                <div style={{height:120,overflow:"hidden",flexShrink:0}}>
+                  <img src={course.image} alt={course.title} style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
                 </div>
-                <h2 style={{fontSize:17,fontWeight:700,fontFamily:"'Google Sans',sans-serif",marginBottom:4,lineHeight:1.3}}>{course.title}</h2>
-                <p style={{fontSize:12,opacity:.85,lineHeight:1.5}}>{course.subtitle}</p>
+              ):(
+                <div style={{height:80,background:"linear-gradient(135deg,var(--primary) 0%,#4a90e2 100%)",flexShrink:0}}/>
+              )}
+              {/* Dedicated header section — badges + title + subtitle */}
+              <div style={{background:course.weeks?.[0]?.colorSoft||"var(--surface)",borderBottom:"1px solid var(--border)",padding:"12px 16px"}}>
+                <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:5,marginBottom:7}}>
+                  <span style={{background:"var(--primary-light)",color:"var(--primary)",padding:"2px 10px",borderRadius:100,fontSize:11,fontWeight:600}}>{course.level}</span>
+                  <span style={{background:"var(--bg)",color:"var(--text2)",padding:"2px 10px",borderRadius:100,fontSize:11,fontWeight:600,border:"1px solid var(--border)"}}>{course.category}</span>
+                </div>
+                <h2 style={{fontSize:16,fontWeight:700,fontFamily:"'Google Sans',sans-serif",marginBottom:3,lineHeight:1.3,color:"var(--text)"}}>{course.title}</h2>
+                <p style={{fontSize:11,color:"var(--text2)",lineHeight:1.4,margin:0}}>{course.subtitle}</p>
               </div>
               <div style={{padding:"16px 20px",flex:1,display:"flex",flexDirection:"column"}}>
                 <p style={{fontSize:13,color:"var(--text2)",marginBottom:14,lineHeight:1.6,flex:1}}>{course.description.slice(0,130)}...</p>

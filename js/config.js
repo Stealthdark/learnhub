@@ -96,12 +96,12 @@ function initStorage(){
       joinedAt:new Date().toISOString(),enrolledCourses:[]
     }]);
   }
-  // Seed or merge bundled courses — adds any course whose id isn't already stored
-  const BUNDLED_COURSES=[NODEJS_30DAY_COURSE,FRONTEND_ROADMAP_COURSE];
+  // Seed and sync bundled courses — adds new courses and updates existing ones with latest bundled data
+  const BUNDLED_COURSES=[NODEJS_30DAY_COURSE,FRONTEND_ROADMAP_COURSE,SQL_MONGODB_20DAY_COURSE,AI_FIRST_WEBDEV_COURSE];
   const stored=store.get(KEYS.courses)||[];
-  const storedIds=new Set(stored.map(c=>c.id));
-  const merged=[...stored,...BUNDLED_COURSES.filter(c=>!storedIds.has(c.id))];
-  if(merged.length!==stored.length||stored.length===0){
-    store.set(KEYS.courses,merged);
-  }
+  const bundledMap=Object.fromEntries(BUNDLED_COURSES.map(c=>[c.id,c]));
+  // Replace stored bundled courses with latest data; keep any admin-created courses untouched
+  const merged=stored.map(c=>bundledMap[c.id]||c);
+  BUNDLED_COURSES.forEach(c=>{if(!merged.find(s=>s.id===c.id))merged.push(c);});
+  store.set(KEYS.courses,merged);
 }

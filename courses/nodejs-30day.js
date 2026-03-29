@@ -12,6 +12,7 @@ const NODEJS_30DAY_COURSE={
   duration:"30 Days",dailyEffort:"2–3 Hours",prerequisites:"JavaScript ES6+",
   outcome:"REST API + Portfolio Project",
   category:"Backend Development",level:"Intermediate",
+  image:"assets/og/courses/nodejs-card.svg",
   weeks:[
     {id:1,label:"Week 1",title:"Foundations — How Node.js Really Works",color:"#7c4dff",colorSoft:"#ede7f6",days:[1,2,3,4,5,6,7]},
     {id:2,label:"Week 2",title:"APIs & Data Layer",color:"#007b83",colorSoft:"#e0f5f5",days:[8,9,10,11,12,13,14]},

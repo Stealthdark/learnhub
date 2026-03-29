@@ -178,10 +178,10 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
         {/* Logo */}
         <div style={{padding:"28px 24px 0",textAlign:"center"}}>
           <div style={{display:"inline-flex",alignItems:"center",gap:10,marginBottom:8}}>
-            <div style={{width:40,height:40,background:"var(--primary)",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:20,fontWeight:700}}>L</div>
-            <span style={{fontFamily:"'Google Sans',sans-serif",fontSize:22,fontWeight:700,color:"var(--primary)"}}>LearnHub</span>
+            <img src="assets/og/logo/learnhub-logo.png" alt="LearnHub Logo" style={{width:"34px",height:"34px",borderRadius:"8px",objectFit:"cover",flexShrink:0}}/>
+            <span style={{fontFamily:"'Google Sans',sans-serif",fontSize:22,fontWeight:700,color:"var(--primary)"}}>LearnHub.Dev</span>
           </div>
-          <p style={{color:"var(--text2)",fontSize:13}}>Professional Learning Platform</p>
+          <p style={{color:"var(--text2)",fontSize:13}}>Professional E-Learning Platform</p>
         </div>
         {/* Pending course context banner */}
         {pendingCourseId&&(()=>{

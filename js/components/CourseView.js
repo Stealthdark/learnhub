@@ -34,19 +34,26 @@ function CourseView({courseId,user,updateUser,showToast}){
   return(
     <div className="page-pad" style={{maxWidth:980}}>
       {/* Hero */}
-      <div className="card hero-card" style={{marginBottom:16,position:"relative",overflow:"hidden"}}>
-        <div style={{position:"absolute",top:0,right:0,width:200,height:200,background:"radial-gradient(circle at top right,rgba(26,115,232,.07) 0%,transparent 70%)",pointerEvents:"none"}}/>
-        <div style={{marginBottom:12,display:"flex",flexWrap:"wrap",gap:6,alignItems:"center"}}>
-          <span className="chip chip-blue">{course.category}</span>
-          <span className="chip chip-purple">{course.level}</span>
-          <div className="verified-badge"><Icon.Check/>Roadmap</div>
-        </div>
-        <h1 style={{fontFamily:"'Google Sans',sans-serif",fontSize:22,fontWeight:700,marginBottom:8,lineHeight:1.3}}>{course.title}</h1>
-        <p style={{color:"var(--text2)",fontSize:13,marginBottom:16,lineHeight:1.7}}>{course.description}</p>
-        <div className="course-meta">
-          {[["Duration",course.duration],["Daily Effort",course.dailyEffort],["Prerequisites",course.prerequisites],["Outcome",course.outcome]].map(([k,v])=>(
-            <div key={k}><div style={{fontSize:10,color:"var(--text3)",fontWeight:600,textTransform:"uppercase",letterSpacing:".06em"}}>{k}</div><div style={{fontSize:13,fontWeight:600,color:"var(--text)"}}>{v}</div></div>
-          ))}
+      <div className="card hero-card" style={{marginBottom:16,position:"relative",overflow:"hidden",padding:0}}>
+        {course.image&&(
+          <div style={{width:"100%",height:330,overflow:"hidden"}}>
+            <img src={course.image} alt={course.title} style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+          </div>
+        )}
+        <div style={{padding:"20px 24px 24px",position:"relative"}}>
+          <div style={{position:"absolute",top:0,right:0,width:200,height:200,background:"radial-gradient(circle at top right,rgba(26,115,232,.07) 0%,transparent 70%)",pointerEvents:"none"}}/>
+          <div style={{marginBottom:12,display:"flex",flexWrap:"wrap",gap:6,alignItems:"center"}}>
+            <span className="chip chip-blue">{course.category}</span>
+            <span className="chip chip-purple">{course.level}</span>
+            <div className="verified-badge"><Icon.Check/>Roadmap</div>
+          </div>
+          <h1 style={{fontFamily:"'Google Sans',sans-serif",fontSize:22,fontWeight:700,marginBottom:8,lineHeight:1.3}}>{course.title}</h1>
+          <p style={{color:"var(--text2)",fontSize:13,marginBottom:16,lineHeight:1.7}}>{course.description}</p>
+          <div className="course-meta">
+            {[["Duration",course.duration],["Daily Effort",course.dailyEffort],["Prerequisites",course.prerequisites],["Outcome",course.outcome]].map(([k,v])=>(
+              <div key={k}><div style={{fontSize:10,color:"var(--text3)",fontWeight:600,textTransform:"uppercase",letterSpacing:".06em"}}>{k}</div><div style={{fontSize:13,fontWeight:600,color:"var(--text)"}}>{v}</div></div>
+            ))}
+          </div>
         </div>
       </div>
       {/* Progress */}
