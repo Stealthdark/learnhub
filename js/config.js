@@ -14,11 +14,11 @@ function getEmailJSConfig() {
   try {
     const saved = JSON.parse(localStorage.getItem(EMAILJS_STORE_KEY) || "{}");
     return {
-      serviceId:  saved.serviceId  || "service_00bfdtx",
+      serviceId:  saved.serviceId  || "service_myj9jvk",
       templateId: saved.templateId || "template_hhjc24d",
       publicKey:  saved.publicKey  || "yAdNYM8PucBh6xdeN",
     };
-  } catch { return { serviceId:"service_00bfdtx", templateId:"template_hhjc24d", publicKey:"yAdNYM8PucBh6xdeN" }; }
+  } catch { return { serviceId:"service_myj9jvk", templateId:"template_hhjc24d", publicKey:"yAdNYM8PucBh6xdeN" }; }
 }
 
 function saveEmailJSConfig(cfg) {

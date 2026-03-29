@@ -4,7 +4,7 @@
 function AdminEmailSettings({showToast}){
   const saved = getEmailJSConfig();
   const[form,setForm]=useState({
-    serviceId:  saved.serviceId  || "service_00bfdtx",
+    serviceId:  saved.serviceId  || "service_myj9jvk",
     templateId: saved.templateId || "template_hhjc24d",
     publicKey:  saved.publicKey  || "yAdNYM8PucBh6xdeN",
   });
