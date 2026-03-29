@@ -1,0 +1,68 @@
+/* ═══════════════════════════════════════════════════════
+   COURSES LIST
+═══════════════════════════════════════════════════════ */
+function CoursesPage({user,setPage,updateUser,showToast}){
+  const courses=store.get(KEYS.courses)||[];
+  const enrolled=user.enrolledCourses||[];
+  function enroll(courseId){
+    if(enrolled.includes(courseId))return;
+    const users=store.get(KEYS.users)||[];
+    const idx=users.findIndex(u=>u.id===user.id);
+    if(idx===-1)return;
+    users[idx].enrolledCourses=[...(users[idx].enrolledCourses||[]),courseId];
+    store.set(KEYS.users,users);
+    updateUser(users[idx]);
+    showToast("Enrolled successfully!","success");
+  }
+  return(
+    <div className="page-pad" style={{maxWidth:1100}}>
+      <h1 className="h1" style={{marginBottom:4}}>Course Catalog</h1>
+      <p style={{color:"var(--text2)",marginBottom:24,fontSize:14}}>Explore our curated learning roadmaps.</p>
+      <div className="grid-courses">
+        {courses.map(course=>{
+          const isEnrolled=enrolled.includes(course.id);
+          const prog=isEnrolled?getUserProgress(user.id,course.id):{completed:[]};
+          const pct=isEnrolled?Math.round((prog.completed.length/(course.days?.length||1))*100):0;
+          return(
+            <div key={course.id} className="card" style={{overflow:"hidden",display:"flex",flexDirection:"column"}}>
+              <div style={{background:"linear-gradient(135deg,var(--primary) 0%,#4a90e2 100%)",padding:"20px 20px 16px",color:"#fff"}}>
+                <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:6,marginBottom:10}}>
+                  <span style={{background:"rgba(255,255,255,.2)",padding:"2px 10px",borderRadius:100,fontSize:11,fontWeight:600}}>{course.level}</span>
+                  <span style={{background:"rgba(255,255,255,.2)",padding:"2px 10px",borderRadius:100,fontSize:11,fontWeight:600}}>{course.category}</span>
+                </div>
+                <h2 style={{fontSize:17,fontWeight:700,fontFamily:"'Google Sans',sans-serif",marginBottom:4,lineHeight:1.3}}>{course.title}</h2>
+                <p style={{fontSize:12,opacity:.85,lineHeight:1.5}}>{course.subtitle}</p>
+              </div>
+              <div style={{padding:"16px 20px",flex:1,display:"flex",flexDirection:"column"}}>
+                <p style={{fontSize:13,color:"var(--text2)",marginBottom:14,lineHeight:1.6,flex:1}}>{course.description.slice(0,130)}...</p>
+                <div className="grid-2col" style={{marginBottom:16}}>
+                  {[["Duration",course.duration],["Daily",course.dailyEffort],["Prereqs",course.prerequisites],["Outcome",course.outcome]].map(([k,v])=>(
+                    <div key={k} style={{background:"var(--bg)",borderRadius:6,padding:"8px 10px"}}>
+                      <div style={{fontSize:10,color:"var(--text3)",fontWeight:600,textTransform:"uppercase",letterSpacing:".04em"}}>{k}</div>
+                      <div style={{fontSize:12,fontWeight:500,color:"var(--text)",marginTop:1}}>{v}</div>
+                    </div>
+                  ))}
+                </div>
+                {isEnrolled?(
+                  <div>
+                    <div className="progress-bar-track" style={{marginBottom:6}}>
+                      <div className="progress-bar-fill" style={{width:pct+"%"}}/>
+                    </div>
+                    <div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"var(--text3)",marginBottom:12}}>
+                      <span>{prog.completed.length}/{course.days?.length} lessons</span><span>{pct}% complete</span>
+                    </div>
+                    <button className="btn btn-primary btn-full" onClick={()=>setPage("course_"+course.id)}>
+                      {pct>0?"Continue Learning →":"Start Course →"}
+                    </button>
+                  </div>
+                ):(
+                  <button className="btn btn-primary btn-full" onClick={()=>enroll(course.id)}>Enroll Now — Free</button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

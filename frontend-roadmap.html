@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontend Mastery Roadmap — HTML · CSS · JavaScript</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0C0C0F;
+  --surface: #111115;
+  --surface2: #18181E;
+  --surface3: #1E1E26;
+  --border: #252530;
+  --border2: #2E2E3C;
+  --text: #F0EFE8;
+  --text-2: #A09FA8;
+  --text-3: #5C5B66;
+  --accent: #FF5C35;
+  --accent-soft: rgba(255,92,53,0.1);
+  --accent-border: rgba(255,92,53,0.25);
+
+  --html: #E44D26;
+  --html-soft: rgba(228,77,38,0.1);
+  --html-border: rgba(228,77,38,0.3);
+
+  --css: #264DE4;
+  --css-glow: #4B7BFF;
+  --css-soft: rgba(75,123,255,0.1);
+  --css-border: rgba(75,123,255,0.3);
+
+  --js: #F7DF1E;
+  --js-soft: rgba(247,223,30,0.08);
+  --js-border: rgba(247,223,30,0.25);
+
+  --green: #22C55E;
+  --green-soft: rgba(34,197,94,0.1);
+  --green-border: rgba(34,197,94,0.3);
+
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+::selection { background: var(--accent-soft); color: var(--accent); }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* ─── STICKY NAV ─── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(12,12,15,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+}
+
+.topbar-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 52px;
+}
+
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: auto;
+}
+
+.logo-mark {
+  display: flex;
+  gap: 3px;
+}
+
+.logo-mark span {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.lm-html { background: var(--html); }
+.lm-css  { background: var(--css-glow); }
+.lm-js   { background: var(--js); }
+
+.logo-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+
+.logo-sub {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 400;
+  margin-left: 2px;
+}
+
+.progress-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.progress-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-2);
+  border: 1px solid var(--border2);
+}
+.btn-outline:hover { border-color: var(--accent-border); color: var(--accent); }
+
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-accent:hover { background: #ff7255; }
+
+/* ─── WRAPPER ─── */
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 40px 100px;
+}
+
+/* ─── HERO ─── */
+.hero {
+  position: relative;
+  padding: 56px 0 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+  overflow: hidden;
+}
+
+.hero-bg-text {
+  position: absolute;
+  top: -10px;
+  right: -20px;
+  font-size: 160px;
+  font-weight: 800;
+  color: var(--surface2);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: -6px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 20px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--html) 0%, var(--css-glow) 50%, var(--js) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-desc {
+  font-size: 15px;
+  color: var(--text-2);
+  max-width: 560px;
+  line-height: 1.75;
+  margin-bottom: 32px;
+  font-weight: 400;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  width: fit-content;
+}
+
+.hero-stat {
+  padding: 14px 24px;
+  border-right: 1px solid var(--border2);
+  min-width: 120px;
+}
+
+.hero-stat:last-child { border-right: none; }
+
+.stat-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* ─── PROGRESS DASHBOARD ─── */
+.progress-dashboard {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 48px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+
+.progress-left {}
+
+.progress-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 10px;
+}
+
+.main-track {
+  height: 6px;
+  background: var(--surface3);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.main-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--html) 0%, var(--css-glow) 50%, var(--js) 100%);
+  border-radius: 3px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+
+.phase-tracks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.phase-track {}
+
+.pt-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-3);
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pt-bar {
+  height: 3px;
+  background: var(--surface3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.pt-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+  width: 0%;
+}
+
+.pt-fill.html { background: var(--html); }
+.pt-fill.css  { background: var(--css-glow); }
+.pt-fill.js   { background: var(--js); }
+
+.progress-right {
+  text-align: right;
+}
+
+.big-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 48px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.pct-sub {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+/* ─── PHASE HEADER ─── */
+.phase-block { margin-bottom: 52px; }
+
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.phase-header.html-phase {
+  background: var(--html-soft);
+  border: 1px solid var(--html-border);
+}
+
+.phase-header.css-phase {
+  background: var(--css-soft);
+  border: 1px solid var(--css-border);
+}
+
+.phase-header.js-phase {
+  background: var(--js-soft);
+  border: 1px solid var(--js-border);
+}
+
+.phase-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.phase-info { flex: 1; }
+
+.phase-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.html-phase .phase-badge { color: var(--html); }
+.css-phase .phase-badge  { color: var(--css-glow); }
+.js-phase .phase-badge   { color: var(--js); }
+
+.phase-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.phase-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+.phase-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+/* ─── DAY CARD ─── */
+.day-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.day-card:hover {
+  border-color: var(--border2);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.day-card.completed { border-color: rgba(34,197,94,0.25); }
+.day-card.completed:hover { border-color: var(--green-border); }
+
+.day-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 20px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.check-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border2);
+  background: var(--surface2);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.check-box:hover { border-color: var(--green); }
+
+.day-card.completed .check-box {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.check-box svg {
+  display: none;
+  width: 12px;
+  height: 12px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.day-card.completed .check-box svg { display: block; }
+
+.day-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-3);
+  min-width: 42px;
+  letter-spacing: 0.04em;
+}
+
+.day-info { flex: 1; min-width: 0; }
+
+.day-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+  transition: color 0.2s;
+}
+
+.day-card.completed .day-name {
+  color: var(--text-3);
+  text-decoration: line-through;
+  text-decoration-color: var(--text-3);
+}
+
+.day-sub {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 400;
+}
+
+.day-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.tag-html    { color: var(--html);     background: var(--html-soft);    border-color: var(--html-border); }
+.tag-css     { color: var(--css-glow); background: var(--css-soft);     border-color: var(--css-border); }
+.tag-js      { color: var(--js);       background: var(--js-soft);      border-color: var(--js-border); }
+.tag-project { color: var(--accent);   background: var(--accent-soft);  border-color: var(--accent-border); }
+.tag-concept { color: var(--text-2);   background: var(--surface3);     border-color: var(--border2); }
+.tag-practice{ color: var(--green);    background: var(--green-soft);   border-color: var(--green-border); }
+
+.done-chip {
+  display: none;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--green);
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--green-soft);
+  border: 1px solid var(--green-border);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+.day-card.completed .done-chip { display: inline-flex; }
+
+.expand-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-3);
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+}
+
+.expand-btn:hover { color: var(--text-2); background: var(--surface2); }
+
+.expand-btn svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s;
+}
+
+.day-card.open .expand-btn svg { transform: rotate(180deg); }
+
+/* ─── DAY BODY ─── */
+.day-body {
+  display: none;
+  padding: 0 20px 20px 76px;
+  border-top: 1px solid var(--border);
+}
+
+.day-card.open .day-body { display: block; }
+
+.body-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 16px 0;
+}
+
+.body-col {}
+
+.col-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 10px;
+}
+
+.topic-list {
+  list-style: none;
+}
+
+.topic-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 12px;
+  color: var(--text-2);
+  font-weight: 400;
+}
+
+.topic-list li::before {
+  content: '›';
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  font-size: 14px;
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+.res-list { list-style: none; }
+
+.res-list li { padding: 4px 0; }
+
+.res-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.res-list a:hover { color: var(--accent); }
+
+.res-list a::before {
+  content: '↗';
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  opacity: 0.5;
+}
+
+.goal-strip {
+  background: var(--surface2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+
+.goal-strip strong { color: var(--accent); font-weight: 700; }
+
+.time-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-3);
+  background: var(--surface3);
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin-top: 10px;
+}
+
+/* ─── RESOURCE LIBRARY ─── */
+.resource-section {
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 48px;
+}
+
+.rs-header {
+  background: var(--surface);
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rs-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.rs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.rs-card {
+  padding: 20px 22px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+
+.rs-card:hover { background: var(--surface2); }
+.rs-card:nth-child(3n) { border-right: none; }
+.rs-card:nth-last-child(-n+3) { border-bottom: none; }
+
+.rs-icon { font-size: 20px; margin-bottom: 8px; }
+.rs-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.rs-desc { font-size: 11px; color: var(--text-3); margin-bottom: 10px; line-height: 1.5; }
+.rs-link { font-size: 11px; font-weight: 700; color: var(--accent); text-decoration: none; }
+.rs-link:hover { text-decoration: underline; }
+
+/* ─── FOOTER ─── */
+.doc-footer {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 400;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 680px) {
+  .wrapper { padding: 32px 20px 80px; }
+  .topbar { padding: 0 20px; }
+  .hero h1 { font-size: 34px; }
+  .hero-bg-text { display: none; }
+  .body-grid { grid-template-columns: 1fr; }
+  .rs-grid { grid-template-columns: 1fr; }
+  .hero-stats { flex-wrap: wrap; }
+  .progress-dashboard { grid-template-columns: 1fr; }
+  .big-pct { font-size: 36px; text-align: left; }
+  .progress-right { text-align: left; }
+  .phase-tracks { grid-template-columns: 1fr; }
+  .day-right .tag { display: none; }
+  .day-body { padding-left: 16px; }
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.phase-block { animation: slideUp 0.4s ease both; }
+.phase-block:nth-child(1) { animation-delay: 0.05s; }
+.phase-block:nth-child(2) { animation-delay: 0.1s; }
+.phase-block:nth-child(3) { animation-delay: 0.15s; }
+</style>
+</head>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<nav class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-logo">
+      <div class="logo-mark">
+        <span class="lm-html"></span>
+        <span class="lm-css"></span>
+        <span class="lm-js"></span>
+      </div>
+      <span class="logo-text">Frontend Mastery<span class="logo-sub"> · Roadmap</span></span>
+    </div>
+    <div class="progress-pill">
+      <div class="progress-dot"></div>
+      <span id="header-count">0 / 60 topics</span>
+    </div>
+    <button class="btn btn-outline" onclick="resetAll()">Reset</button>
+    <button class="btn btn-accent" onclick="expandAll()">Expand All</button>
+  </div>
+</nav>
+
+<!-- ─── MAIN ─── -->
+<div class="wrapper">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg-text">FE</div>
+    <div class="hero-eyebrow">Frontend Mastery Roadmap</div>
+    <h1>Master <em>HTML, CSS</em><br>& JavaScript</h1>
+    <p class="hero-desc">A structured, comprehensive roadmap covering everything from semantic markup to advanced JavaScript patterns. Each section builds on the last — with real projects, curated resources, and clear daily goals.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="stat-val">3</div>
+        <div class="stat-label">Core Languages</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-val">60</div>
+        <div class="stat-label">Topics</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-val">~90</div>
+        <div class="stat-label">Hours Total</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-val">9</div>
+        <div class="stat-label">Projects Built</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-dashboard">
+    <div class="progress-left">
+      <div class="progress-label">Overall Completion</div>
+      <div class="main-track"><div class="main-fill" id="main-fill"></div></div>
+      <div class="phase-tracks">
+        <div class="phase-track">
+          <div class="pt-label">
+            <span>HTML</span>
+            <span id="html-txt">0/20</span>
+          </div>
+          <div class="pt-bar"><div class="pt-fill html" id="html-fill"></div></div>
+        </div>
+        <div class="phase-track">
+          <div class="pt-label">
+            <span>CSS</span>
+            <span id="css-txt">0/20</span>
+          </div>
+          <div class="pt-bar"><div class="pt-fill css" id="css-fill"></div></div>
+        </div>
+        <div class="phase-track">
+          <div class="pt-label">
+            <span>JavaScript</span>
+            <span id="js-txt">0/20</span>
+          </div>
+          <div class="pt-bar"><div class="pt-fill js" id="js-fill"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-right">
+      <div class="big-pct" id="big-pct">0%</div>
+      <div class="pct-sub">COMPLETE</div>
+    </div>
+  </div>
+
+  <!-- ════════════ PHASE 1: HTML ════════════ -->
+  <div class="phase-block" id="phase-html">
+    <div class="phase-header html-phase">
+      <div class="phase-icon">🧱</div>
+      <div class="phase-info">
+        <div class="phase-badge">Phase 01 · HTML</div>
+        <div class="phase-title">The Structure of the Web</div>
+        <div class="phase-desc">Semantic markup, accessibility, forms, SEO — the bones every frontend is built on</div>
+      </div>
+      <div class="phase-count" id="html-count">0 / 20</div>
+    </div>
+
+    <!-- H1 -->
+    <div class="day-card" id="t-h1">
+      <div class="day-row" onclick="toggleCard('h1')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h1','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 01</div>
+        <div class="day-info">
+          <div class="day-name">How Browsers Work & the DOM</div>
+          <div class="day-sub">Rendering pipeline · HTML parsing · DOM tree</div>
+        </div>
+        <div class="day-right">
+          <span class="tag tag-concept">CONCEPT</span>
+          <div class="done-chip">✓ DONE</div>
+          <button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col">
+            <div class="col-label">Topics</div>
+            <ul class="topic-list">
+              <li>DNS lookup → TCP → HTTP request/response</li>
+              <li>HTML parsing → DOM tree construction</li>
+              <li>CSSOM tree → Render tree → Layout → Paint</li>
+              <li>document object — querySelector, getElementById</li>
+              <li>Browser DevTools: Elements, Console panels</li>
+            </ul>
+          </div>
+          <div class="body-col">
+            <div class="col-label">Resources</div>
+            <ul class="res-list">
+              <li><a href="https://developer.chrome.com/docs/devtools/" target="_blank">Chrome DevTools Guide</a></li>
+              <li><a href="https://www.youtube.com/watch?v=0IsQqJ7pwhw" target="_blank">How browsers render HTML (Fireship)</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction" target="_blank">MDN — Introduction to the DOM</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Open any website in DevTools, inspect the DOM tree, modify text live. Understand what happens from URL to pixels.</div>
+        <div class="time-badge">⏱ ~1.5 hrs</div>
+      </div>
+    </div>
+
+    <!-- H2 -->
+    <div class="day-card" id="t-h2">
+      <div class="day-row" onclick="toggleCard('h2')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h2','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 02</div>
+        <div class="day-info">
+          <div class="day-name">Semantic HTML — Why It Matters</div>
+          <div class="day-sub">Landmark elements · Meaning over div-soup</div>
+        </div>
+        <div class="day-right">
+          <span class="tag tag-html">HTML</span>
+          <div class="done-chip">✓ DONE</div>
+          <button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col">
+            <div class="col-label">Topics</div>
+            <ul class="topic-list">
+              <li>header, nav, main, section, article, aside, footer</li>
+              <li>h1–h6 hierarchy — one h1 per page rule</li>
+              <li>Inline vs block elements</li>
+              <li>figure, figcaption, time, address, mark</li>
+              <li>Why div/span are last resorts</li>
+              <li>HTML5 Outline algorithm</li>
+            </ul>
+          </div>
+          <div class="body-col">
+            <div class="col-label">Resources</div>
+            <ul class="res-list">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element" target="_blank">MDN HTML Elements Reference</a></li>
+              <li><a href="https://www.w3schools.com/html/html5_semantic_elements.asp" target="_blank">W3Schools — HTML5 Semantic</a></li>
+              <li><a href="https://htmlreference.io/" target="_blank">htmlreference.io — Visual guide</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Rebuild a basic blog post page using only semantic elements. No divs except where truly needed.</div>
+        <div class="time-badge">⏱ ~1.5 hrs</div>
+      </div>
+    </div>
+
+    <!-- H3 -->
+    <div class="day-card" id="t-h3">
+      <div class="day-row" onclick="toggleCard('h3')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h3','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 03</div>
+        <div class="day-info">
+          <div class="day-name">Forms — The Complete Guide</div>
+          <div class="day-sub">All input types · Validation · Label / ARIA association</div>
+        </div>
+        <div class="day-right">
+          <span class="tag tag-html">HTML</span>
+          <div class="done-chip">✓ DONE</div>
+          <button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col">
+            <div class="col-label">Topics</div>
+            <ul class="topic-list">
+              <li>form, fieldset, legend, label, input</li>
+              <li>All input types: text, email, number, date, range, file, color…</li>
+              <li>textarea, select, option, datalist</li>
+              <li>Built-in validation: required, min, max, pattern</li>
+              <li>novalidate + custom JS validation</li>
+              <li>Connecting label to input (for/id)</li>
+            </ul>
+          </div>
+          <div class="body-col">
+            <div class="col-label">Resources</div>
+            <ul class="res-list">
+              <li><a href="https://web.dev/learn/forms/" target="_blank">web.dev — Learn Forms</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Learn/Forms" target="_blank">MDN — HTML Forms Guide</a></li>
+              <li><a href="https://www.youtube.com/watch?v=fNcJuPIZ2WE" target="_blank">HTML Forms Tutorial (Web Dev Simplified)</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Build a complete registration form with all input types, built-in HTML validation, and proper label associations.</div>
+        <div class="time-badge">⏱ ~2 hrs</div>
+      </div>
+    </div>
+
+    <!-- H4 -->
+    <div class="day-card" id="t-h4">
+      <div class="day-row" onclick="toggleCard('h4')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h4','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 04</div>
+        <div class="day-info">
+          <div class="day-name">Accessibility (a11y) Fundamentals</div>
+          <div class="day-sub">ARIA · Screen readers · Keyboard navigation · WCAG</div>
+        </div>
+        <div class="day-right">
+          <span class="tag tag-concept">CONCEPT</span>
+          <div class="done-chip">✓ DONE</div>
+          <button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col">
+            <div class="col-label">Topics</div>
+            <ul class="topic-list">
+              <li>WCAG 2.1 — perceivable, operable, understandable, robust</li>
+              <li>ARIA roles, aria-label, aria-labelledby, aria-hidden</li>
+              <li>Focus management — tabindex, :focus-visible</li>
+              <li>Skip to main content links</li>
+              <li>Color contrast ratios (4.5:1 minimum)</li>
+              <li>Screen reader testing with NVDA / VoiceOver</li>
+            </ul>
+          </div>
+          <div class="body-col">
+            <div class="col-label">Resources</div>
+            <ul class="res-list">
+              <li><a href="https://web.dev/learn/accessibility/" target="_blank">web.dev — Learn Accessibility</a></li>
+              <li><a href="https://www.a11yproject.com/" target="_blank">The A11Y Project</a></li>
+              <li><a href="https://webaim.org/resources/contrastchecker/" target="_blank">WebAIM Contrast Checker</a></li>
+              <li><a href="https://www.youtube.com/watch?v=e2nkq3h1P68" target="_blank">a11y Crash Course (Kevin Powell)</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Audit your registration form with axe DevTools. Fix all accessibility violations. Navigate it using keyboard only.</div>
+        <div class="time-badge">⏱ ~2.5 hrs</div>
+      </div>
+    </div>
+
+    <!-- H5 -->
+    <div class="day-card" id="t-h5">
+      <div class="day-row" onclick="toggleCard('h5')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h5','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 05</div>
+        <div class="day-info">
+          <div class="day-name">Images, Media & Optimization</div>
+          <div class="day-sub">Responsive images · picture · video · lazy loading · WebP</div>
+        </div>
+        <div class="day-right">
+          <span class="tag tag-html">HTML</span>
+          <div class="done-chip">✓ DONE</div>
+          <button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col">
+            <div class="col-label">Topics</div>
+            <ul class="topic-list">
+              <li>img srcset + sizes for responsive images</li>
+              <li>picture + source for art direction</li>
+              <li>WebP, AVIF — modern image formats</li>
+              <li>loading="lazy" — native lazy loading</li>
+              <li>video, audio — controls, autoplay, muted</li>
+              <li>SVG inline vs img src</li>
+            </ul>
+          </div>
+          <div class="body-col">
+            <div class="col-label">Resources</div>
+            <ul class="res-list">
+              <li><a href="https://web.dev/learn/images/" target="_blank">web.dev — Learn Images</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images" target="_blank">MDN — Responsive Images</a></li>
+              <li><a href="https://squoosh.app/" target="_blank">Squoosh — Image Optimizer</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Add 3 responsive images to your blog using srcset. Convert to WebP and measure the size difference with DevTools.</div>
+        <div class="time-badge">⏱ ~2 hrs</div>
+      </div>
+    </div>
+
+    <!-- H6 -->
+    <div class="day-card" id="t-h6">
+      <div class="day-row" onclick="toggleCard('h6')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h6','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 06</div>
+        <div class="day-info">
+          <div class="day-name">SEO & Meta Tags</div>
+          <div class="day-sub">Open Graph · Twitter Cards · Structured data · Sitemap</div>
+        </div>
+        <div class="day-right">
+          <span class="tag tag-concept">CONCEPT</span>
+          <div class="done-chip">✓ DONE</div>
+          <button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col">
+            <div class="col-label">Topics</div>
+            <ul class="topic-list">
+              <li>title, description, canonical, robots meta tags</li>
+              <li>Open Graph tags (og:title, og:image…)</li>
+              <li>Twitter Card meta tags</li>
+              <li>JSON-LD structured data (schema.org)</li>
+              <li>viewport meta for mobile</li>
+              <li>Google Search Console basics</li>
+            </ul>
+          </div>
+          <div class="body-col">
+            <div class="col-label">Resources</div>
+            <ul class="res-list">
+              <li><a href="https://ogp.me/" target="_blank">The Open Graph Protocol</a></li>
+              <li><a href="https://schema.org/" target="_blank">Schema.org — Structured Data</a></li>
+              <li><a href="https://developers.facebook.com/tools/debug/" target="_blank">Facebook OG Debugger</a></li>
+              <li><a href="https://web.dev/learn/html/metadata/" target="_blank">web.dev — Metadata Guide</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Add complete SEO and Open Graph meta tags to your blog. Test the share preview using Facebook's OG Debugger.</div>
+        <div class="time-badge">⏱ ~1.5 hrs</div>
+      </div>
+    </div>
+
+    <!-- H7 -->
+    <div class="day-card" id="t-h7">
+      <div class="day-row" onclick="toggleCard('h7')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h7','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 07</div>
+        <div class="day-info">
+          <div class="day-name">HTML APIs — Storage, Drag, History</div>
+          <div class="day-sub">localStorage · sessionStorage · Drag & Drop · History API</div>
+        </div>
+        <div class="day-right">
+          <span class="tag tag-html">HTML</span>
+          <div class="done-chip">✓ DONE</div>
+          <button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col">
+            <div class="col-label">Topics</div>
+            <ul class="topic-list">
+              <li>localStorage vs sessionStorage vs cookies</li>
+              <li>Web Storage API — getItem, setItem, removeItem</li>
+              <li>Drag & Drop API — dragstart, dragover, drop</li>
+              <li>History API — pushState, replaceState, popstate</li>
+              <li>Geolocation API overview</li>
+            </ul>
+          </div>
+          <div class="body-col">
+            <div class="col-label">Resources</div>
+            <ul class="res-list">
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API" target="_blank">MDN — Web Storage API</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API" target="_blank">MDN — Drag and Drop API</a></li>
+              <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/History_API" target="_blank">MDN — History API</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Build a Kanban board with drag-and-drop columns. Save the card positions in localStorage.</div>
+        <div class="time-badge">⏱ ~2.5 hrs</div>
+      </div>
+    </div>
+
+    <!-- H8–H20 condensed cards -->
+    <div class="day-card" id="t-h8">
+      <div class="day-row" onclick="toggleCard('h8')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h8','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 08</div>
+        <div class="day-info"><div class="day-name">Tables — Semantic & Accessible</div><div class="day-sub">thead/tbody/tfoot · scope · caption · responsive tables</div></div>
+        <div class="day-right"><span class="tag tag-html">HTML</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>table, thead, tbody, tfoot, tr, th, td</li><li>scope="col/row" for accessibility</li><li>colspan, rowspan</li><li>caption element</li><li>Responsive tables with overflow-x</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Tables/Basics" target="_blank">MDN — HTML Tables Basics</a></li><li><a href="https://web.dev/learn/html/tables/" target="_blank">web.dev — Learn HTML Tables</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Build a pricing comparison table — accessible, responsive, with proper scope attributes.</div>
+        <div class="time-badge">⏱ ~1.5 hrs</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h9">
+      <div class="day-row" onclick="toggleCard('h9')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h9','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 09</div>
+        <div class="day-info"><div class="day-name">Custom Data Attributes</div><div class="day-sub">data-* attributes · dataset API · JS integration</div></div>
+        <div class="day-right"><span class="tag tag-html">HTML</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>data-* attribute syntax</li><li>element.dataset API</li><li>Using data attributes to drive JS behavior</li><li>CSS attribute selectors with data-*</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes" target="_blank">MDN — data-* attributes</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Build a tooltip component using only data-tooltip attributes and CSS — zero JavaScript required.</div>
+        <div class="time-badge">⏱ ~1 hr</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h10">
+      <div class="day-row" onclick="toggleCard('h10')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h10','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 10</div>
+        <div class="day-info"><div class="day-name">HTML Performance — Critical Rendering Path</div><div class="day-sub">async/defer · Preload · dns-prefetch · Resource hints</div></div>
+        <div class="day-right"><span class="tag tag-concept">CONCEPT</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>script defer vs async — differences</li><li>link rel="preload" for critical assets</li><li>link rel="dns-prefetch" and "preconnect"</li><li>Core Web Vitals: LCP, FID, CLS</li><li>Lighthouse audit basics</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://web.dev/learn/performance/" target="_blank">web.dev — Learn Performance</a></li><li><a href="https://pagespeed.web.dev/" target="_blank">PageSpeed Insights Tool</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Run Lighthouse on your blog project. Score 90+ on Performance. Fix every recommendation it gives.</div>
+        <div class="time-badge">⏱ ~2 hrs</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h11">
+      <div class="day-row" onclick="toggleCard('h11')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h11','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 11</div>
+        <div class="day-info"><div class="day-name">Iframes, Canvas & SVG Basics</div><div class="day-sub">Embedding · Canvas 2D API · Inline SVG</div></div>
+        <div class="day-right"><span class="tag tag-html">HTML</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>iframe sandbox attribute, allow policies</li><li>canvas element + getContext("2d")</li><li>Drawing shapes, paths, text on canvas</li><li>Inline SVG — viewBox, path, circle, rect</li><li>SVG animations with CSS</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial" target="_blank">MDN — Canvas Tutorial</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial" target="_blank">MDN — SVG Tutorial</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Draw a mini bar chart using the Canvas API. Animate an SVG logo icon using CSS keyframes.</div>
+        <div class="time-badge">⏱ ~2 hrs</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h12">
+      <div class="day-row" onclick="toggleCard('h12')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h12','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 12</div>
+        <div class="day-info"><div class="day-name">Web Components — Custom Elements</div><div class="day-sub">customElements API · Shadow DOM · HTML templates</div></div>
+        <div class="day-right"><span class="tag tag-html">HTML</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>customElements.define() — creating tags</li><li>HTMLElement lifecycle: connectedCallback, attributeChangedCallback</li><li>Shadow DOM — encapsulated styles</li><li>&lt;template&gt; and &lt;slot&gt; elements</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components" target="_blank">MDN — Web Components</a></li><li><a href="https://www.webcomponents.org/" target="_blank">webcomponents.org</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Build a &lt;star-rating&gt; web component from scratch with Shadow DOM encapsulation.</div>
+        <div class="time-badge">⏱ ~2.5 hrs</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h13">
+      <div class="day-row" onclick="toggleCard('h13')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h13','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 13</div>
+        <div class="day-info"><div class="day-name">Progressive Enhancement & Graceful Degradation</div><div class="day-sub">Feature detection · noscript · Baseline features</div></div>
+        <div class="day-right"><span class="tag tag-concept">CONCEPT</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Progressive enhancement philosophy</li><li>Feature detection vs user-agent sniffing</li><li>&lt;noscript&gt; fallback content</li><li>Baseline web features (browser support)</li><li>Polyfills — when and how</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement" target="_blank">MDN — Progressive Enhancement</a></li><li><a href="https://caniuse.com/" target="_blank">Can I Use — Browser Support</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Audit your project — does it work with JavaScript disabled? Add a noscript message.</div>
+        <div class="time-badge">⏱ ~1.5 hrs</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h14">
+      <div class="day-row" onclick="toggleCard('h14')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h14','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 14</div>
+        <div class="day-info"><div class="day-name">Microdata & Structured Data (JSON-LD)</div><div class="day-sub">Rich results · Schema.org · Google Search appearance</div></div>
+        <div class="day-right"><span class="tag tag-html">HTML</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>JSON-LD script blocks for structured data</li><li>Schema.org types: Article, Product, BreadcrumbList</li><li>Rich results: star ratings, FAQs, sitelinks</li><li>Google Rich Results Test tool</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data" target="_blank">Google — Structured Data Guide</a></li><li><a href="https://search.google.com/test/rich-results" target="_blank">Rich Results Test Tool</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Add JSON-LD Article schema to your blog post. Validate it passes the Rich Results Test with no errors.</div>
+        <div class="time-badge">⏱ ~1.5 hrs</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h15">
+      <div class="day-row" onclick="toggleCard('h15')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h15','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 15</div>
+        <div class="day-info"><div class="day-name">HTML Email Fundamentals</div><div class="day-sub">Table-based layout · Inline CSS · Email clients</div></div>
+        <div class="day-right"><span class="tag tag-html">HTML</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Why email HTML is different (table layouts)</li><li>Inline CSS only (no external stylesheets)</li><li>MSO conditional comments for Outlook</li><li>Testing with Litmus or Email on Acid</li><li>MJML — email templating framework</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://mjml.io/" target="_blank">MJML Email Framework</a></li><li><a href="https://www.caniemail.com/" target="_blank">Can I Email — Support checker</a></li><li><a href="https://htmlemail.io/free/" target="_blank">HTML Email Templates</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Build a transactional welcome email using MJML. Test it renders correctly in Gmail and Outlook views.</div>
+        <div class="time-badge">⏱ ~2 hrs</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h16">
+      <div class="day-row" onclick="toggleCard('h16')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h16','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 16</div>
+        <div class="day-info"><div class="day-name">Internationalization (i18n) & lang</div><div class="day-sub">lang attribute · dir · bidi text · charset</div></div>
+        <div class="day-right"><span class="tag tag-html">HTML</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>html lang attribute (en, hi, ar, fr…)</li><li>dir="rtl" for right-to-left languages</li><li>meta charset="UTF-8" importance</li><li>hreflang for multilingual SEO</li><li>translate="no" attribute</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://www.w3.org/International/questions/qa-html-language-declarations" target="_blank">W3C — Language Declarations</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang" target="_blank">MDN — lang attribute</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Create a bilingual page (English + Hindi). Use proper lang attributes, handle RTL text in a third language section.</div>
+        <div class="time-badge">⏱ ~1 hr</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h17">
+      <div class="day-row" onclick="toggleCard('h17')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h17','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 17</div>
+        <div class="day-info"><div class="day-name">dialog, details, summary & Native UI</div><div class="day-sub">Native modal · Accordion · popover API</div></div>
+        <div class="day-right"><span class="tag tag-html">HTML</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>&lt;dialog&gt; element + showModal() method</li><li>&lt;details&gt; + &lt;summary&gt; for accordions</li><li>Popover API (popover attribute)</li><li>Native &lt;menu&gt; element</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog" target="_blank">MDN — dialog element</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Popover_API" target="_blank">MDN — Popover API</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Build an FAQ accordion using &lt;details&gt;/&lt;summary&gt; only. Build a modal using &lt;dialog&gt; with no JS libraries.</div>
+        <div class="time-badge">⏱ ~1.5 hrs</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h18">
+      <div class="day-row" onclick="toggleCard('h18')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h18','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 18</div>
+        <div class="day-info"><div class="day-name">HTML Validation & Best Practices</div><div class="day-sub">W3C Validator · Common pitfalls · DOCTYPE</div></div>
+        <div class="day-right"><span class="tag tag-practice">PRACTICE</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>W3C HTML Validator — reading errors</li><li>&lt;!DOCTYPE html&gt; — why it matters</li><li>Self-closing tags (br, img, input, hr)</li><li>Boolean attributes (required, disabled)</li><li>Quotation marks in attributes</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://validator.w3.org/" target="_blank">W3C HTML Validator</a></li><li><a href="https://htmlhint.com/" target="_blank">HTMLHint — Linting Tool</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Run all your HTML projects through the W3C Validator. Zero errors, zero warnings.</div>
+        <div class="time-badge">⏱ ~1 hr</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h19">
+      <div class="day-row" onclick="toggleCard('h19')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h19','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 19</div>
+        <div class="day-info"><div class="day-name">PWA Manifest & Service Workers</div><div class="day-sub">manifest.json · Offline support · App icons</div></div>
+        <div class="day-right"><span class="tag tag-concept">CONCEPT</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Web App Manifest — name, icons, theme_color</li><li>Service Worker lifecycle: install, activate, fetch</li><li>Cache API — offline caching strategies</li><li>Add to Home Screen (A2HS)</li></ul></div>
+          <div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://web.dev/learn/pwa/" target="_blank">web.dev — Learn PWA</a></li><li><a href="https://developer.chrome.com/docs/workbox/" target="_blank">Workbox by Google</a></li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> Make your blog installable as a PWA. Add offline support with a simple Service Worker cache.</div>
+        <div class="time-badge">⏱ ~2 hrs</div>
+      </div>
+    </div>
+
+    <div class="day-card" id="t-h20">
+      <div class="day-row" onclick="toggleCard('h20')">
+        <div class="check-box" onclick="event.stopPropagation();toggleCheck('h20','html')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div>
+        <div class="day-num">H — 20</div>
+        <div class="day-info"><div class="day-name">HTML Phase Project — Personal Portfolio</div><div class="day-sub">Full semantic site · Accessible · Validated · Fast</div></div>
+        <div class="day-right"><span class="tag tag-project">PROJECT</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div>
+      </div>
+      <div class="day-body">
+        <div class="body-grid">
+          <div class="body-col"><div class="col-label">Project Deliverables</div><ul class="topic-list"><li>Hero, About, Projects, Contact sections</li><li>Fully semantic HTML (no div soup)</li><li>Contact form with validation</li><li>Responsive images with srcset</li><li>Complete meta/OG tags</li><li>W3C Validator: zero errors</li><li>Lighthouse: 90+ on all scores</li></ul></div>
+          <div class="body-col"><div class="col-label">Stretch Goals</div><ul class="topic-list"><li>PWA manifest + offline page</li><li>JSON-LD PersonSchema</li><li>ARIA landmarks throughout</li><li>Push to GitHub Pages</li></ul></div>
+        </div>
+        <div class="goal-strip"><strong>Goal:</strong> A fully-built HTML-only portfolio — no styling yet. The cleanest HTML you've ever written. 🎉</div>
+        <div class="time-badge">⏱ ~3 hrs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ PHASE 2: CSS ════════════ -->
+  <div class="phase-block" id="phase-css">
+    <div class="phase-header css-phase">
+      <div class="phase-icon">🎨</div>
+      <div class="phase-info">
+        <div class="phase-badge">Phase 02 · CSS</div>
+        <div class="phase-title">Design, Layout & Motion</div>
+        <div class="phase-desc">From the box model to animations, custom properties, and modern layout systems</div>
+      </div>
+      <div class="phase-count" id="css-count">0 / 20</div>
+    </div>
+
+    <div class="day-card" id="t-c1"><div class="day-row" onclick="toggleCard('c1')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c1','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 01</div><div class="day-info"><div class="day-name">The Box Model — Deep Understanding</div><div class="day-sub">margin · border · padding · content · box-sizing</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Content, padding, border, margin layers</li><li>box-sizing: border-box (always use this!)</li><li>Collapsing margins</li><li>outline vs border</li><li>DevTools box model visualizer</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://web.dev/learn/css/box-model/" target="_blank">web.dev — Box Model</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/The_box_model" target="_blank">MDN — The Box Model</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Use DevTools to inspect the box model of 5 different elements. Predict sizes before inspecting.</div><div class="time-badge">⏱ ~1.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-c2"><div class="day-row" onclick="toggleCard('c2')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c2','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 02</div><div class="day-info"><div class="day-name">Specificity, Cascade & Inheritance</div><div class="day-sub">Selector weight · !important traps · CSS layers</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Specificity scoring: 0-0-0 system</li><li>Cascade layers — @layer</li><li>inherited vs non-inherited properties</li><li>initial, inherit, unset, revert keywords</li><li>Why !important is a code smell</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://web.dev/learn/css/specificity/" target="_blank">web.dev — Specificity</a></li><li><a href="https://specificity.keegan.st/" target="_blank">Specificity Calculator</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Resolve 5 conflicting specificity challenges from CSS Battle without using !important.</div><div class="time-badge">⏱ ~1.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-c3"><div class="day-row" onclick="toggleCard('c3')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c3','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 03</div><div class="day-info"><div class="day-name">Flexbox — Complete Mastery</div><div class="day-sub">All flex properties · Alignment axes · Real layouts</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>flex-direction, flex-wrap, flex-flow</li><li>justify-content, align-items, align-content</li><li>flex-grow, flex-shrink, flex-basis</li><li>order, align-self</li><li>gap property</li><li>Common patterns: nav bar, cards, centering</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank">CSS-Tricks — Flexbox Guide</a></li><li><a href="https://flexboxfroggy.com/" target="_blank">Flexbox Froggy (Game)</a></li><li><a href="https://web.dev/learn/css/flexbox/" target="_blank">web.dev — Flexbox</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Complete all 24 levels of Flexbox Froggy. Then build a responsive card grid using only flexbox.</div><div class="time-badge">⏱ ~2.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-c4"><div class="day-row" onclick="toggleCard('c4')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c4','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 04</div><div class="day-info"><div class="day-name">CSS Grid — Complete Mastery</div><div class="day-sub">grid-template · areas · auto-fill · subgrid</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>grid-template-columns/rows + fr unit</li><li>grid-template-areas — named regions</li><li>grid-column/row placement</li><li>auto-fill vs auto-fit with minmax()</li><li>gap, align/justify-items/content</li><li>subgrid — aligning nested items</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank">CSS-Tricks — Grid Guide</a></li><li><a href="https://cssgridgarden.com/" target="_blank">Grid Garden (Game)</a></li><li><a href="https://grid.layoutit.com/" target="_blank">CSS Grid Generator</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Complete Grid Garden. Rebuild the portfolio layout using CSS Grid template areas.</div><div class="time-badge">⏱ ~2.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-c5"><div class="day-row" onclick="toggleCard('c5')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c5','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 05</div><div class="day-info"><div class="day-name">Responsive Design & Media Queries</div><div class="day-sub">Mobile-first · Breakpoints · Container queries</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Mobile-first approach (min-width queries)</li><li>Common breakpoints and why they're arbitrary</li><li>@container queries — component-level responsiveness</li><li>@media: prefers-color-scheme, prefers-reduced-motion</li><li>clamp() for fluid typography</li><li>CSS logical properties</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://web.dev/learn/design/" target="_blank">web.dev — Learn Responsive Design</a></li><li><a href="https://utopia.fyi/" target="_blank">Utopia — Fluid Typography Tool</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries" target="_blank">MDN — Container Queries</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Make your portfolio fully responsive — mobile (320px) to ultra-wide (2560px). Use container queries for card components.</div><div class="time-badge">⏱ ~3 hrs</div></div></div>
+
+    <div class="day-card" id="t-c6"><div class="day-row" onclick="toggleCard('c6')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c6','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 06</div><div class="day-info"><div class="day-name">Custom Properties (CSS Variables)</div><div class="day-sub">Design tokens · Theming · Dynamic variables</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>--variable-name syntax and var() function</li><li>Scoping variables to :root and components</li><li>Fallback values: var(--color, #000)</li><li>Dark mode with custom properties</li><li>Updating variables with JavaScript</li><li>Design token systems</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://web.dev/learn/css/color/#custom-properties" target="_blank">web.dev — Custom Properties</a></li><li><a href="https://www.smashingmagazine.com/2021/05/complete-guide-css-variables/" target="_blank">Smashing Mag — CSS Variables Guide</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Add a full design token system to your portfolio. Implement dark/light mode toggle using CSS custom properties only.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-c7"><div class="day-row" onclick="toggleCard('c7')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c7','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 07</div><div class="day-info"><div class="day-name">CSS Animations & Transitions</div><div class="day-sub">@keyframes · transition · animation-fill-mode</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>transition: property duration easing delay</li><li>@keyframes — from/to, percentage keyframes</li><li>animation shorthand — all properties</li><li>animation-fill-mode: forwards/backwards</li><li>will-change for GPU acceleration</li><li>prefers-reduced-motion media query</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://web.dev/learn/css/animations/" target="_blank">web.dev — CSS Animations</a></li><li><a href="https://easings.net/" target="_blank">Easings.net — Easing Functions</a></li><li><a href="https://cubic-bezier.com/" target="_blank">Cubic Bezier Visualizer</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Add a page-load animation sequence to your portfolio — staggered fade-in for hero text and image.</div><div class="time-badge">⏱ ~2.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-c8"><div class="day-row" onclick="toggleCard('c8')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c8','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 08</div><div class="day-info"><div class="day-name">Transforms & 3D Effects</div><div class="day-sub">translate · rotate · scale · perspective · matrix</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>translateX/Y/Z, rotate, scale, skew</li><li>transform-origin</li><li>perspective and perspective-origin</li><li>3D transforms: rotateX, rotateY, rotateZ</li><li>transform-style: preserve-3d</li><li>backface-visibility</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform" target="_blank">MDN — CSS transform</a></li><li><a href="https://www.joshwcomeau.com/css/transforms/" target="_blank">Josh Comeau — CSS Transforms</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Build a 3D card flip effect for your project cards. Pure CSS, no JS.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-c9"><div class="day-row" onclick="toggleCard('c9')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c9','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 09</div><div class="day-info"><div class="day-name">Typography — The CSS Deep Dive</div><div class="day-sub">font-face · Variable fonts · Type scale · line-height</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>@font-face — woff2, subsetting, display swap</li><li>Variable fonts — font-variation-settings</li><li>Type scale systems (modular scale)</li><li>line-height, letter-spacing, word-spacing</li><li>text-overflow, white-space, overflow-wrap</li><li>font-feature-settings (ligatures, etc.)</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://fonts.google.com/" target="_blank">Google Fonts</a></li><li><a href="https://v-fonts.com/" target="_blank">Variable Fonts — v-fonts.com</a></li><li><a href="https://type-scale.com/" target="_blank">Type Scale Calculator</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Implement a fluid typographic scale using clamp(). Host a custom font with @font-face and verify font-display: swap.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-c10"><div class="day-row" onclick="toggleCard('c10')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c10','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 10</div><div class="day-info"><div class="day-name">Colors — Modern CSS Color</div><div class="day-sub">oklch · color-mix · Gradients · color-scheme</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Modern color spaces: oklch, lch, lab, p3</li><li>color-mix() function</li><li>Linear and radial gradients</li><li>Conic gradients</li><li>color-scheme property</li><li>forced-colors media query (Windows HC)</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://oklch.com/" target="_blank">OKLCH Color Picker</a></li><li><a href="https://developer.chrome.com/blog/css-color-mix/" target="_blank">CSS color-mix() Guide</a></li><li><a href="https://cssgradient.io/" target="_blank">CSS Gradient Generator</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Rewrite your color system using oklch. Use color-mix() to generate tints/shades programmatically.</div><div class="time-badge">⏱ ~1.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-c11"><div class="day-row" onclick="toggleCard('c11')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c11','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 11</div><div class="day-info"><div class="day-name">Pseudo-classes & Pseudo-elements</div><div class="day-sub">::before · ::after · :is() · :has() · :where()</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>::before, ::after, ::placeholder, ::marker</li><li>:hover, :focus, :focus-visible, :focus-within</li><li>:nth-child(), :nth-of-type()</li><li>:is(), :where(), :not() — selector grouping</li><li>:has() — the parent selector</li><li>:checked, :invalid, :valid form states</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://web.dev/learn/css/pseudo-classes/" target="_blank">web.dev — Pseudo-classes</a></li><li><a href="https://ishadeed.com/article/css-has-parent-selector/" target="_blank">Ahmad Shadeed — :has() Guide</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Style a form using only :valid/:invalid/:focus-visible. Build a "highlight when child is hovered" effect with :has().</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-c12"><div class="day-row" onclick="toggleCard('c12')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c12','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 12</div><div class="day-info"><div class="day-name">Scroll Animations & scroll-driven</div><div class="day-sub">scroll-snap · IntersectionObserver · @scroll-timeline</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>scroll-snap-type, scroll-snap-align</li><li>Scroll-driven animations (CSS native)</li><li>animation-timeline: scroll()</li><li>IntersectionObserver API</li><li>Parallax effects with CSS only</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://developer.chrome.com/docs/css-ui/scroll-driven-animations" target="_blank">Chrome — Scroll-driven Animations</a></li><li><a href="https://scroll-driven-animations.style/" target="_blank">Scroll-Driven Animations Demo Site</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Add a scroll-progress indicator to your portfolio using CSS scroll-driven animations.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-c13"><div class="day-row" onclick="toggleCard('c13')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c13','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 13</div><div class="day-info"><div class="day-name">CSS Architecture — BEM, SMACSS & Utility</div><div class="day-sub">Naming conventions · Scalable CSS · Tailwind approach</div></div><div class="day-right"><span class="tag tag-concept">CONCEPT</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>BEM naming: block__element--modifier</li><li>SMACSS categories: base, layout, module, state</li><li>OOCSS — object-oriented CSS</li><li>Utility-first CSS — Tailwind philosophy</li><li>CSS Modules approach</li><li>When to use each methodology</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://getbem.com/" target="_blank">BEM Official Guide</a></li><li><a href="https://tailwindcss.com/docs" target="_blank">Tailwind CSS Docs</a></li><li><a href="https://smacss.com/" target="_blank">SMACSS — Scalable CSS</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Refactor a component using BEM. Rebuild the same component using utility classes. Compare maintainability.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-c14"><div class="day-row" onclick="toggleCard('c14')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c14','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 14</div><div class="day-info"><div class="day-name">Sass / SCSS Preprocessing</div><div class="day-sub">Nesting · Mixins · Functions · @use & @forward</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Sass variables ($var), nesting rules</li><li>@mixin and @include with arguments</li><li>@function — custom functions</li><li>@use vs @import (new module system)</li><li>@forward for library exports</li><li>Partial files (_name.scss)</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://sass-lang.com/documentation/" target="_blank">Sass Official Docs</a></li><li><a href="https://www.youtube.com/watch?v=_a5j7KoflTs" target="_blank">Sass Crash Course (Traversy)</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Convert your portfolio CSS to SCSS. Create a _variables, _mixins, and _typography partial structure.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-c15"><div class="day-row" onclick="toggleCard('c15')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c15','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 15</div><div class="day-info"><div class="day-name">Positioning — static, relative, absolute, fixed, sticky</div><div class="day-sub">Stacking context · z-index · Containing blocks</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>All 5 position values and when to use them</li><li>Stacking context — how it's created</li><li>z-index management strategies</li><li>Containing block rules</li><li>Sticky positioning gotchas (overflow hidden parent)</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://www.joshwcomeau.com/css/stacking-contexts/" target="_blank">Josh Comeau — Stacking Contexts</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/position" target="_blank">MDN — CSS position</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Debug 3 broken z-index situations. Build a sticky sidebar that stops at a certain point on scroll.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-c16"><div class="day-row" onclick="toggleCard('c16')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c16','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 16</div><div class="day-info"><div class="day-name">CSS Shapes, clip-path & Masking</div><div class="day-sub">clip-path · shape-outside · mask-image</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>clip-path: polygon, circle, ellipse, path()</li><li>shape-outside for text wrapping</li><li>mask-image with gradients</li><li>Animating clip-path</li><li>Clipping vs masking differences</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://bennettfeely.com/clippy/" target="_blank">Clippy — clip-path Generator</a></li><li><a href="https://css-tricks.com/almanac/properties/c/clip-path/" target="_blank">CSS-Tricks — clip-path</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Build a hero section with an angled bottom edge using clip-path. Animate the clip-path on hover for a reveal effect.</div><div class="time-badge">⏱ ~1.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-c17"><div class="day-row" onclick="toggleCard('c17')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c17','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 17</div><div class="day-info"><div class="day-name">CSS Filters, Backdrop & Blend Modes</div><div class="day-sub">filter · backdrop-filter · mix-blend-mode</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>filter: blur, brightness, contrast, grayscale, hue-rotate</li><li>backdrop-filter for frosted glass effect</li><li>mix-blend-mode — Photoshop blend modes in CSS</li><li>isolation: isolate for stacking context</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter" target="_blank">MDN — CSS filter</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter" target="_blank">MDN — backdrop-filter</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Build a frosted glass card UI. Create a duotone image effect using mix-blend-mode.</div><div class="time-badge">⏱ ~1.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-c18"><div class="day-row" onclick="toggleCard('c18')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c18','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 18</div><div class="day-info"><div class="day-name">Print Styles & Non-Screen Media</div><div class="day-sub">@media print · @page · print-specific CSS</div></div><div class="day-right"><span class="tag tag-css">CSS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>@media print rules</li><li>@page — size, margin</li><li>page-break-before/after/inside</li><li>Hiding nav/buttons for print</li><li>Showing URLs for links in print</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://www.smashingmagazine.com/2018/05/print-stylesheets-in-2018/" target="_blank">Smashing Mag — Print Styles</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Add a print stylesheet to your portfolio. It should print cleanly — no nav, proper URL display, good typography.</div><div class="time-badge">⏱ ~1 hr</div></div></div>
+
+    <div class="day-card" id="t-c19"><div class="day-row" onclick="toggleCard('c19')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c19','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 19</div><div class="day-info"><div class="day-name">CSS Performance & Optimization</div><div class="day-sub">Paint · Composite · Layout thrashing · content-visibility</div></div><div class="day-right"><span class="tag tag-concept">CONCEPT</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Layout → Paint → Composite layers</li><li>Properties that trigger layout reflow</li><li>GPU compositing: transform, opacity</li><li>content-visibility: auto for virtualization</li><li>contain property</li><li>CSS minification and critical CSS</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://csstriggers.com/" target="_blank">CSS Triggers — Layout/Paint Reference</a></li><li><a href="https://developer.chrome.com/docs/devtools/performance/" target="_blank">Chrome Performance Panel</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Profile your portfolio animations in Chrome DevTools. Ensure all animations run at 60fps using only composite properties.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-c20"><div class="day-row" onclick="toggleCard('c20')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('c20','css')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">C — 20</div><div class="day-info"><div class="day-name">CSS Phase Project — Styled Portfolio</div><div class="day-sub">Full design system · Dark mode · Animations · Responsive</div></div><div class="day-right"><span class="tag tag-project">PROJECT</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Project Deliverables</div><ul class="topic-list"><li>Full SCSS design token system</li><li>Dark/light mode via CSS custom properties</li><li>Fluid typography with clamp()</li><li>CSS Grid + Flexbox layouts</li><li>Smooth page-load animations</li><li>3D card flip on project items</li><li>clip-path hero section</li><li>Fully responsive (mobile → wide)</li></ul></div><div class="body-col"><div class="col-label">Quality Checks</div><ul class="topic-list"><li>60fps animations (DevTools verified)</li><li>Lighthouse Performance 90+</li><li>Zero layout shift (CLS: 0)</li><li>Print stylesheet included</li><li>Accessible color contrast throughout</li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> A production-quality, beautifully styled portfolio. You've mastered CSS. Push to GitHub Pages. 🎨</div><div class="time-badge">⏱ ~4 hrs</div></div></div>
+  </div>
+
+  <!-- ════════════ PHASE 3: JAVASCRIPT ════════════ -->
+  <div class="phase-block" id="phase-js">
+    <div class="phase-header js-phase">
+      <div class="phase-icon">⚡</div>
+      <div class="phase-info">
+        <div class="phase-badge">Phase 03 · JavaScript</div>
+        <div class="phase-title">Logic, Interaction & Modern JS</div>
+        <div class="phase-desc">From DOM manipulation to async patterns, modules, and advanced ES2024+ features</div>
+      </div>
+      <div class="phase-count" id="js-count">0 / 20</div>
+    </div>
+
+    <div class="day-card" id="t-j1"><div class="day-row" onclick="toggleCard('j1')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j1','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 01</div><div class="day-info"><div class="day-name">JavaScript Fundamentals Review</div><div class="day-sub">Types · Coercion · Scope · Hoisting · Closures</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Primitive types and typeof quirks</li><li>== vs === (implicit coercion)</li><li>var vs let vs const — temporal dead zone</li><li>Hoisting — functions vs variables</li><li>Lexical scope and closure patterns</li><li>IIFE pattern</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/" target="_blank">javascript.info — The Modern JS Tutorial</a></li><li><a href="https://github.com/getify/You-Dont-Know-JS" target="_blank">You Don't Know JS (free book)</a></li><li><a href="https://www.youtube.com/watch?v=hdI2bqOjy3c" target="_blank">JS Crash Course (Traversy)</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Pass 20 closure-based quiz questions from javascript.info without looking up answers.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-j2"><div class="day-row" onclick="toggleCard('j2')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j2','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 02</div><div class="day-info"><div class="day-name">DOM Manipulation — Complete Guide</div><div class="day-sub">Querying · Creating · Modifying · Removing elements</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>querySelector, querySelectorAll, getElementById</li><li>createElement, appendChild, insertAdjacentHTML</li><li>classList — add, remove, toggle, contains</li><li>dataset API, style property</li><li>innerHTML vs textContent vs innerText</li><li>Node vs Element difference</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/document" target="_blank">javascript.info — Document</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document" target="_blank">MDN — Document API</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Build a dynamic todo list — add, remove, toggle complete — using only vanilla DOM APIs.</div><div class="time-badge">⏱ ~2.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-j3"><div class="day-row" onclick="toggleCard('j3')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j3','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 03</div><div class="day-info"><div class="day-name">Events — Deep Dive</div><div class="day-sub">Bubbling · Capturing · Delegation · Custom events</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Event bubbling vs capturing phases</li><li>stopPropagation vs stopImmediatePropagation</li><li>Event delegation pattern</li><li>CustomEvent and dispatchEvent</li><li>once, passive event listener options</li><li>Keyboard, mouse, pointer events</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/event-bubbling" target="_blank">javascript.info — Event Bubbling</a></li><li><a href="https://javascript.info/custom-events" target="_blank">javascript.info — Custom Events</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Refactor the todo list to use event delegation — one event listener for unlimited items.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-j4"><div class="day-row" onclick="toggleCard('j4')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j4','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 04</div><div class="day-info"><div class="day-name">ES6+ Features — The Full Rundown</div><div class="day-sub">Destructuring · Spread · Optional chaining · Nullish coalescing</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Arrow functions + this binding rules</li><li>Destructuring arrays and objects (with defaults)</li><li>Spread (...) and rest parameters</li><li>Optional chaining (?.) and nullish coalescing (??)</li><li>Template literals + tagged templates</li><li>Symbol, WeakMap, WeakSet, WeakRef</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/destructuring-assignment" target="_blank">javascript.info — Destructuring</a></li><li><a href="https://tc39.es/ecma262/" target="_blank">TC39 — ECMAScript Spec</a></li><li><a href="https://github.com/tc39/proposals" target="_blank">TC39 Proposals — What's coming</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Rewrite your todo list using every ES6+ feature at least once. No old-style var or function declarations.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-j5"><div class="day-row" onclick="toggleCard('j5')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j5','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 05</div><div class="day-info"><div class="day-name">Arrays & Functional Programming</div><div class="day-sub">map · filter · reduce · flatMap · Immutability</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>map, filter, reduce — truly understanding reduce</li><li>flatMap, flat, Array.from, Array.of</li><li>find, findIndex, some, every, includes</li><li>Method chaining patterns</li><li>Immutability — never mutate, always return new</li><li>Functional composition concepts</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/array-methods" target="_blank">javascript.info — Array Methods</a></li><li><a href="https://www.youtube.com/watch?v=BMUiFMZr7vk" target="_blank">Functional JS (Fun Fun Function)</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Solve 10 array challenges on Codewars using only map/filter/reduce — no for loops allowed.</div><div class="time-badge">⏱ ~2.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-j6"><div class="day-row" onclick="toggleCard('j6')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j6','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 06</div><div class="day-info"><div class="day-name">Objects, Prototypes & OOP</div><div class="day-sub">Prototype chain · class · Inheritance · this keyword</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Prototype chain and __proto__</li><li>Object.create() — prototype-based inheritance</li><li>class syntax — constructor, methods, static</li><li>extends and super</li><li>this binding rules — implicit, explicit, new, arrow</li><li>Getter/setter properties</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/prototype-inheritance" target="_blank">javascript.info — Prototypes</a></li><li><a href="https://www.youtube.com/watch?v=2ZphE5HcQPQ" target="_blank">OOP in JS (Traversy)</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Build an Animal → Dog → GuideDog class hierarchy using ES6 class syntax. Add getters/setters for properties.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-j7"><div class="day-row" onclick="toggleCard('j7')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j7','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 07</div><div class="day-info"><div class="day-name">Async JavaScript — Promises & async/await</div><div class="day-sub">Microtask queue · Promise.all · Error handling</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Promise states: pending, fulfilled, rejected</li><li>then/catch/finally chaining</li><li>Promise.all, Promise.allSettled, Promise.race, Promise.any</li><li>async/await — syntactic sugar, not magic</li><li>try/catch with async functions</li><li>Top-level await</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/async" target="_blank">javascript.info — Async</a></li><li><a href="https://www.youtube.com/watch?v=PoRJizFvM7s" target="_blank">Async JS Crash Course (Traversy)</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Fetch data from 3 APIs simultaneously using Promise.all. Handle partial failures gracefully with Promise.allSettled.</div><div class="time-badge">⏱ ~2.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-j8"><div class="day-row" onclick="toggleCard('j8')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j8','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 08</div><div class="day-info"><div class="day-name">Fetch API & REST Consumption</div><div class="day-sub">fetch · Headers · AbortController · Response parsing</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>fetch() — Request/Response objects</li><li>Headers object</li><li>Parsing: response.json(), response.text(), response.blob()</li><li>AbortController for cancellable requests</li><li>Custom useFetch hook pattern</li><li>Network error vs HTTP error handling</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/fetch" target="_blank">javascript.info — Fetch</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank">MDN — Fetch API</a></li><li><a href="https://jsonplaceholder.typicode.com/" target="_blank">JSONPlaceholder — Free test API</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Build a GitHub user search app — fetch profile + repos, handle loading/error states, cancel pending requests.</div><div class="time-badge">⏱ ~3 hrs</div></div></div>
+
+    <div class="day-card" id="t-j9"><div class="day-row" onclick="toggleCard('j9')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j9','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 09</div><div class="day-info"><div class="day-name">ES Modules & Code Organisation</div><div class="day-sub">import · export · Dynamic imports · Module patterns</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Named vs default exports</li><li>import * as namespace</li><li>Re-exporting (export { x } from './y')</li><li>Dynamic import() for code splitting</li><li>Module vs script execution context</li><li>Import maps in the browser</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/modules-intro" target="_blank">javascript.info — Modules</a></li><li><a href="https://vitejs.dev/" target="_blank">Vite — Modern module bundler</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Refactor the GitHub search app into modules: api.js, ui.js, utils.js. Use Vite as bundler.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-j10"><div class="day-row" onclick="toggleCard('j10')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j10','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 10</div><div class="day-info"><div class="day-name">Generators, Iterators & Symbols</div><div class="day-sub">function* · yield · for...of · Symbol.iterator</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Iterable protocol — Symbol.iterator</li><li>Generator functions — function* and yield</li><li>for...of and spread with custom iterables</li><li>Async generators — async function* and for await</li><li>Lazy evaluation with generators</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/generators" target="_blank">javascript.info — Generators</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_generators" target="_blank">MDN — Iterators and Generators</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Write an infinite sequence generator (fibonacci, IDs). Build a range() iterable that works with for...of.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-j11"><div class="day-row" onclick="toggleCard('j11')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j11','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 11</div><div class="day-info"><div class="day-name">Design Patterns in JavaScript</div><div class="day-sub">Observer · Factory · Singleton · Strategy · Command</div></div><div class="day-right"><span class="tag tag-concept">CONCEPT</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Observer/EventEmitter pattern</li><li>Factory and Abstract Factory</li><li>Singleton (and why to avoid it)</li><li>Strategy pattern for interchangeable behavior</li><li>Command pattern for undo/redo</li><li>Proxy pattern (Proxy object)</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://www.patterns.dev/vanilla" target="_blank">patterns.dev — JS Patterns</a></li><li><a href="https://www.youtube.com/watch?v=tv-_1er1mWI" target="_blank">Design Patterns (Web Dev Simplified)</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Implement an EventEmitter class from scratch. Build an undo/redo text editor using the Command pattern.</div><div class="time-badge">⏱ ~2.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-j12"><div class="day-row" onclick="toggleCard('j12')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j12','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 12</div><div class="day-info"><div class="day-name">Error Handling & Defensive Programming</div><div class="day-sub">Custom errors · Error boundaries · Global handlers</div></div><div class="day-right"><span class="tag tag-practice">PRACTICE</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Custom error classes extending Error</li><li>window.onerror and unhandledrejection</li><li>try/catch/finally nuances</li><li>Error re-throwing pattern</li><li>Type guards and defensive checks</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/error-handling" target="_blank">javascript.info — Error Handling</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/error_event" target="_blank">MDN — Global error handling</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Add global error tracking to GitHub search app. Create custom ValidationError and NetworkError classes.</div><div class="time-badge">⏱ ~1.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-j13"><div class="day-row" onclick="toggleCard('j13')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j13','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 13</div><div class="day-info"><div class="day-name">Performance — Debounce, Throttle, Lazy Load</div><div class="day-sub">Rendering optimization · requestAnimationFrame · RAIL</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Debounce vs throttle — implementations</li><li>requestAnimationFrame for smooth animations</li><li>IntersectionObserver for lazy loading</li><li>ResizeObserver and MutationObserver</li><li>RAIL model: Response, Animation, Idle, Load</li><li>Web Workers for heavy computation</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/settimeout-setinterval" target="_blank">javascript.info — Timers</a></li><li><a href="https://css-tricks.com/debouncing-throttling-explained-examples/" target="_blank">CSS-Tricks — Debounce & Throttle</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Implement debounce from scratch. Add it to the GitHub search input. Add infinite scroll with IntersectionObserver.</div><div class="time-badge">⏱ ~2.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-j14"><div class="day-row" onclick="toggleCard('j14')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j14','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 14</div><div class="day-info"><div class="day-name">State Management — Vanilla Patterns</div><div class="day-sub">Store pattern · Proxy reactivity · Mini Redux</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Centralized store pattern</li><li>Reactive state with Proxy object</li><li>Pub/Sub state updates</li><li>Mini Redux: actions, reducers, dispatch</li><li>History of state management</li><li>When frameworks help vs vanilla is fine</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://javascript.info/proxy" target="_blank">javascript.info — Proxy</a></li><li><a href="https://www.patterns.dev/vanilla/flux" target="_blank">patterns.dev — Flux Pattern</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Build a mini Redux-like store from scratch. Use it to manage todo list state.</div><div class="time-badge">⏱ ~3 hrs</div></div></div>
+
+    <div class="day-card" id="t-j15"><div class="day-row" onclick="toggleCard('j15')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j15','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 15</div><div class="day-info"><div class="day-name">Testing JavaScript — Vitest & Testing Library</div><div class="day-sub">Unit tests · DOM testing · AAA pattern</div></div><div class="day-right"><span class="tag tag-practice">PRACTICE</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Vitest setup with Vite projects</li><li>AAA pattern: Arrange, Act, Assert</li><li>Testing pure functions</li><li>Mocking fetch with vi.fn()</li><li>@testing-library/dom for DOM tests</li><li>Code coverage reports</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://vitest.dev/" target="_blank">Vitest Official Docs</a></li><li><a href="https://testing-library.com/docs/dom-testing-library/intro/" target="_blank">DOM Testing Library</a></li><li><a href="https://www.youtube.com/watch?v=7r4xVDI2vho" target="_blank">Vitest Crash Course (Traversy)</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Write unit tests for your debounce function and custom EventEmitter. Achieve 80%+ coverage.</div><div class="time-badge">⏱ ~2.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-j16"><div class="day-row" onclick="toggleCard('j16')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j16','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 16</div><div class="day-info"><div class="day-name">TypeScript for JavaScript Devs</div><div class="day-sub">Types · Interfaces · Generics · Type narrowing</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Type annotations: string, number, boolean, any, unknown</li><li>Interface vs type alias</li><li>Union types, intersection types</li><li>Generics — T, K, V patterns</li><li>Type narrowing: typeof, instanceof, in</li><li>Utility types: Partial, Required, Pick, Omit</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://www.typescriptlang.org/docs/" target="_blank">TypeScript Official Docs</a></li><li><a href="https://www.totaltypescript.com/" target="_blank">Total TypeScript (Matt Pocock)</a></li><li><a href="https://typescript-exercises.github.io/" target="_blank">TypeScript Exercises</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Convert the GitHub search app to TypeScript. Type all API response shapes with interfaces.</div><div class="time-badge">⏱ ~3 hrs</div></div></div>
+
+    <div class="day-card" id="t-j17"><div class="day-row" onclick="toggleCard('j17')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j17','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 17</div><div class="day-info"><div class="day-name">Browser APIs — Clipboard, Notification, Share</div><div class="day-sub">Modern browser APIs overview</div></div><div class="day-right"><span class="tag tag-js">JS</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>Clipboard API — copy/paste</li><li>Notifications API</li><li>Web Share API</li><li>BroadcastChannel — tab communication</li><li>Vibration API (mobile)</li><li>Battery API, Network Information API</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://developer.chrome.com/docs/capabilities/" target="_blank">Chrome Capabilities — Web APIs</a></li><li><a href="https://whatwebcando.today/" target="_blank">What Web Can Do Today</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Add a "Copy profile URL" button to GitHub search using the Clipboard API. Add a Web Share button for mobile.</div><div class="time-badge">⏱ ~1.5 hrs</div></div></div>
+
+    <div class="day-card" id="t-j18"><div class="day-row" onclick="toggleCard('j18')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j18','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 18</div><div class="day-info"><div class="day-name">Security — XSS, CSRF & Content Security Policy</div><div class="day-sub">sanitize HTML · CSP headers · Trusted Types</div></div><div class="day-right"><span class="tag tag-concept">CONCEPT</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>XSS attacks — stored, reflected, DOM-based</li><li>Why innerHTML is dangerous</li><li>DOMPurify — sanitizing HTML</li><li>Content Security Policy headers</li><li>Trusted Types API</li><li>CSRF — what it is and how cookies help</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://owasp.org/www-community/attacks/xss/" target="_blank">OWASP — XSS Guide</a></li><li><a href="https://github.com/cure53/DOMPurify" target="_blank">DOMPurify on GitHub</a></li><li><a href="https://content-security-policy.com/" target="_blank">CSP Reference</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Identify innerHTML in your projects. Replace with textContent or DOMPurify. Set up a CSP header locally.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-j19"><div class="day-row" onclick="toggleCard('j19')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j19','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 19</div><div class="day-info"><div class="day-name">Tooling — ESLint, Prettier, Husky, Bundlers</div><div class="day-sub">Vite · esbuild · Code quality automation</div></div><div class="day-right"><span class="tag tag-practice">PRACTICE</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Topics</div><ul class="topic-list"><li>ESLint + recommended config setup</li><li>Prettier for code formatting</li><li>Husky + lint-staged — pre-commit hooks</li><li>Vite — dev server + build tool</li><li>esbuild speed vs webpack comparison</li><li>Sourcemaps for production debugging</li></ul></div><div class="body-col"><div class="col-label">Resources</div><ul class="res-list"><li><a href="https://eslint.org/docs/latest/" target="_blank">ESLint Official Docs</a></li><li><a href="https://prettier.io/docs/en/index.html" target="_blank">Prettier Docs</a></li><li><a href="https://vitejs.dev/guide/" target="_blank">Vite Getting Started</a></li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Set up ESLint + Prettier + Husky on your project. Commits should auto-format and fail if there are lint errors.</div><div class="time-badge">⏱ ~2 hrs</div></div></div>
+
+    <div class="day-card" id="t-j20"><div class="day-row" onclick="toggleCard('j20')"><div class="check-box" onclick="event.stopPropagation();toggleCheck('j20','js')"><svg viewBox="0 0 12 12"><polyline points="1,6 4,9 11,2"/></svg></div><div class="day-num">J — 20</div><div class="day-info"><div class="day-name">🏁 JS Capstone — Interactive Dashboard</div><div class="day-sub">Real APIs · TypeScript · Tested · Deployed</div></div><div class="day-right"><span class="tag tag-project">PROJECT</span><div class="done-chip">✓ DONE</div><button class="expand-btn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 5l5 5 5-5"/></svg></button></div></div><div class="day-body"><div class="body-grid"><div class="body-col"><div class="col-label">Project: GitHub Dashboard</div><ul class="topic-list"><li>Search users, view profile + repos + followers</li><li>TypeScript — all types defined</li><li>Vanilla state management store</li><li>IntersectionObserver lazy loading for repos</li><li>Debounced search input</li><li>Dark/light mode with CSS custom properties</li><li>Vitest — 70%+ coverage</li><li>ESLint + Prettier configured</li></ul></div><div class="body-col"><div class="col-label">What's Next</div><ul class="topic-list"><li>React — understand why it exists now</li><li>Vue 3 Composition API</li><li>Next.js / Nuxt for SSR</li><li>Web performance profiling</li><li>Contribute to open source</li></ul></div></div><div class="goal-strip"><strong>Goal:</strong> Ship a TypeScript Vite app with real GitHub data, state management, tests, and deploy to Vercel/Netlify. Frontend Mastery complete. 🎉</div><div class="time-badge">⏱ ~4 hrs</div></div></div>
+  </div>
+
+  <!-- ─── MASTER RESOURCES ─── -->
+  <div class="resource-section">
+    <div class="rs-header">
+      <span style="font-size:18px">📚</span>
+      <div class="rs-title">Master Resource Library</div>
+    </div>
+    <div class="rs-grid">
+      <div class="rs-card"><div class="rs-icon">🌐</div><div class="rs-name">MDN Web Docs</div><div class="rs-desc">The authoritative reference for every HTML, CSS, and JS API. Bookmark it.</div><a class="rs-link" href="https://developer.mozilla.org/" target="_blank">developer.mozilla.org →</a></div>
+      <div class="rs-card"><div class="rs-icon">🎓</div><div class="rs-name">web.dev / Learn</div><div class="rs-desc">Google's structured learning paths for HTML, CSS, Performance, and PWA.</div><a class="rs-link" href="https://web.dev/learn/" target="_blank">web.dev/learn →</a></div>
+      <div class="rs-card"><div class="rs-icon">⚡</div><div class="rs-name">javascript.info</div><div class="rs-desc">The best modern JavaScript tutorial. Complete, well-written, with exercises.</div><a class="rs-link" href="https://javascript.info/" target="_blank">javascript.info →</a></div>
+      <div class="rs-card"><div class="rs-icon">📖</div><div class="rs-name">You Don't Know JS</div><div class="rs-desc">Kyle Simpson's free book series — deep dive into JS internals.</div><a class="rs-link" href="https://github.com/getify/You-Dont-Know-JS" target="_blank">GitHub (free) →</a></div>
+      <div class="rs-card"><div class="rs-icon">🎨</div><div class="rs-name">Josh W Comeau's Blog</div><div class="rs-desc">World-class CSS and JS tutorials with interactive playgrounds.</div><a class="rs-link" href="https://www.joshwcomeau.com/" target="_blank">joshwcomeau.com →</a></div>
+      <div class="rs-card"><div class="rs-icon">📐</div><div class="rs-name">Kevin Powell — CSS</div><div class="rs-desc">Best CSS YouTuber. Deep, practical, modern CSS videos.</div><a class="rs-link" href="https://www.youtube.com/@KevinPowell" target="_blank">YouTube →</a></div>
+      <div class="rs-card"><div class="rs-icon">🏋️</div><div class="rs-name">Frontend Mentor</div><div class="rs-desc">Real design challenges to build and compare with the community.</div><a class="rs-link" href="https://www.frontendmentor.io/" target="_blank">frontendmentor.io →</a></div>
+      <div class="rs-card"><div class="rs-icon">🧩</div><div class="rs-name">CSS Battle</div><div class="rs-desc">Competitive CSS challenges. Best way to sharpen your selectors.</div><a class="rs-link" href="https://cssbattle.dev/" target="_blank">cssbattle.dev →</a></div>
+      <div class="rs-card"><div class="rs-icon">🗺️</div><div class="rs-name">Frontend Roadmap</div><div class="rs-desc">roadmap.sh visual guide — see exactly where you are in the ecosystem.</div><a class="rs-link" href="https://roadmap.sh/frontend" target="_blank">roadmap.sh/frontend →</a></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <span>Frontend Mastery Roadmap — HTML · CSS · JavaScript</span>
+    <span id="footer-date"></span>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'frontend_roadmap_v1';
+let completed = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+
+const PHASE_MAP = {
+  html: ['h1','h2','h3','h4','h5','h6','h7','h8','h9','h10','h11','h12','h13','h14','h15','h16','h17','h18','h19','h20'],
+  css:  ['c1','c2','c3','c4','c5','c6','c7','c8','c9','c10','c11','c12','c13','c14','c15','c16','c17','c18','c19','c20'],
+  js:   ['j1','j2','j3','j4','j5','j6','j7','j8','j9','j10','j11','j12','j13','j14','j15','j16','j17','j18','j19','j20']
+};
+
+function init() {
+  document.getElementById('footer-date').textContent =
+    new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  completed.forEach(id => {
+    const card = document.getElementById('t-' + id);
+    if (card) card.classList.add('completed');
+  });
+  updateProgress();
+}
+
+function toggleCheck(id, phase) {
+  event.stopPropagation();
+  const card = document.getElementById('t-' + id);
+  if (!card) return;
+  if (completed.has(id)) {
+    completed.delete(id);
+    card.classList.remove('completed');
+  } else {
+    completed.add(id);
+    card.classList.add('completed');
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...completed]));
+  updateProgress();
+}
+
+function toggleCard(id) {
+  const card = document.getElementById('t-' + id);
+  if (card) card.classList.toggle('open');
+}
+
+function updateProgress() {
+  const total = 60;
+  const done = completed.size;
+  const pct = Math.round((done / total) * 100);
+
+  document.getElementById('big-pct').textContent = pct + '%';
+  document.getElementById('main-fill').style.width = pct + '%';
+  document.getElementById('header-count').textContent = done + ' / ' + total + ' topics';
+
+  ['html', 'css', 'js'].forEach(phase => {
+    const ids = PHASE_MAP[phase];
+    const pDone = ids.filter(id => completed.has(id)).length;
+    const pPct = Math.round((pDone / ids.length) * 100);
+    document.getElementById(phase + '-fill').style.width = pPct + '%';
+    document.getElementById(phase + '-txt').textContent = pDone + '/' + ids.length;
+    document.getElementById(phase + '-count').textContent = pDone + ' / ' + ids.length;
+  });
+}
+
+function expandAll() {
+  [...PHASE_MAP.html, ...PHASE_MAP.css, ...PHASE_MAP.js].forEach(id => {
+    const card = document.getElementById('t-' + id);
+    if (card) card.classList.add('open');
+  });
+}
+
+function resetAll() {
+  if (!confirm('Reset all progress?')) return;
+  completed.clear();
+  localStorage.removeItem(STORAGE_KEY);
+  [...PHASE_MAP.html, ...PHASE_MAP.css, ...PHASE_MAP.js].forEach(id => {
+    const card = document.getElementById('t-' + id);
+    if (card) card.classList.remove('completed', 'open');
+  });
+  updateProgress();
+}
+
+init();
+</script>
+</body>
+</html>
