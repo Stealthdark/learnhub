@@ -159,7 +159,7 @@
 <text x="64" y="342"
       font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
       font-size="80" font-weight="800" letter-spacing="-2"
-      fill="url(#headlineGrad)" filter="url(#textGlow)">Learning</text>
+      fill="url(#headlineGrad)" filter="url(#textGlow)">E-Learning</text>
 
 <!-- "Platform." -->
 <text x="64" y="436"
@@ -180,29 +180,29 @@
      STAT PILLS
      ══════════════════════════════════════ -->
 
-<!-- Pill 1: 2 Courses -->
-<rect x="64"  y="506" width="128" height="38" rx="19"
+<!-- Pill 1: Various Courses -->
+<rect x="64"  y="506" width="160" height="38" rx="19"
       fill="url(#pill1bg)" stroke="#3B82F6" stroke-opacity="0.45" stroke-width="1"/>
-<text x="128" y="530"
+<text x="144" y="530"
       font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
       font-size="15" font-weight="700"
-      fill="#93C5FD" text-anchor="middle">2 Courses</text>
+      fill="#93C5FD" text-anchor="middle">Various Courses</text>
 
-<!-- Pill 2: 60+ Days -->
-<rect x="204" y="506" width="118" height="38" rx="19"
+<!-- Pill 2: Self Paced Learning -->
+<rect x="236" y="506" width="196" height="38" rx="19"
       fill="url(#pill2bg)" stroke="#0D9488" stroke-opacity="0.45" stroke-width="1"/>
-<text x="263" y="530"
+<text x="334" y="530"
       font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
       font-size="15" font-weight="700"
-      fill="#5EEAD4" text-anchor="middle">60+ Days</text>
+      fill="#5EEAD4" text-anchor="middle">Self Paced Learning</text>
 
-<!-- Pill 3: Free Forever -->
-<rect x="334" y="506" width="145" height="38" rx="19"
+<!-- Pill 3: Limited Slots -->
+<rect x="444" y="506" width="142" height="38" rx="19"
       fill="url(#pill3bg)" stroke="#7C3AED" stroke-opacity="0.45" stroke-width="1"/>
-<text x="406" y="530"
+<text x="515" y="530"
       font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
       font-size="15" font-weight="700"
-      fill="#C4B5FD" text-anchor="middle">Free Forever</text>
+      fill="#C4B5FD" text-anchor="middle">Limited Slots</text>
 
 <!-- ══════════════════════════════════════
      URL / FOOTER
@@ -211,6 +211,6 @@
 <text x="64" y="594"
       font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
       font-size="17" font-weight="400"
-      fill="rgba(255,255,255,0.22)">learnhub.dev</text>
+      fill="rgba(255,255,255,0.22)">Crafted by Harshit | © learnhub.dev</text>
 
 </svg>

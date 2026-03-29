@@ -7,6 +7,7 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
   const[errors,setErrors]=useState({});
   const[loading,setLoading]=useState(false);
   const[showPass,setShowPass]=useState(false);
+  const[showConfirmPass,setShowConfirmPass]=useState(false);
   const[pendingVerify,setPendingVerify]=useState(null);// {email, code}
   const[verifyInput,setVerifyInput]=useState("");
   const[verifyError,setVerifyError]=useState("");
@@ -233,18 +234,19 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
           {tab==="signup"&&(
             <div className="form-group">
               <label className="label">Confirm Password</label>
-              <input className={`input${errors.confirmPassword?" error":""}`} type="password" placeholder="Repeat password" value={form.confirmPassword} onChange={e=>set("confirmPassword",e.target.value)}/>
+              <div style={{position:"relative"}}>
+                <input className={`input${errors.confirmPassword?" error":""}`} type={showConfirmPass?"text":"password"} placeholder="Repeat password" value={form.confirmPassword} onChange={e=>set("confirmPassword",e.target.value)}/>
+                <button onClick={()=>setShowConfirmPass(!showConfirmPass)} style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",color:"var(--text3)"}}>
+                  {showConfirmPass?<Icon.EyeOff/>:<Icon.Eye/>}
+                </button>
+              </div>
               {errors.confirmPassword&&<p className="error-text">{errors.confirmPassword}</p>}
+              
             </div>
           )}
           <button className="btn btn-primary btn-lg" onClick={tab==="login"?handleLogin:handleSignup} disabled={loading} style={{width:"100%",justifyContent:"center",marginTop:4}}>
             {loading?<span className="spinner"/>:tab==="login"?"Sign In":"Create Account"}
           </button>
-          {tab==="login"&&(
-            <p style={{textAlign:"center",fontSize:12,color:"var(--text3)",marginTop:16}}>
-              Demo admin: admin@learnhub.dev / Admin@123
-            </p>
-          )}
         </div>
       </div>
     </div>

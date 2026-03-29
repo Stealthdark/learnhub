@@ -125,13 +125,16 @@ function drawBadge(ctx,x,y,text,bg,color){
   ctx.fillStyle='rgba(255,255,255,0.9)';
   ctx.font='bold 28px system-ui,sans-serif';
   ctx.fillText('LearnHub',128,95);
+  ctx.fillStyle='#60a5fa';
+  ctx.fillText('.Dev',128+ctx.measureText('LearnHub').width,95);
+  ctx.fillStyle='rgba(255,255,255,0.9)';
 
   // Main headline
   ctx.fillStyle='#ffffff';
   ctx.font='bold 72px system-ui,sans-serif';
   ctx.fillText('Professional',64,240);
   ctx.fillStyle='#1a73e8';
-  ctx.fillText('Learning',64,325);
+  ctx.fillText('E-Learning',64,325);
   ctx.fillStyle='#ffffff';
   ctx.fillText('Platform.',64,410);
 
@@ -141,7 +144,7 @@ function drawBadge(ctx,x,y,text,bg,color){
   ctx.fillText('Master programming with structured roadmaps.',64,470);
 
   // Stats pills
-  const stats=[['2 Courses','#1a73e8'],['60+ Days','#0d9488'],['Free Forever','#7c3aed']];
+  const stats=[['Various Courses','#1a73e8'],['Self Paced Learning','#0d9488'],['Limited Slots','#7c3aed']];
   let sx=64;
   stats.forEach(([label,color])=>{
     ctx.font='bold 16px system-ui,sans-serif';
@@ -161,7 +164,7 @@ function drawBadge(ctx,x,y,text,bg,color){
   // URL
   ctx.fillStyle='rgba(255,255,255,0.25)';
   ctx.font='18px system-ui,sans-serif';
-  ctx.fillText('learnhub.dev',64,598);
+  ctx.fillText('Crafted by Harshit | © learnhub.dev',64,598);
 })();
 
 // ── Card 1: Node.js Course ─────────────────────────────────────
