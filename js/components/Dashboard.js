@@ -2,17 +2,26 @@
    DASHBOARD
 ═══════════════════════════════════════════════════════ */
 function Dashboard({user,setPage}){
-  const courses=store.get(KEYS.courses)||[];
+  const[stats,setStats]=useState([]);
   const enrolled=user.enrolledCourses||[];
-  const stats=enrolled.map(cid=>{
-    const course=courses.find(c=>c.id===cid);
-    if(!course)return null;
-    const prog=getUserProgress(user.id,cid);
-    const pct=Math.round((prog.completed.length/(course.days?.length||1))*100);
-    return{course,pct,completed:prog.completed.length,total:course.days?.length||0};
-  }).filter(Boolean);
+
+  useEffect(()=>{
+    if(!enrolled.length){setStats([]);return;}
+    fbGetCourses().then(async courses=>{
+      const computed=await Promise.all(enrolled.map(async cid=>{
+        const course=courses.find(c=>c.id===cid);
+        if(!course)return null;
+        const prog=await getUserProgress(user.id,cid);
+        const pct=Math.round((prog.completed.length/(course.days?.length||1))*100);
+        return{course,pct,completed:prog.completed.length,total:course.days?.length||0};
+      }));
+      setStats(computed.filter(Boolean));
+    });
+  },[user.id,enrolled.join(',')]);
+
   const totalDays=stats.reduce((a,s)=>a+s.total,0);
   const doneDays=stats.reduce((a,s)=>a+s.completed,0);
+
   return(
     <div className="page-pad" style={{maxWidth:1100}}>
       <div style={{marginBottom:24}}>

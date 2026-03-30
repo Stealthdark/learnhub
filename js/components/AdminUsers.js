@@ -2,29 +2,47 @@
    ADMIN — USERS
 ═══════════════════════════════════════════════════════ */
 function AdminUsers({showToast}){
-  const[users,setUsers]=useState(store.get(KEYS.users)||[]);
+  const[users,setUsers]=useState([]);
+  const[courses,setCourses]=useState([]);
   const[selected,setSelected]=useState(null);
   const[search,setSearch]=useState("");
-  const courses=store.get(KEYS.courses)||[];
+  const[progressMap,setProgressMap]=useState({});
+  const[loading,setLoading]=useState(true);
 
-  function refresh(){setUsers(store.get(KEYS.users)||[]);}
+  useEffect(()=>{
+    Promise.all([fbGetUsers(),fbGetCourses()]).then(([u,c])=>{
+      setUsers(u);setCourses(c);setLoading(false);
+    });
+  },[]);
 
-  function toggleRole(uid){
-    const all=store.get(KEYS.users)||[];
-    const idx=all.findIndex(u=>u.id===uid);
-    if(idx===-1)return;
-    all[idx].role=all[idx].role==="admin"?"user":"admin";
-    store.set(KEYS.users,all);
-    setUsers([...all]);
+  useEffect(()=>{
+    if(!selected||(selected.enrolledCourses||[]).length===0){setProgressMap({});return;}
+    Promise.all(
+      selected.enrolledCourses.map(cid=>
+        getUserProgress(selected.id,cid).then(prog=>[cid,prog])
+      )
+    ).then(entries=>setProgressMap(Object.fromEntries(entries)));
+  },[selected?.id]);
+
+  async function refresh(){
+    const u=await fbGetUsers();
+    setUsers(u);
+  }
+
+  async function toggleRole(uid){
+    const u=users.find(x=>x.id===uid);
+    if(!u)return;
+    const updated={...u,role:u.role==="admin"?"user":"admin"};
+    await fbSetUser(updated);
+    await refresh();
     showToast("Role updated","success");
   }
 
-  function deleteUser(uid){
+  async function deleteUser(uid){
     if(!confirm("Delete this user permanently?"))return;
-    const all=(store.get(KEYS.users)||[]).filter(u=>u.id!==uid);
-    store.set(KEYS.users,all);
-    setUsers(all);
+    await fbDeleteUser(uid);
     setSelected(null);
+    await refresh();
     showToast("User deleted","info");
   }
 
@@ -32,6 +50,14 @@ function AdminUsers({showToast}){
     u.name.toLowerCase().includes(search.toLowerCase())||
     u.email.toLowerCase().includes(search.toLowerCase())
   );
+
+  if(loading){
+    return(
+      <div className="page-pad" style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:200}}>
+        <span className="spinner" style={{width:28,height:28}}/>
+      </div>
+    );
+  }
 
   return(
     <div className="page-pad" style={{maxWidth:1100}}>
@@ -100,7 +126,7 @@ function AdminUsers({showToast}){
                 (selected.enrolledCourses||[]).map(cid=>{
                   const course=courses.find(c=>c.id===cid);
                   if(!course)return null;
-                  const prog=getUserProgress(selected.id,cid);
+                  const prog=progressMap[cid]||{completed:[]};
                   const pct=Math.round((prog.completed.length/(course.days?.length||1))*100);
                   return(
                     <div key={cid} style={{marginBottom:12}}>

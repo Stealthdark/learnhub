@@ -87,21 +87,5 @@ const store={
   set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}},
 };
 
-function initStorage(){
-  if(!store.get(KEYS.users)){
-    store.set(KEYS.users,[{
-      id:"admin",email:"admin@learnhub.dev",name:"Admin",
-      password:"Admin@123",role:"admin",verified:true,
-      avatar:"",bio:"Platform administrator",
-      joinedAt:new Date().toISOString(),enrolledCourses:[]
-    }]);
-  }
-  // Seed and sync bundled courses — adds new courses and updates existing ones with latest bundled data
-  const BUNDLED_COURSES=[NODEJS_30DAY_COURSE,FRONTEND_ROADMAP_COURSE,SQL_MONGODB_20DAY_COURSE,AI_FIRST_WEBDEV_COURSE];
-  const stored=store.get(KEYS.courses)||[];
-  const bundledMap=Object.fromEntries(BUNDLED_COURSES.map(c=>[c.id,c]));
-  // Replace stored bundled courses with latest data; keep any admin-created courses untouched
-  const merged=stored.map(c=>bundledMap[c.id]||c);
-  BUNDLED_COURSES.forEach(c=>{if(!merged.find(s=>s.id===c.id))merged.push(c);});
-  store.set(KEYS.courses,merged);
-}
+// initStorage is no longer used — seeding moved to initFirestoreAdmin() in firebase.js
+function initStorage(){}

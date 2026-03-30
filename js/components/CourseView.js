@@ -2,23 +2,41 @@
    COURSE VIEW
 ═══════════════════════════════════════════════════════ */
 function CourseView({courseId,user,updateUser,showToast}){
-  const courses=store.get(KEYS.courses)||[];
-  const course=courses.find(c=>c.id===courseId);
-  const[progress,setProgress]=useState(()=>getUserProgress(user.id,courseId));
+  const[course,setCourse]=useState(null);
+  const[progress,setProgress]=useState({completed:[],lastUpdated:null});
+  const[loading,setLoading]=useState(true);
   const[expandedDays,setExpandedDays]=useState(new Set());
+
+  useEffect(()=>{
+    setLoading(true);
+    Promise.all([
+      fbGetCourses().then(courses=>courses.find(c=>c.id===courseId)||null),
+      getUserProgress(user.id,courseId)
+    ]).then(([c,prog])=>{
+      setCourse(c);
+      setProgress(prog);
+      setLoading(false);
+    });
+  },[courseId,user.id]);
+
+  if(loading)return<div className="page-pad" style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:200}}><span className="spinner" style={{width:28,height:28}}/></div>;
   if(!course)return<div className="page-pad" style={{color:"var(--text2)"}}>Course not found.</div>;
+
   const completed=new Set(progress.completed||[]);
   const pct=Math.round((completed.size/(course.days?.length||1))*100);
-  function toggleComplete(dayId){
+
+  async function toggleComplete(dayId){
     const newSet=new Set(completed);
     newSet.has(dayId)?newSet.delete(dayId):newSet.add(dayId);
     const newProg={...progress,completed:[...newSet]};
     setProgress(newProg);
-    saveUserProgress(user.id,courseId,newProg);
+    await saveUserProgress(user.id,courseId,newProg);
   }
+
   function toggleExpand(dayId){
     setExpandedDays(prev=>{const n=new Set(prev);n.has(dayId)?n.delete(dayId):n.add(dayId);return n;});
   }
+
   const tagClass=(tag)=>{
     if(tag==="Concept")return"chip chip-blue";
     if(tag==="Practice")return"chip chip-green";
@@ -31,6 +49,7 @@ function CourseView({courseId,user,updateUser,showToast}){
   };
   const defaultColors=["#7c4dff","#007b83","#137333","#e37400","#1a73e8","#c5221f"];
   const weekColors=course.weeks.map((w,i)=>w.color||defaultColors[i%defaultColors.length]);
+
   return(
     <div className="page-pad" style={{maxWidth:980}}>
       {/* Hero */}

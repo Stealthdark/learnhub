@@ -2,12 +2,16 @@
    ADMIN — COURSES
 ═══════════════════════════════════════════════════════ */
 function AdminCourses({showToast}){
-  const[courses,setCourses]=useState(store.get(KEYS.courses)||[]);
+  const[courses,setCourses]=useState([]);
   const[showModal,setShowModal]=useState(false);
   const[form,setForm]=useState({title:"",subtitle:"",description:"",category:"",level:"Beginner",duration:"",dailyEffort:"",prerequisites:"",outcome:""});
   const[errors,setErrors]=useState({});
   const[importing,setImporting]=useState(false);
   const fileRef=useRef();
+
+  useEffect(()=>{
+    fbGetCourses().then(setCourses);
+  },[]);
 
   const set=(k,v)=>setForm(f=>({...f,[k]:v}));
 
@@ -18,33 +22,30 @@ function AdminCourses({showToast}){
     return e;
   }
 
-  function handleSave(){
+  async function handleSave(){
     const e=validate();
     if(Object.keys(e).length){setErrors(e);return;}
     const newCourse={
       ...form,id:generateId(),weeks:[],days:[],
       createdAt:new Date().toISOString()
     };
-    const updated=[...courses,newCourse];
-    store.set(KEYS.courses,updated);
-    setCourses(updated);
+    await fbSetCourse(newCourse);
+    setCourses(prev=>[...prev,newCourse]);
     setShowModal(false);
     setForm({title:"",subtitle:"",description:"",category:"",level:"Beginner",duration:"",dailyEffort:"",prerequisites:"",outcome:""});
     showToast("Course created!","success");
   }
 
-  function deleteCourse(id){
+  async function deleteCourse(id){
     if(!confirm("Delete this course?"))return;
-    const updated=courses.filter(c=>c.id!==id);
-    store.set(KEYS.courses,updated);
-    setCourses(updated);
+    await fbDeleteCourse(id);
+    setCourses(prev=>prev.filter(c=>c.id!==id));
     showToast("Course deleted","info");
   }
 
   // Extracts a course data JS object from a script's text content.
   // Uses bracket-counting so nested objects/arrays are handled correctly.
   function extractCourseObjectFromScript(scriptText){
-    // Patterns that indicate a course data variable
     const varPatterns=[
       /(?:const|var|let)\s+(COURSE_DATA)\s*=/,
       /(?:const|var|let)\s+(\w*COURSE\w*)\s*=/,
@@ -55,8 +56,6 @@ function AdminCourses({showToast}){
       const afterEq=scriptText.indexOf("=",scriptText.indexOf(match[0]))+1;
       const braceStart=scriptText.indexOf("{",afterEq);
       if(braceStart===-1)continue;
-      // Walk forward counting braces/brackets to find the matching closing brace,
-      // skipping string literals so quoted { } don't count.
       let depth=0,inStr=false,strChar="",i=braceStart;
       for(;i<scriptText.length;i++){
         const ch=scriptText[i];
@@ -82,36 +81,31 @@ function AdminCourses({showToast}){
     if(!file)return;
     setImporting(true);
     const reader=new FileReader();
-    reader.onload=ev=>{
+    reader.onload=async ev=>{
       try{
         const html=ev.target.result;
         const parser=new DOMParser();
         const doc=parser.parseFromString(html,"text/html");
 
-        // 1. Try to extract full structured course data from any script tag
         let courseData=null;
         const scripts=Array.from(doc.querySelectorAll("script"));
         for(const script of scripts){
           const content=script.textContent||"";
-          // Quick pre-check: skip scripts that clearly have no course data
           if(!content.includes("days:")&&!content.includes('"days"'))continue;
           courseData=extractCourseObjectFromScript(content);
           if(courseData)break;
         }
 
         if(courseData&&courseData.title&&Array.isArray(courseData.days)){
-          // Full structured course data found — import as-is
           const imported={
             ...courseData,
             id:courseData.id||generateId(),
             createdAt:courseData.createdAt||new Date().toISOString(),
           };
-          const updated=[...courses,imported];
-          store.set(KEYS.courses,updated);
-          setCourses(updated);
+          await fbSetCourse(imported);
+          setCourses(prev=>[...prev,imported]);
           showToast(`"${imported.title}" imported — ${imported.days.length} days of content!`,"success");
         }else{
-          // 2. Fallback: metadata-only import from HTML tags
           const titleEl=doc.querySelector("title");
           const title=titleEl?titleEl.textContent.replace("Dev. Harshit | ","").trim():"Imported Course";
           const metaDesc=doc.querySelector('meta[name="description"]');
@@ -123,9 +117,8 @@ function AdminCourses({showToast}){
             weeks:[],days:[],
             createdAt:new Date().toISOString()
           };
-          const updated=[...courses,newCourse];
-          store.set(KEYS.courses,updated);
-          setCourses(updated);
+          await fbSetCourse(newCourse);
+          setCourses(prev=>[...prev,newCourse]);
           showToast(`"${title}" imported (no structured content found — edit to add days).`,"info");
         }
       }catch(err){

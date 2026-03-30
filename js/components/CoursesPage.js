@@ -2,18 +2,29 @@
    COURSES LIST
 ═══════════════════════════════════════════════════════ */
 function CoursesPage({user,setPage,updateUser,showToast}){
-  const courses=store.get(KEYS.courses)||[];
+  const[courses,setCourses]=useState([]);
+  const[progressMap,setProgressMap]=useState({});
   const enrolled=user.enrolledCourses||[];
-  function enroll(courseId){
+
+  useEffect(()=>{
+    fbGetCourses().then(setCourses);
+  },[]);
+
+  useEffect(()=>{
+    if(!enrolled.length)return;
+    Promise.all(
+      enrolled.map(cid=>getUserProgress(user.id,cid).then(prog=>[cid,prog]))
+    ).then(entries=>setProgressMap(Object.fromEntries(entries)));
+  },[user.id,enrolled.join(',')]);
+
+  async function enroll(courseId){
     if(enrolled.includes(courseId))return;
-    const users=store.get(KEYS.users)||[];
-    const idx=users.findIndex(u=>u.id===user.id);
-    if(idx===-1)return;
-    users[idx].enrolledCourses=[...(users[idx].enrolledCourses||[]),courseId];
-    store.set(KEYS.users,users);
-    updateUser(users[idx]);
+    const updated={...user,enrolledCourses:[...enrolled,courseId]};
+    await fbSetUser(updated);
+    updateUser(updated);
     showToast("Enrolled successfully!","success");
   }
+
   return(
     <div className="page-pad" style={{maxWidth:1100}}>
       <h1 className="h1" style={{marginBottom:4}}>Course Catalog</h1>
@@ -21,7 +32,7 @@ function CoursesPage({user,setPage,updateUser,showToast}){
       <div className="grid-courses">
         {courses.map(course=>{
           const isEnrolled=enrolled.includes(course.id);
-          const prog=isEnrolled?getUserProgress(user.id,course.id):{completed:[]};
+          const prog=isEnrolled?(progressMap[course.id]||{completed:[]}):{completed:[]};
           const pct=isEnrolled?Math.round((prog.completed.length/(course.days?.length||1))*100):0;
           return(
             <div key={course.id} className="card" style={{overflow:"hidden",display:"flex",flexDirection:"column"}}>

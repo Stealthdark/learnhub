@@ -7,7 +7,8 @@ function GlobalStyles(){ return null; }
    MAIN APP
 ═══════════════════════════════════════════════════════ */
 function App(){
-  const[user,setUser]=useState(()=>getCurrentUser());
+  const[user,setUser]=useState(null);
+  const[authChecked,setAuthChecked]=useState(false);
   const[page,setPage]=useState("dashboard");
   const[toast,setToast]=useState(null);
   const[sidebarOpen,setSidebarOpen]=useState(false);
@@ -16,50 +17,46 @@ function App(){
   const[onboarding,setOnboarding]=useState(false);
 
   useEffect(()=>{
-    initStorage();
-    // Read ?c=COURSE_ID from URL and handle routing
-    const params=new URLSearchParams(window.location.search);
-    const courseParam=params.get("c");
-    if(courseParam){
-      setPendingCourseId(courseParam);
-      const currentUser=getCurrentUser();
-      if(currentUser){
-        // Logged in: enroll if needed, go to course
-        _enrollIfNeeded(currentUser,courseParam);
-        setPage("course_"+courseParam);
-      }else{
-        // Not logged in: show public landing page
-        setShowLanding(true);
+    const init=async()=>{
+      await initFirestoreAdmin();
+      const u=await getCurrentUser();
+      setUser(u);
+      setAuthChecked(true);
+      const params=new URLSearchParams(window.location.search);
+      const courseParam=params.get("c");
+      if(courseParam){
+        setPendingCourseId(courseParam);
+        if(u){
+          await _enrollIfNeeded(u,courseParam);
+          setPage("course_"+courseParam);
+        }else{
+          setShowLanding(true);
+        }
       }
-    }
+    };
+    init();
   },[]);
 
-  function _enrollIfNeeded(u,courseId){
+  async function _enrollIfNeeded(u,courseId){
     if((u.enrolledCourses||[]).includes(courseId))return u;
-    const users=store.get(KEYS.users)||[];
-    const idx=users.findIndex(usr=>usr.id===u.id);
-    if(idx===-1)return u;
-    users[idx].enrolledCourses=[...(users[idx].enrolledCourses||[]),courseId];
-    store.set(KEYS.users,users);
-    setUser(users[idx]);
-    return users[idx];
+    const updated={...u,enrolledCourses:[...(u.enrolledCourses||[]),courseId]};
+    await fbSetUser(updated);
+    setUser(updated);
+    return updated;
   }
 
-  // Close sidebar on page change (mobile)
   function goPage(id){setPage(id);setSidebarOpen(false);}
-
   function showToast(msg,type="info"){setToast({msg,type});}
   function updateUser(u){setUser(u);}
 
-  // Called after login (existing user)
-  function handleLogin(u,isNew=false){
+  async function handleLogin(u,isNew=false){
     setUser(u);
     setShowLanding(false);
     if(isNew){
       setOnboarding(true);
     }else{
       if(pendingCourseId){
-        _enrollIfNeeded(u,pendingCourseId);
+        await _enrollIfNeeded(u,pendingCourseId);
         setPage("course_"+pendingCourseId);
         setPendingCourseId(null);
       }else{
@@ -68,11 +65,10 @@ function App(){
     }
   }
 
-  // Called when onboarding is completed or skipped
-  function handleOnboardingComplete(updatedUser){
+  async function handleOnboardingComplete(updatedUser){
     setOnboarding(false);
     if(pendingCourseId){
-      _enrollIfNeeded(updatedUser,pendingCourseId);
+      await _enrollIfNeeded(updatedUser,pendingCourseId);
       setPage("course_"+pendingCourseId);
       setPendingCourseId(null);
     }else{
@@ -81,6 +77,15 @@ function App(){
   }
 
   function handleLogout(){logoutUser();setUser(null);setPage("dashboard");setShowLanding(false);setOnboarding(false);}
+
+  // ── Loading state while checking auth + seeding Firestore ──
+  if(!authChecked){
+    return(
+      <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)"}}>
+        <span className="spinner" style={{width:32,height:32}}/>
+      </div>
+    );
+  }
 
   // ── Public course landing (no auth required) ──
   if(showLanding&&pendingCourseId&&!user){

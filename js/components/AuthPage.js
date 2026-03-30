@@ -11,6 +11,15 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
   const[pendingVerify,setPendingVerify]=useState(null);// {email, code}
   const[verifyInput,setVerifyInput]=useState("");
   const[verifyError,setVerifyError]=useState("");
+  const[pendingCourse,setPendingCourse]=useState(null);
+
+  useEffect(()=>{
+    if(!pendingCourseId)return;
+    fbGetCourses().then(courses=>{
+      const c=courses.find(x=>x.id===pendingCourseId);
+      if(c)setPendingCourse(c);
+    });
+  },[pendingCourseId]);
 
   const set=(k,v)=>setForm(f=>({...f,[k]:v}));
 
@@ -25,29 +34,22 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
     return e;
   }
 
-  function handleLogin(){
+  async function handleLogin(){
     setLoading(true);setErrors({});
-    setTimeout(()=>{
-      const users=store.get(KEYS.users)||[];
-      const user=users.find(u=>u.email.toLowerCase()===form.email.toLowerCase());
-      if(!user||hashPassword(form.password)!==hashPassword(user.password)||(user.password!==form.password&&hashPassword(form.password)!==form.password)){
-        // simple: compare directly (we store plain for simplicity/demo)
-        const u2=users.find(u=>u.email.toLowerCase()===form.email.toLowerCase()&&u.password===form.password);
-        if(!u2){setErrors({global:"Invalid email or password"});setLoading(false);return;}
-        if(!u2.verified){setErrors({global:"Please verify your email first"});setLoading(false);return;}
-        loginUser(u2);onLogin(u2,false);setLoading(false);return;
-      }
-      if(!user.verified){setErrors({global:"Please verify your email first"});setLoading(false);return;}
-      loginUser(user);onLogin(user,false);setLoading(false);
-    },600);
+    const user=await fbGetUserByEmail(form.email);
+    if(!user||user.password!==form.password){
+      setErrors({global:"Invalid email or password"});setLoading(false);return;
+    }
+    if(!user.verified){setErrors({global:"Please verify your email first"});setLoading(false);return;}
+    loginUser(user);onLogin(user,false);setLoading(false);
   }
 
   async function handleSignup(){
     const e=validateSignup();
     if(Object.keys(e).length){setErrors(e);return;}
     setLoading(true);
-    const users=store.get(KEYS.users)||[];
-    if(users.find(u=>u.email.toLowerCase()===form.email.toLowerCase())){
+    const existing=await fbGetUserByEmail(form.email);
+    if(existing){
       setErrors({email:"Email already registered"});setLoading(false);return;
     }
     const code=generateVerificationCode();
@@ -55,33 +57,29 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
     vs[form.email]={code,name:form.name,password:form.password,createdAt:Date.now()};
     store.set(KEYS.verifications,vs);
 
-    const result = await sendVerificationEmail(form.email, form.name, code);
+    const result=await sendVerificationEmail(form.email,form.name,code);
     setLoading(false);
 
     if(result.fallback){
-      // EmailJS not configured — show code in the verify screen banner
-      setPendingVerify({email:form.email, code, showFallback:true});
+      setPendingVerify({email:form.email,code,showFallback:true});
       showToast("Check the verification screen for your code","info");
-    } else {
-      // Real email sent successfully
-      setPendingVerify({email:form.email, code, showFallback:false});
+    }else{
+      setPendingVerify({email:form.email,code,showFallback:false});
       showToast(`Verification email sent to ${form.email}!`,"success");
     }
   }
 
-  function handleVerify(){
+  async function handleVerify(){
     setVerifyError("");
     const vs=store.get(KEYS.verifications)||{};
     const v=vs[pendingVerify.email];
     if(!v||v.code!==verifyInput){setVerifyError("Invalid code. Try again.");return;}
-    const users=store.get(KEYS.users)||[];
     const newUser={
-      id:generateId(),email:pendingVerify.email,name:v.name,
+      id:generateId(),email:pendingVerify.email.toLowerCase(),name:v.name,
       password:v.password,role:"user",verified:true,
       avatar:"",bio:"",joinedAt:new Date().toISOString(),enrolledCourses:[]
     };
-    users.push(newUser);
-    store.set(KEYS.users,users);
+    await fbSetUser(newUser);
     delete vs[pendingVerify.email];
     store.set(KEYS.verifications,vs);
     loginUser(newUser);onLogin(newUser,true);
@@ -154,9 +152,9 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
             onClick={async()=>{
               const newCode=generateVerificationCode();
               const vs=store.get(KEYS.verifications)||{};
-              const userName = vs[pendingVerify.email]?.name || "there";
+              const userName=vs[pendingVerify.email]?.name||"there";
               if(vs[pendingVerify.email]){vs[pendingVerify.email].code=newCode;store.set(KEYS.verifications,vs);}
-              const r=await sendVerificationEmail(pendingVerify.email, userName, newCode);
+              const r=await sendVerificationEmail(pendingVerify.email,userName,newCode);
               setPendingVerify(prev=>({...prev,code:newCode,showFallback:r.fallback}));
               showToast(r.fallback?"New code generated":"New code sent to your email","info");
             }}
@@ -184,17 +182,15 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
           <p style={{color:"var(--text2)",fontSize:13}}>Professional E-Learning Platform</p>
         </div>
         {/* Pending course context banner */}
-        {pendingCourseId&&(()=>{
-          const courses=store.get(KEYS.courses)||[];
-          const c=courses.find(x=>x.id===pendingCourseId);
-          return c?(<div style={{margin:"16px 24px 0",background:"var(--primary-light)",border:"1px solid #aecbfa",borderRadius:8,padding:"10px 14px",display:"flex",gap:10,alignItems:"center"}}>
+        {pendingCourse&&(
+          <div style={{margin:"16px 24px 0",background:"var(--primary-light)",border:"1px solid #aecbfa",borderRadius:8,padding:"10px 14px",display:"flex",gap:10,alignItems:"center"}}>
             <span style={{fontSize:18,flexShrink:0}}>📚</span>
             <div style={{minWidth:0}}>
               <div style={{fontSize:11,fontWeight:700,color:"var(--primary)"}}>Enrolling in</div>
-              <div style={{fontSize:13,fontWeight:600,color:"var(--text)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.title}</div>
+              <div style={{fontSize:13,fontWeight:600,color:"var(--text)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{pendingCourse.title}</div>
             </div>
-          </div>):null;
-        })()}
+          </div>
+        )}
         {/* Tabs */}
         <div style={{display:"flex",borderBottom:"1px solid var(--border)",margin:"24px 0 0"}}>
           {["login","signup"].map(t=>(
@@ -241,7 +237,6 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
                 </button>
               </div>
               {errors.confirmPassword&&<p className="error-text">{errors.confirmPassword}</p>}
-              
             </div>
           )}
           <button className="btn btn-primary btn-lg" onClick={tab==="login"?handleLogin:handleSignup} disabled={loading} style={{width:"100%",justifyContent:"center",marginTop:4}}>

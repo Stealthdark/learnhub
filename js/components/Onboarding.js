@@ -6,41 +6,32 @@ function Onboarding({user,updateUser,pendingCourseId,onComplete,showToast}){
   const[bio,setBio]=useState("");
   const[goal,setGoal]=useState("");
   const[saving,setSaving]=useState(false);
+  const[pendingCourse,setPendingCourse]=useState(null);
 
   const goals=["Frontend Developer","Backend Developer","Full-Stack Developer","DevOps / Cloud","Mobile Developer","Just Exploring"];
-  const courses=store.get(KEYS.courses)||[];
-  const pendingCourse=pendingCourseId?courses.find(c=>c.id===pendingCourseId):null;
 
-  function handleComplete(){
+  useEffect(()=>{
+    if(!pendingCourseId)return;
+    fbGetCourses().then(courses=>{
+      const c=courses.find(x=>x.id===pendingCourseId);
+      if(c)setPendingCourse(c);
+    });
+  },[pendingCourseId]);
+
+  async function handleComplete(){
     setSaving(true);
-    setTimeout(()=>{
-      const users=store.get(KEYS.users)||[];
-      const idx=users.findIndex(u=>u.id===user.id);
-      if(idx!==-1){
-        users[idx].bio=bio.trim();
-        users[idx].goal=goal;
-        users[idx].onboardingDone=true;
-        store.set(KEYS.users,users);
-        updateUser(users[idx]);
-        onComplete(users[idx]);
-      }else{
-        onComplete(user);
-      }
-      setSaving(false);
-    },400);
+    const updated={...user,bio:bio.trim(),goal,onboardingDone:true};
+    await fbSetUser(updated);
+    updateUser(updated);
+    onComplete(updated);
+    setSaving(false);
   }
 
-  function handleSkip(){
-    const users=store.get(KEYS.users)||[];
-    const idx=users.findIndex(u=>u.id===user.id);
-    if(idx!==-1){
-      users[idx].onboardingDone=true;
-      store.set(KEYS.users,users);
-      updateUser(users[idx]);
-      onComplete(users[idx]);
-    }else{
-      onComplete(user);
-    }
+  async function handleSkip(){
+    const updated={...user,onboardingDone:true};
+    await fbSetUser(updated);
+    updateUser(updated);
+    onComplete(updated);
   }
 
   return(

@@ -5,45 +5,59 @@ function ProfilePage({user,updateUser,showToast}){
   const[form,setForm]=useState({name:user.name,email:user.email,bio:user.bio||"",currentPassword:"",newPassword:"",confirmNewPassword:""});
   const[errors,setErrors]=useState({});
   const[tab,setTab]=useState("profile");
+  const[courses,setCourses]=useState([]);
+  const[progressMap,setProgressMap]=useState({});
   const fileRef=useRef();
+  const enrolled=user.enrolledCourses||[];
+
+  useEffect(()=>{
+    fbGetCourses().then(setCourses);
+  },[]);
+
+  useEffect(()=>{
+    if(!enrolled.length)return;
+    Promise.all(
+      enrolled.map(cid=>getUserProgress(user.id,cid).then(prog=>[cid,prog]))
+    ).then(entries=>setProgressMap(Object.fromEntries(entries)));
+  },[user.id,enrolled.join(',')]);
+
   const set=(k,v)=>setForm(f=>({...f,[k]:v}));
-  function handleProfileSave(){
+
+  async function handleProfileSave(){
     const e={};
     if(!form.name.trim())e.name="Name required";
     if(Object.keys(e).length){setErrors(e);return;}
-    const users=store.get(KEYS.users)||[];
-    const idx=users.findIndex(u=>u.id===user.id);
-    users[idx]={...users[idx],name:form.name,bio:form.bio};
-    store.set(KEYS.users,users);updateUser(users[idx]);
+    const updated={...user,name:form.name,bio:form.bio};
+    await fbSetUser(updated);
+    updateUser(updated);
     showToast("Profile updated!","success");setErrors({});
   }
-  function handlePasswordSave(){
+
+  async function handlePasswordSave(){
     const e={};
     if(form.currentPassword!==user.password)e.currentPassword="Incorrect current password";
     if(form.newPassword.length<8)e.newPassword="Min 8 characters";
     if(form.newPassword!==form.confirmNewPassword)e.confirmNewPassword="Passwords don't match";
     if(Object.keys(e).length){setErrors(e);return;}
-    const users=store.get(KEYS.users)||[];
-    const idx=users.findIndex(u=>u.id===user.id);
-    users[idx].password=form.newPassword;
-    store.set(KEYS.users,users);updateUser(users[idx]);
+    const updated={...user,password:form.newPassword};
+    await fbSetUser(updated);
+    updateUser(updated);
     showToast("Password changed!","success");
     setForm(f=>({...f,currentPassword:"",newPassword:"",confirmNewPassword:""}));setErrors({});
   }
+
   function handleAvatar(e){
     const file=e.target.files[0];if(!file)return;
     const reader=new FileReader();
-    reader.onload=ev=>{
-      const users=store.get(KEYS.users)||[];
-      const idx=users.findIndex(u=>u.id===user.id);
-      users[idx].avatar=ev.target.result;
-      store.set(KEYS.users,users);updateUser(users[idx]);
+    reader.onload=async ev=>{
+      const updated={...user,avatar:ev.target.result};
+      await fbSetUser(updated);
+      updateUser(updated);
       showToast("Avatar updated!","success");
     };
     reader.readAsDataURL(file);
   }
-  const courses=store.get(KEYS.courses)||[];
-  const enrolled=user.enrolledCourses||[];
+
   return(
     <div className="page-pad" style={{maxWidth:680}}>
       <h1 className="h1" style={{marginBottom:20}}>Account Settings</h1>
@@ -108,7 +122,7 @@ function ProfilePage({user,updateUser,showToast}){
           {enrolled.length===0?(<div className="card" style={{padding:28,textAlign:"center",color:"var(--text2)"}}>No courses enrolled yet.</div>):(
             enrolled.map(cid=>{
               const course=courses.find(c=>c.id===cid);if(!course)return null;
-              const prog=getUserProgress(user.id,cid);
+              const prog=progressMap[cid]||{completed:[]};
               const pct=Math.round((prog.completed.length/(course.days?.length||1))*100);
               return(
                 <div key={cid} className="card" style={{padding:16,marginBottom:10,display:"flex",flexWrap:"wrap",alignItems:"center",gap:12}}>

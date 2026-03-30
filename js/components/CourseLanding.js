@@ -4,8 +4,23 @@
    No auth required — "Enroll" triggers sign-up flow.
 ═══════════════════════════════════════════════════════ */
 function CourseLanding({courseId,user,onEnroll,showToast}){
-  const courses=store.get(KEYS.courses)||[];
-  const course=courses.find(c=>c.id===courseId);
+  const[course,setCourse]=useState(null);
+  const[loading,setLoading]=useState(true);
+
+  useEffect(()=>{
+    fbGetCourses().then(courses=>{
+      setCourse(courses.find(c=>c.id===courseId)||null);
+      setLoading(false);
+    });
+  },[courseId]);
+
+  if(loading){
+    return(
+      <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)"}}>
+        <span className="spinner" style={{width:32,height:32}}/>
+      </div>
+    );
+  }
 
   if(!course){
     return(
