@@ -8,10 +8,10 @@ function CourseLanding({courseId,user,onEnroll,showToast}){
   const[loading,setLoading]=useState(true);
 
   useEffect(()=>{
-    fbGetCourses().then(courses=>{
+    apiGetCourses().then(courses=>{
       setCourse(courses.find(c=>c.id===courseId)||null);
       setLoading(false);
-    });
+    }).catch(()=>setLoading(false));
   },[courseId]);
 
   if(loading){
@@ -38,12 +38,7 @@ function CourseLanding({courseId,user,onEnroll,showToast}){
   const accentColor=course.weeks?.[0]?.color||"#1a73e8";
 
   function handleEnrollClick(){
-    if(user){
-      // Already logged in — enroll handled by parent, just trigger
-      onEnroll();
-    }else{
-      onEnroll();
-    }
+    onEnroll();
   }
 
   return(

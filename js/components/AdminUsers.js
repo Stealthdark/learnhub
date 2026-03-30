@@ -10,7 +10,7 @@ function AdminUsers({showToast}){
   const[loading,setLoading]=useState(true);
 
   useEffect(()=>{
-    Promise.all([fbGetUsers(),fbGetCourses()]).then(([u,c])=>{
+    Promise.all([apiGetUsers(),apiGetCourses()]).then(([u,c])=>{
       setUsers(u);setCourses(c);setLoading(false);
     });
   },[]);
@@ -25,22 +25,21 @@ function AdminUsers({showToast}){
   },[selected?.id]);
 
   async function refresh(){
-    const u=await fbGetUsers();
+    const u=await apiGetUsers();
     setUsers(u);
   }
 
   async function toggleRole(uid){
     const u=users.find(x=>x.id===uid);
     if(!u)return;
-    const updated={...u,role:u.role==="admin"?"user":"admin"};
-    await fbSetUser(updated);
+    await apiUpdateUser(uid,{role:u.role==="admin"?"user":"admin"});
     await refresh();
     showToast("Role updated","success");
   }
 
   async function deleteUser(uid){
     if(!confirm("Delete this user permanently?"))return;
-    await fbDeleteUser(uid);
+    await apiDeleteUser(uid);
     setSelected(null);
     await refresh();
     showToast("User deleted","info");

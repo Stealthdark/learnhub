@@ -12,26 +12,35 @@ function Onboarding({user,updateUser,pendingCourseId,onComplete,showToast}){
 
   useEffect(()=>{
     if(!pendingCourseId)return;
-    fbGetCourses().then(courses=>{
+    apiGetCourses().then(courses=>{
       const c=courses.find(x=>x.id===pendingCourseId);
       if(c)setPendingCourse(c);
-    });
+    }).catch(()=>{});
   },[pendingCourseId]);
 
   async function handleComplete(){
     setSaving(true);
-    const updated={...user,bio:bio.trim(),goal,onboardingDone:true};
-    await fbSetUser(updated);
-    updateUser(updated);
-    onComplete(updated);
-    setSaving(false);
+    try{
+      const updated=await apiUpdateUser(user.id,{bio:bio.trim(),goal,onboardingDone:true});
+      updateUser(updated);
+      onComplete(updated);
+    }catch(err){
+      showToast(err.message||"Failed to save","error");
+      setSaving(false);
+    }
   }
 
   async function handleSkip(){
-    const updated={...user,onboardingDone:true};
-    await fbSetUser(updated);
-    updateUser(updated);
-    onComplete(updated);
+    try{
+      const updated=await apiUpdateUser(user.id,{onboardingDone:true});
+      updateUser(updated);
+      onComplete(updated);
+    }catch{
+      // Non-critical — proceed anyway with local state
+      const updated={...user,onboardingDone:true};
+      updateUser(updated);
+      onComplete(updated);
+    }
   }
 
   return(

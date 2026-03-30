@@ -10,7 +10,7 @@ function AdminCourses({showToast}){
   const fileRef=useRef();
 
   useEffect(()=>{
-    fbGetCourses().then(setCourses);
+    apiGetCourses().then(setCourses);
   },[]);
 
   const set=(k,v)=>setForm(f=>({...f,[k]:v}));
@@ -29,7 +29,7 @@ function AdminCourses({showToast}){
       ...form,id:generateId(),weeks:[],days:[],
       createdAt:new Date().toISOString()
     };
-    await fbSetCourse(newCourse);
+    await apiSetCourse(newCourse);
     setCourses(prev=>[...prev,newCourse]);
     setShowModal(false);
     setForm({title:"",subtitle:"",description:"",category:"",level:"Beginner",duration:"",dailyEffort:"",prerequisites:"",outcome:""});
@@ -38,13 +38,11 @@ function AdminCourses({showToast}){
 
   async function deleteCourse(id){
     if(!confirm("Delete this course?"))return;
-    await fbDeleteCourse(id);
+    await apiDeleteCourse(id);
     setCourses(prev=>prev.filter(c=>c.id!==id));
     showToast("Course deleted","info");
   }
 
-  // Extracts a course data JS object from a script's text content.
-  // Uses bracket-counting so nested objects/arrays are handled correctly.
   function extractCourseObjectFromScript(scriptText){
     const varPatterns=[
       /(?:const|var|let)\s+(COURSE_DATA)\s*=/,
@@ -102,7 +100,7 @@ function AdminCourses({showToast}){
             id:courseData.id||generateId(),
             createdAt:courseData.createdAt||new Date().toISOString(),
           };
-          await fbSetCourse(imported);
+          await apiSetCourse(imported);
           setCourses(prev=>[...prev,imported]);
           showToast(`"${imported.title}" imported — ${imported.days.length} days of content!`,"success");
         }else{
@@ -117,7 +115,7 @@ function AdminCourses({showToast}){
             weeks:[],days:[],
             createdAt:new Date().toISOString()
           };
-          await fbSetCourse(newCourse);
+          await apiSetCourse(newCourse);
           setCourses(prev=>[...prev,newCourse]);
           showToast(`"${title}" imported (no structured content found — edit to add days).`,"info");
         }

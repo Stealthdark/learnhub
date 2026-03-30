@@ -7,7 +7,7 @@ function CoursesPage({user,setPage,updateUser,showToast}){
   const enrolled=user.enrolledCourses||[];
 
   useEffect(()=>{
-    fbGetCourses().then(setCourses);
+    apiGetCourses().then(setCourses);
   },[]);
 
   useEffect(()=>{
@@ -19,10 +19,13 @@ function CoursesPage({user,setPage,updateUser,showToast}){
 
   async function enroll(courseId){
     if(enrolled.includes(courseId))return;
-    const updated={...user,enrolledCourses:[...enrolled,courseId]};
-    await fbSetUser(updated);
-    updateUser(updated);
-    showToast("Enrolled successfully!","success");
+    try{
+      const updated=await apiEnrollCourse(user.id,courseId);
+      updateUser(updated);
+      showToast("Enrolled successfully!","success");
+    }catch(err){
+      showToast(err.message||"Enrollment failed","error");
+    }
   }
 
   return(
@@ -36,7 +39,6 @@ function CoursesPage({user,setPage,updateUser,showToast}){
           const pct=isEnrolled?Math.round((prog.completed.length/(course.days?.length||1))*100):0;
           return(
             <div key={course.id} className="card" style={{overflow:"hidden",display:"flex",flexDirection:"column"}}>
-              {/* Image section — pure visual, no text overlay */}
               {course.image?(
                 <div style={{height:120,overflow:"hidden",flexShrink:0}}>
                   <img src={course.image} alt={course.title} style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
@@ -44,7 +46,6 @@ function CoursesPage({user,setPage,updateUser,showToast}){
               ):(
                 <div style={{height:80,background:"linear-gradient(135deg,var(--primary) 0%,#4a90e2 100%)",flexShrink:0}}/>
               )}
-              {/* Dedicated header section — badges + title + subtitle */}
               <div style={{background:course.weeks?.[0]?.colorSoft||"var(--surface)",borderBottom:"1px solid var(--border)",padding:"12px 16px"}}>
                 <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:5,marginBottom:7}}>
                   <span style={{background:"var(--primary-light)",color:"var(--primary)",padding:"2px 10px",borderRadius:100,fontSize:11,fontWeight:600}}>{course.level}</span>

@@ -8,17 +8,17 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
   const[loading,setLoading]=useState(false);
   const[showPass,setShowPass]=useState(false);
   const[showConfirmPass,setShowConfirmPass]=useState(false);
-  const[pendingVerify,setPendingVerify]=useState(null);// {email, code}
+  const[pendingVerify,setPendingVerify]=useState(null);// {email}
   const[verifyInput,setVerifyInput]=useState("");
   const[verifyError,setVerifyError]=useState("");
   const[pendingCourse,setPendingCourse]=useState(null);
 
   useEffect(()=>{
     if(!pendingCourseId)return;
-    fbGetCourses().then(courses=>{
+    apiGetCourses().then(courses=>{
       const c=courses.find(x=>x.id===pendingCourseId);
       if(c)setPendingCourse(c);
-    });
+    }).catch(()=>{});
   },[pendingCourseId]);
 
   const set=(k,v)=>setForm(f=>({...f,[k]:v}));
@@ -36,99 +36,58 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
 
   async function handleLogin(){
     setLoading(true);setErrors({});
-    const user=await fbGetUserByEmail(form.email);
-    if(!user||user.password!==form.password){
-      setErrors({global:"Invalid email or password"});setLoading(false);return;
+    try{
+      const{token,user}=await apiLogin(form.email,form.password);
+      loginUser(token);
+      onLogin(user,false);
+    }catch(err){
+      setErrors({global:err.message||"Invalid email or password"});
     }
-    if(!user.verified){setErrors({global:"Please verify your email first"});setLoading(false);return;}
-    loginUser(user);onLogin(user,false);setLoading(false);
+    setLoading(false);
   }
 
   async function handleSignup(){
     const e=validateSignup();
     if(Object.keys(e).length){setErrors(e);return;}
-    setLoading(true);
-    const existing=await fbGetUserByEmail(form.email);
-    if(existing){
-      setErrors({email:"Email already registered"});setLoading(false);return;
+    setLoading(true);setErrors({});
+    try{
+      await apiSignup(form.name.trim(),form.email,form.password);
+      setPendingVerify({email:form.email});
+      showToast(`Verification code sent to ${form.email}`,"success");
+    }catch(err){
+      if(err.status===409)setErrors({email:"Email already registered"});
+      else setErrors({global:err.message||"Signup failed"});
     }
-    const code=generateVerificationCode();
-    const vs=store.get(KEYS.verifications)||{};
-    vs[form.email]={code,name:form.name,password:form.password,createdAt:Date.now()};
-    store.set(KEYS.verifications,vs);
-
-    const result=await sendVerificationEmail(form.email,form.name,code);
     setLoading(false);
-
-    if(result.fallback){
-      setPendingVerify({email:form.email,code,showFallback:true});
-      showToast("Check the verification screen for your code","info");
-    }else{
-      setPendingVerify({email:form.email,code,showFallback:false});
-      showToast(`Verification email sent to ${form.email}!`,"success");
-    }
   }
 
   async function handleVerify(){
     setVerifyError("");
-    const vs=store.get(KEYS.verifications)||{};
-    const v=vs[pendingVerify.email];
-    if(!v||v.code!==verifyInput){setVerifyError("Invalid code. Try again.");return;}
-    const newUser={
-      id:generateId(),email:pendingVerify.email.toLowerCase(),name:v.name,
-      password:v.password,role:"user",verified:true,
-      avatar:"",bio:"",joinedAt:new Date().toISOString(),enrolledCourses:[]
-    };
-    await fbSetUser(newUser);
-    delete vs[pendingVerify.email];
-    store.set(KEYS.verifications,vs);
-    loginUser(newUser);onLogin(newUser,true);
+    if(!verifyInput||verifyInput.length!==6){setVerifyError("Enter the 6-digit code.");return;}
+    setLoading(true);
+    try{
+      const{token,user}=await apiVerifyEmail(pendingVerify.email,verifyInput);
+      loginUser(token);
+      onLogin(user,true);
+    }catch(err){
+      setVerifyError(err.message||"Invalid code. Try again.");
+    }
+    setLoading(false);
   }
 
   if(pendingVerify){
     return(
       <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)",padding:20}}>
         <div className="card" style={{width:"100%",maxWidth:420,padding:"24px 20px",textAlign:"center"}}>
-          <div style={{fontSize:48,marginBottom:16}}>{pendingVerify.showFallback?"🔑":"📧"}</div>
+          <div style={{fontSize:48,marginBottom:16}}>📧</div>
           <h2 style={{fontFamily:"'Google Sans',sans-serif",fontSize:22,fontWeight:500,marginBottom:8,color:"var(--text)"}}>
-            {pendingVerify.showFallback?"Enter Verification Code":"Check your inbox"}
+            Check your inbox
           </h2>
+          <p style={{color:"var(--text2)",marginBottom:24,fontSize:14,lineHeight:1.7}}>
+            We sent a 6-digit code to<br/>
+            <strong style={{color:"var(--text)"}}>{pendingVerify.email}</strong>
+          </p>
 
-          {/* ── Real email sent ── */}
-          {!pendingVerify.showFallback&&(
-            <p style={{color:"var(--text2)",marginBottom:24,fontSize:14,lineHeight:1.7}}>
-              We sent a 6-digit code to<br/>
-              <strong style={{color:"var(--text)"}}>{pendingVerify.email}</strong>
-            </p>
-          )}
-
-          {/* ── Fallback: EmailJS not configured ── */}
-          {pendingVerify.showFallback&&(
-            <div>
-              <p style={{color:"var(--text2)",marginBottom:16,fontSize:14,lineHeight:1.7}}>
-                EmailJS is not configured yet. Your verification code is shown below.
-              </p>
-              <div style={{
-                background:"var(--amber-bg)",border:"1px solid #fce083",borderRadius:8,
-                padding:"16px 20px",marginBottom:24,
-              }}>
-                <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:"var(--amber)",marginBottom:6}}>
-                  ⚠ Dev Mode — Your OTP Code
-                </div>
-                <div style={{
-                  fontFamily:"'Roboto Mono',monospace",fontSize:32,fontWeight:700,
-                  letterSpacing:12,color:"var(--text)",userSelect:"all"
-                }}>
-                  {pendingVerify.code}
-                </div>
-                <div style={{fontSize:11,color:"var(--amber)",marginTop:6}}>
-                  Configure EmailJS in the HTML to send real emails
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* OTP Input */}
           <input
             className="input"
             placeholder="_ _ _ _ _ _"
@@ -141,28 +100,27 @@ function AuthPage({onLogin,showToast,pendingCourseId}){
           />
           {verifyError&&<p className="error-text" style={{marginBottom:8}}>{verifyError}</p>}
 
-          <button className="btn btn-primary btn-lg" onClick={handleVerify} style={{width:"100%",justifyContent:"center",marginTop:8,marginBottom:8}}>
-            Verify & Continue
+          <button className="btn btn-primary btn-lg" onClick={handleVerify} disabled={loading} style={{width:"100%",justifyContent:"center",marginTop:8,marginBottom:8}}>
+            {loading?<span className="spinner"/>:"Verify & Continue"}
           </button>
 
-          {/* Resend */}
           <button
             className="btn btn-ghost btn-sm"
             style={{width:"100%",justifyContent:"center",marginBottom:8}}
+            disabled={loading}
             onClick={async()=>{
-              const newCode=generateVerificationCode();
-              const vs=store.get(KEYS.verifications)||{};
-              const userName=vs[pendingVerify.email]?.name||"there";
-              if(vs[pendingVerify.email]){vs[pendingVerify.email].code=newCode;store.set(KEYS.verifications,vs);}
-              const r=await sendVerificationEmail(pendingVerify.email,userName,newCode);
-              setPendingVerify(prev=>({...prev,code:newCode,showFallback:r.fallback}));
-              showToast(r.fallback?"New code generated":"New code sent to your email","info");
+              try{
+                await apiResendOtp(pendingVerify.email);
+                showToast("New code sent to your email","info");
+              }catch(err){
+                showToast(err.message||"Could not resend code","error");
+              }
             }}
           >
             Resend Code
           </button>
 
-          <button className="btn btn-ghost btn-sm" onClick={()=>{setPendingVerify(null);setTab("login");}} style={{width:"100%",justifyContent:"center"}}>
+          <button className="btn btn-ghost btn-sm" onClick={()=>{setPendingVerify(null);setVerifyInput("");setVerifyError("");setTab("login");}} style={{width:"100%",justifyContent:"center"}}>
             ← Back to Sign In
           </button>
         </div>

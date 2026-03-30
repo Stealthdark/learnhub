@@ -11,7 +11,7 @@ function ProfilePage({user,updateUser,showToast}){
   const enrolled=user.enrolledCourses||[];
 
   useEffect(()=>{
-    fbGetCourses().then(setCourses);
+    apiGetCourses().then(setCourses);
   },[]);
 
   useEffect(()=>{
@@ -27,33 +27,41 @@ function ProfilePage({user,updateUser,showToast}){
     const e={};
     if(!form.name.trim())e.name="Name required";
     if(Object.keys(e).length){setErrors(e);return;}
-    const updated={...user,name:form.name,bio:form.bio};
-    await fbSetUser(updated);
-    updateUser(updated);
-    showToast("Profile updated!","success");setErrors({});
+    try{
+      const updated=await apiUpdateUser(user.id,{name:form.name.trim(),bio:form.bio});
+      updateUser(updated);
+      showToast("Profile updated!","success");setErrors({});
+    }catch(err){
+      showToast(err.message||"Failed to save profile","error");
+    }
   }
 
   async function handlePasswordSave(){
     const e={};
-    if(form.currentPassword!==user.password)e.currentPassword="Incorrect current password";
     if(form.newPassword.length<8)e.newPassword="Min 8 characters";
+    if(!/[A-Z]/.test(form.newPassword))e.newPassword="Must contain uppercase";
     if(form.newPassword!==form.confirmNewPassword)e.confirmNewPassword="Passwords don't match";
     if(Object.keys(e).length){setErrors(e);return;}
-    const updated={...user,password:form.newPassword};
-    await fbSetUser(updated);
-    updateUser(updated);
-    showToast("Password changed!","success");
-    setForm(f=>({...f,currentPassword:"",newPassword:"",confirmNewPassword:""}));setErrors({});
+    try{
+      await apiChangePassword(user.id,form.currentPassword,form.newPassword);
+      showToast("Password changed!","success");
+      setForm(f=>({...f,currentPassword:"",newPassword:"",confirmNewPassword:""}));setErrors({});
+    }catch(err){
+      setErrors({currentPassword:err.message||"Password change failed"});
+    }
   }
 
   function handleAvatar(e){
     const file=e.target.files[0];if(!file)return;
     const reader=new FileReader();
     reader.onload=async ev=>{
-      const updated={...user,avatar:ev.target.result};
-      await fbSetUser(updated);
-      updateUser(updated);
-      showToast("Avatar updated!","success");
+      try{
+        const updated=await apiUpdateUser(user.id,{avatar:ev.target.result});
+        updateUser(updated);
+        showToast("Avatar updated!","success");
+      }catch(err){
+        showToast(err.message||"Failed to update avatar","error");
+      }
     };
     reader.readAsDataURL(file);
   }

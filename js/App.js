@@ -18,7 +18,6 @@ function App(){
 
   useEffect(()=>{
     const init=async()=>{
-      await initFirestoreAdmin();
       const u=await getCurrentUser();
       setUser(u);
       setAuthChecked(true);
@@ -39,8 +38,7 @@ function App(){
 
   async function _enrollIfNeeded(u,courseId){
     if((u.enrolledCourses||[]).includes(courseId))return u;
-    const updated={...u,enrolledCourses:[...(u.enrolledCourses||[]),courseId]};
-    await fbSetUser(updated);
+    const updated=await apiEnrollCourse(u.id,courseId);
     setUser(updated);
     return updated;
   }
@@ -78,7 +76,6 @@ function App(){
 
   function handleLogout(){logoutUser();setUser(null);setPage("dashboard");setShowLanding(false);setOnboarding(false);}
 
-  // ── Loading state while checking auth + seeding Firestore ──
   if(!authChecked){
     return(
       <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg)"}}>
@@ -87,7 +84,6 @@ function App(){
     );
   }
 
-  // ── Public course landing (no auth required) ──
   if(showLanding&&pendingCourseId&&!user){
     return(
       <>
@@ -103,7 +99,6 @@ function App(){
     );
   }
 
-  // ── Auth screen ──
   if(!user){
     return(
       <>
@@ -114,7 +109,6 @@ function App(){
     );
   }
 
-  // ── Onboarding (after first sign-up) ──
   if(onboarding){
     return(
       <>
@@ -131,7 +125,6 @@ function App(){
     );
   }
 
-  // ── Logged-in app shell ──
   let content=null;
   if(page==="dashboard")content=<Dashboard user={user} setPage={goPage}/>;
   else if(page==="courses")content=<CoursesPage user={user} setPage={goPage} updateUser={updateUser} showToast={showToast}/>;

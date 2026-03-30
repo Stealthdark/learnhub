@@ -10,7 +10,7 @@ function CourseView({courseId,user,updateUser,showToast}){
   useEffect(()=>{
     setLoading(true);
     Promise.all([
-      fbGetCourses().then(courses=>courses.find(c=>c.id===courseId)||null),
+      apiGetCourses().then(courses=>courses.find(c=>c.id===courseId)||null),
       getUserProgress(user.id,courseId)
     ]).then(([c,prog])=>{
       setCourse(c);

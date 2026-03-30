@@ -7,7 +7,7 @@ function Dashboard({user,setPage}){
 
   useEffect(()=>{
     if(!enrolled.length){setStats([]);return;}
-    fbGetCourses().then(async courses=>{
+    apiGetCourses().then(async courses=>{
       const computed=await Promise.all(enrolled.map(async cid=>{
         const course=courses.find(c=>c.id===cid);
         if(!course)return null;
