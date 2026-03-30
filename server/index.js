@@ -27,6 +27,7 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(globalLimiter);
 
+app.get('/', (_req, res) => res.redirect('https://learnhubdev.com'));
 app.get('/health', (_req, res) => res.json({ status: 'ok', ts: new Date().toISOString() }));
 
 app.use('/api/auth', authLimiter, authRoutes);
