@@ -10,7 +10,7 @@ const SMART_BA_ROADMAP_COURSE={
   duration:"30 Days",dailyEffort:"2–3 Hours",prerequisites:"Basic computer skills, no coding required",
   outcome:"Job-Ready Business Analyst",
   category:"Business Analysis",level:"Beginner to Intermediate",
-  image:"",
+  image:"assets/og/courses/smart-ba-roadmap-card.svg",
   weeks:[
     {id:1,label:"Phase 1",title:"BA Foundations",color:"#1a73e8",colorSoft:"#e8f0fe",days:[1,2,3,4,5,6]},
     {id:2,label:"Phase 2",title:"Requirements Engineering",color:"#137333",colorSoft:"#e6f4ea",days:[7,8,9,10,11,12]},
