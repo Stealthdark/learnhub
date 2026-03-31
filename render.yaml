@@ -32,4 +32,13 @@ services:
       - key: SMTP_FROM
         sync: false
       - key: ALLOWED_ORIGINS
-        value: https://learnhubdev.com,http://127.0.0.1:5500
+        value: https://learnhubdev.com
+
+  - type: static
+    name: learnhub-frontend
+    buildCommand: npm install && npm run build && cp -r assets dist/
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
