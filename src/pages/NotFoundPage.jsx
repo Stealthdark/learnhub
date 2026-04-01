@@ -1,7 +1,15 @@
 import { Link } from 'react-router-dom'
+import SEO from '../components/SEO'
 
 export default function NotFoundPage() {
   return (
+    <>
+      <SEO
+        title="404 — Page Not Found"
+        description="The page you're looking for doesn't exist or has been moved. Browse LearnHub's free developer courses and roadmaps."
+        path="/404"
+        noindex
+      />
     <div style={{
       display: 'flex',
       flexDirection: 'column',
@@ -22,5 +30,6 @@ export default function NotFoundPage() {
         Back to home
       </Link>
     </div>
+    </>
   )
 }

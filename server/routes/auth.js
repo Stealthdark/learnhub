@@ -9,7 +9,7 @@ const { generateOtp, isOtpExpired } = require('../services/otp');
 const { validateEmail, validatePassword, requireFields, sanitizeUser } = require('../utils/validate');
 
 const router = express.Router();
-const SALT_ROUNDS = 12;
+const SALT_ROUNDS = 10;
 
 function signToken(user) {
   return jwt.sign(
@@ -36,8 +36,10 @@ router.post('/signup', async (req, res, next) => {
     const code = generateOtp();
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
     // Store pending signup data alongside the OTP (deleted on verify)
-    await saveOtp(email, code, { name: name.trim(), passwordHash });
-    await sendOtpEmail(email, name.trim(), code);
+    await Promise.all([
+      saveOtp(email, code, { name: name.trim(), passwordHash }),
+      sendOtpEmail(email, name.trim(), code),
+    ]);
 
     res.json({ message: 'Verification code sent', email: email.toLowerCase() });
   } catch (err) {
@@ -108,9 +110,8 @@ router.post('/login', async (req, res, next) => {
 
     if (!valid) return res.status(401).json({ error: 'Invalid email or password' });
 
-    const freshUser = await getUserByEmail(email);
-    const token = signToken(freshUser);
-    res.json({ token, user: sanitizeUser(freshUser) });
+    const token = signToken(user);
+    res.json({ token, user: sanitizeUser(user) });
   } catch (err) {
     next(err);
   }

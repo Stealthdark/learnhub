@@ -107,6 +107,15 @@ input,textarea,select{font-family:'Roboto',sans-serif}
 .spinner-dark{border-color:var(--border);border-top-color:var(--primary)}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ── GLOBAL LOADER ── */
+.gl-overlay{position:fixed;inset:0;z-index:9998;background:var(--bg);display:flex;align-items:center;justify-content:center;animation:gl-in .18s ease both}
+.gl-overlay-exit{animation:gl-out .25s ease both}
+.gl-card{display:flex;flex-direction:column;align-items:center;gap:14px}
+.gl-ring{width:44px;height:44px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .75s linear infinite}
+.gl-label{font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;color:var(--text3);letter-spacing:.03em}
+@keyframes gl-in{from{opacity:0}to{opacity:1}}
+@keyframes gl-out{from{opacity:1}to{opacity:0}}
+
 /* ── DAY CARDS ── */
 .day-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:8px;overflow:hidden;transition:box-shadow .15s}
 .day-card:hover{box-shadow:var(--shadow-md)}

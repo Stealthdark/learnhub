@@ -1,9 +1,54 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import SEO from '../../components/SEO'
 import { useAuth } from '../../hooks/useAuth'
 import { useToast } from '../../hooks/useToast'
 import { apiGetCourses, apiEnrollCourse } from '../../utils/api'
+
+const SITE_URL = 'https://learnhubdev.com'
+
+const COURSE_BENEFITS = {
+  'nodejs-30day': [
+    'Build production-ready REST APIs with Node.js and Express',
+    'Master middleware, routing, and authentication patterns',
+    'Connect to SQL and NoSQL databases from Node.js',
+    'Implement JWT auth, file uploads, and email sending',
+    'Deploy Node.js applications to cloud platforms',
+    'Write clean, scalable backend architecture',
+  ],
+  'frontend-roadmap': [
+    'Master semantic HTML5 and modern CSS3 from scratch',
+    'Build fully responsive layouts with Flexbox and Grid',
+    'Write modern JavaScript ES6+ with confidence',
+    'Manipulate the DOM and handle user interactions',
+    'Build a portfolio-ready responsive website',
+    'Understand web accessibility and performance fundamentals',
+  ],
+  'sql-mongodb-20day': [
+    'Write complex SQL queries, joins, and aggregations',
+    'Design relational database schemas from scratch',
+    'Master MongoDB document modeling and CRUD operations',
+    'Apply indexing strategies and query optimization',
+    'Integrate databases into Node.js applications',
+    'Choose the right database for real-world projects',
+  ],
+  'ai-first-webdev-49day': [
+    'Build production AI-powered apps with React and Next.js',
+    'Integrate OpenAI, Claude, and modern AI APIs',
+    'Master server-side rendering with Next.js and Nuxt',
+    'Write end-to-end tests with Playwright',
+    'Deploy AI web apps to production environments',
+    'Understand AI tooling, prompting, and responsible AI usage',
+  ],
+  'smart-ba-roadmap': [
+    'Write clear business requirements and user stories',
+    'Model business processes using industry-standard tools',
+    'Facilitate stakeholder workshops and elicitation sessions',
+    'Work confidently in Agile and Scrum environments',
+    'Use BA tools like JIRA, Confluence, and Visio',
+    'Prepare for BA certifications and job interviews',
+  ],
+}
 
 export default function CourseLandingPage() {
   const { courseId } = useParams()
@@ -13,6 +58,8 @@ export default function CourseLandingPage() {
   const imgSrc = img => img && (img.startsWith('/') || img.startsWith('http') ? img : '/' + img)
   const [course, setCourse] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [showShare, setShowShare] = useState(false)
+  const shareRef = useRef(null)
 
   useEffect(() => {
     apiGetCourses().then(courses => {
@@ -20,6 +67,15 @@ export default function CourseLandingPage() {
       setLoading(false)
     }).catch(() => setLoading(false))
   }, [courseId])
+
+  useEffect(() => {
+    if (!showShare) return
+    function handleOutsideClick(e) {
+      if (shareRef.current && !shareRef.current.contains(e.target)) setShowShare(false)
+    }
+    document.addEventListener('mousedown', handleOutsideClick)
+    return () => document.removeEventListener('mousedown', handleOutsideClick)
+  }, [showShare])
 
   if (loading) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
@@ -64,8 +120,10 @@ export default function CourseLandingPage() {
       <SEO
         title={course.title}
         description={`${course.description?.slice(0, 150)} Free ${course.duration} structured roadmap on LearnHub.`}
-        path={`/course/${courseId}`}
+        path={`/courses/${courseId}`}
+        image={course.image ? (course.image.startsWith('http') ? course.image : `${SITE_URL}${course.image.startsWith('/') ? '' : '/'}${course.image}`) : undefined}
         keywords={`${course.title}, ${course.category}, free course, developer roadmap, ${course.level}`}
+        breadcrumb={[{ name: 'Courses', path: '/courses' }, { name: course.title, path: `/courses/${courseId}` }]}
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'Course',
@@ -126,6 +184,43 @@ export default function CourseLandingPage() {
                 <button className="btn btn-primary" style={{ fontSize: 16, padding: '14px 32px', borderRadius: 10 }} onClick={handleEnrollClick}>
                   {user && enrolled ? 'Continue Learning →' : user ? 'Start Course — Free →' : 'Enroll Now — Free →'}
                 </button>
+
+                {/* Share Button */}
+                <div ref={shareRef} style={{ position: 'relative' }}>
+                  <button
+                    onClick={() => setShowShare(s => !s)}
+                    style={{ display: 'flex', alignItems: 'center', gap: 7, background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', padding: '13px 20px', borderRadius: 10, fontSize: 15, fontWeight: 500, cursor: 'pointer' }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                    </svg>
+                    Share
+                  </button>
+                  {showShare && (
+                    <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: 6, boxShadow: '0 8px 32px rgba(0,0,0,0.14)', zIndex: 200, minWidth: 220 }}>
+                      <div style={{ padding: '8px 12px 6px', fontSize: 11, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '.06em' }}>Share this course</div>
+                      {[
+                        { label: 'Copy Link', icon: '🔗', action: () => { navigator.clipboard?.writeText(`${SITE_URL}/courses/${courseId}`); showToast('Link copied!', 'success'); setShowShare(false) } },
+                        { label: 'Share on X / Twitter', icon: '𝕏', href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out "${course.title}" — a free structured learning roadmap on LearnHub!`)}&url=${encodeURIComponent(`${SITE_URL}/courses/${courseId}`)}` },
+                        { label: 'Share on LinkedIn', icon: '💼', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE_URL}/courses/${courseId}`)}` },
+                        { label: 'Share on Facebook', icon: '📘', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${SITE_URL}/courses/${courseId}`)}` },
+                        { label: 'Share on WhatsApp', icon: '💬', href: `https://api.whatsapp.com/send?text=${encodeURIComponent(`Check out "${course.title}" — free on LearnHub! ${SITE_URL}/courses/${courseId}`)}` },
+                      ].map(({ label, icon, action, href }) =>
+                        action ? (
+                          <button key={label} onClick={action} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', width: '100%', border: 'none', background: 'transparent', cursor: 'pointer', borderRadius: 8, fontSize: 13, color: 'var(--text)', fontFamily: "'Roboto',sans-serif", textAlign: 'left' }}>
+                            <span style={{ fontSize: 15 }}>{icon}</span>{label}
+                          </button>
+                        ) : (
+                          <a key={label} href={href} target="_blank" rel="noopener noreferrer" onClick={() => setShowShare(false)} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', borderRadius: 8, fontSize: 13, color: 'var(--text)', textDecoration: 'none', fontFamily: "'Roboto',sans-serif" }}>
+                            <span style={{ fontSize: 15 }}>{icon}</span>{label}
+                          </a>
+                        )
+                      )}
+                    </div>
+                  )}
+                </div>
+
                 <span style={{ fontSize: 13, color: 'var(--text3)' }}>No credit card required · Free forever</span>
               </div>
             </div>
@@ -144,6 +239,21 @@ export default function CourseLandingPage() {
             </div>
           </div>
         </div>
+
+        {/* What You'll Learn */}
+        {COURSE_BENEFITS[courseId] && (
+          <div style={{ maxWidth: 860, margin: '0 auto', padding: '52px 24px 0' }}>
+            <h2 style={{ fontFamily: "'Google Sans',sans-serif", fontSize: 24, fontWeight: 700, color: 'var(--text)', marginBottom: 20 }}>What You'll Learn</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10 }}>
+              {COURSE_BENEFITS[courseId].map(benefit => (
+                <div key={benefit} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '13px 16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10 }}>
+                  <span style={{ color: accentColor, fontSize: 15, flexShrink: 0, marginTop: 1, fontWeight: 700 }}>✓</span>
+                  <span style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.55 }}>{benefit}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Curriculum Preview */}
         {course.weeks?.length > 0 && (

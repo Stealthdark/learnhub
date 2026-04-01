@@ -10,17 +10,23 @@ function getToken() {
 }
 
 async function apiFetch(path, options = {}) {
+  const { silent = false, ...fetchOptions } = options
+  if (!silent) window.dispatchEvent(new CustomEvent('lh:fetch:start'))
   const token = getToken()
-  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) }
+  const headers = { 'Content-Type': 'application/json', ...(fetchOptions.headers || {}) }
   if (token) headers['Authorization'] = `Bearer ${token}`
-  const res = await fetch(`${API_BASE}${path}`, { ...options, headers })
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}))
-    const err = new Error(body.error || `HTTP ${res.status}`)
-    err.status = res.status
-    throw err
+  try {
+    const res = await fetch(`${API_BASE}${path}`, { ...fetchOptions, headers })
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}))
+      const err = new Error(body.error || `HTTP ${res.status}`)
+      err.status = res.status
+      throw err
+    }
+    return res.json()
+  } finally {
+    if (!silent) window.dispatchEvent(new CustomEvent('lh:fetch:end'))
   }
-  return res.json()
 }
 
 /* ── Auth ─────────────────────────────────────────── */
@@ -79,9 +85,9 @@ export async function apiGetProgress(userId, courseId) {
   }
 }
 export async function apiSaveProgress(userId, courseId, data) {
-  return apiFetch(`/api/progress/${userId}/${courseId}`, { method: 'PUT', body: JSON.stringify(data) })
+  return apiFetch(`/api/progress/${userId}/${courseId}`, { method: 'PUT', body: JSON.stringify(data), silent: true })
 }
-export async function apiBatchProgress(userId) { return apiFetch(`/api/progress/${userId}`) }
+export async function apiBatchProgress(userId) { return apiFetch(`/api/progress/${userId}`, { silent: true }) }
 
 /* ── Auth helpers ─────────────────────────────────── */
 export function loginUser(token) { sessionStorage.setItem('lh_token', token) }

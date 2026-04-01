@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useAuth, AuthProvider } from './hooks/useAuth'
 import { ToastProvider } from './hooks/useToast'
+import { LoadingProvider } from './contexts/LoadingContext'
+import GlobalLoader from './components/shared/GlobalLoader'
 
 import HomePage from './pages/HomePage'
 import CoursesPublicPage from './pages/CoursesPublicPage'
@@ -58,9 +60,11 @@ function AdminRoute({ children }) {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <ToastProvider>
-          <Routes>
+      <LoadingProvider>
+        <AuthProvider>
+          <ToastProvider>
+            <GlobalLoader />
+            <Routes>
             {/* Public marketing routes */}
             <Route path="/" element={<HomePage />} />
             <Route path="/courses" element={<CoursesPublicPage />} />
@@ -121,9 +125,10 @@ export default function App() {
 
             {/* 404 */}
             <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </ToastProvider>
-      </AuthProvider>
+            </Routes>
+          </ToastProvider>
+        </AuthProvider>
+      </LoadingProvider>
     </BrowserRouter>
   )
 }
