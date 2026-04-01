@@ -24,6 +24,11 @@ export default function AboutPage() {
             url: 'https://learnhubdev.com',
             foundingDate: '2024',
             description: 'Free structured learning roadmaps for developers.',
+            sameAs: [
+              'https://twitter.com/learnhubdev',
+              'https://github.com/learnhubdev',
+              'https://linkedin.com/company/learnhubdev',
+            ],
           },
         }}
       />
@@ -77,7 +82,7 @@ export default function AboutPage() {
                 { emoji: '🤖', name: 'AI-First Web Dev — 49 Days', id: 'ai-first-webdev-49day' },
                 { emoji: '📊', name: 'Smart Business Analyst Roadmap', id: 'smart-ba-roadmap' },
               ].map(c => (
-                <Link key={c.id} to={`/course/${c.id}`} className="mkt-courses-simple-card">
+                <Link key={c.id} to={`/courses/${c.id}`} className="mkt-courses-simple-card">
                   <span>{c.emoji}</span>
                   <span>{c.name}</span>
                 </Link>

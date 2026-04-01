@@ -17,6 +17,45 @@ const HOW_TO_SCHEMA = {
   ],
 }
 
+const FEATURES_FAQ_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How does progress tracking work on LearnHub?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Each lesson has a checkbox. Mark it complete and your progress bar updates instantly. You can see your overall progress and per-phase progress at a glance. Progress is saved to your account and syncs across all devices.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I learn on mobile or tablet?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. LearnHub is fully responsive and works on any device — laptop, tablet, or phone. Your progress syncs automatically so you can switch between devices seamlessly.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How do certificates work on LearnHub?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Complete all lessons in any course by marking them as done. Once you reach 100% completion, a certificate of completion is generated automatically. You can download it as a PDF and share it on LinkedIn or in your portfolio.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I enroll in multiple courses at the same time?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. You can enroll in all 5 courses simultaneously and track progress independently for each. Your dashboard shows all active courses and their completion percentages.',
+      },
+    },
+  ],
+}
+
 const features = [
   { icon: '🗺️', title: 'Structured Roadmaps', desc: 'Every course is a day-by-day plan, not a random collection of videos. You always know exactly what to learn next, eliminating decision fatigue and tutorial paralysis.' },
   { icon: '📈', title: 'Progress Tracking', desc: 'Mark each lesson complete with a checkbox. Watch your progress bar fill up. See your week-by-week momentum with visual breakdowns per phase.' },
@@ -38,7 +77,7 @@ export default function FeaturesPage() {
         path="/features"
         keywords="learnhub features, progress tracking, learning roadmap features, free online learning, developer platform"
         breadcrumb={[{ name: 'Features', path: '/features' }]}
-        jsonLd={HOW_TO_SCHEMA}
+        jsonLd={[HOW_TO_SCHEMA, FEATURES_FAQ_SCHEMA]}
       />
 
       <Navbar />

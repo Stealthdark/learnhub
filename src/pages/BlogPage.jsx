@@ -3,6 +3,64 @@ import Navbar from '../components/marketing/Navbar'
 import Footer from '../components/marketing/Footer'
 import SEO from '../components/SEO'
 
+const BLOG_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'LearnHub Blog',
+  description: 'Developer learning tips, roadmap guides, career advice, and how to master Node.js, Frontend, Databases, and AI development.',
+  url: 'https://learnhubdev.com/blog',
+  publisher: {
+    '@type': 'Organization',
+    name: 'LearnHub',
+    url: 'https://learnhubdev.com',
+    logo: 'https://learnhubdev.com/assets/og/logo/learnhub-logo.png',
+  },
+  blogPost: [
+    {
+      '@type': 'BlogPosting',
+      headline: 'How to learn Node.js in 30 days (without getting overwhelmed)',
+      description: 'A structured approach to mastering Node.js backend development in 30 days using the LearnHub roadmap.',
+      author: { '@type': 'Organization', name: 'LearnHub' },
+      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
+    },
+    {
+      '@type': 'BlogPosting',
+      headline: 'Frontend vs Backend: which should you learn first?',
+      description: 'An honest guide to choosing your first learning path as a developer — Frontend or Backend.',
+      author: { '@type': 'Organization', name: 'LearnHub' },
+      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
+    },
+    {
+      '@type': 'BlogPosting',
+      headline: 'The honest guide to SQL for JavaScript developers',
+      description: 'Learn SQL from a JavaScript developer perspective with practical examples and real-world queries.',
+      author: { '@type': 'Organization', name: 'LearnHub' },
+      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
+    },
+    {
+      '@type': 'BlogPosting',
+      headline: 'Building AI-powered apps with Next.js and OpenAI',
+      description: 'A practical walkthrough of integrating OpenAI APIs into a Next.js application, from setup to deployment.',
+      author: { '@type': 'Organization', name: 'LearnHub' },
+      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
+    },
+    {
+      '@type': 'BlogPosting',
+      headline: '5 signs your learning roadmap is actually working',
+      description: 'How to know when a structured learning path is genuinely moving your skills forward.',
+      author: { '@type': 'Organization', name: 'LearnHub' },
+      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
+    },
+    {
+      '@type': 'BlogPosting',
+      headline: 'From tutorial hell to real projects: a structured approach',
+      description: 'Why most self-taught developers get stuck and how structured roadmaps break the cycle.',
+      author: { '@type': 'Organization', name: 'LearnHub' },
+      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
+    },
+  ],
+}
+
 export default function BlogPage() {
   return (
     <>
@@ -12,6 +70,7 @@ export default function BlogPage() {
         path="/blog"
         keywords="developer blog, coding tips, learning roadmap blog, web development articles, programming career"
         breadcrumb={[{ name: 'Blog', path: '/blog' }]}
+        jsonLd={BLOG_SCHEMA}
       />
 
       <Navbar />

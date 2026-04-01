@@ -22,11 +22,58 @@ const COURSE_LIST_SCHEMA = {
   name: 'LearnHub Developer Courses',
   description: 'Free structured learning roadmaps for developers',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, item: { '@type': 'Course', name: '30-Day Node.js Mastery Plan', description: 'Master Node.js, Express, and backend development in 30 structured days.', provider: { '@type': 'Organization', name: 'LearnHub' }, isAccessibleForFree: true, educationalLevel: 'Intermediate', timeRequired: 'P30D', url: 'https://learnhubdev.com/course/nodejs-30day' } },
-    { '@type': 'ListItem', position: 2, item: { '@type': 'Course', name: 'Frontend Development Roadmap', description: 'Master HTML, CSS, and JavaScript with a 60-day structured roadmap.', provider: { '@type': 'Organization', name: 'LearnHub' }, isAccessibleForFree: true, educationalLevel: 'Beginner', timeRequired: 'P60D', url: 'https://learnhubdev.com/course/frontend-roadmap' } },
-    { '@type': 'ListItem', position: 3, item: { '@type': 'Course', name: 'SQL & MongoDB 20-Day Plan', description: 'Learn relational and NoSQL databases in 20 days.', provider: { '@type': 'Organization', name: 'LearnHub' }, isAccessibleForFree: true, educationalLevel: 'Beginner', timeRequired: 'P20D', url: 'https://learnhubdev.com/course/sql-mongodb-20day' } },
-    { '@type': 'ListItem', position: 4, item: { '@type': 'Course', name: 'AI-First Web Dev — 49 Days', description: 'Build production AI apps with React, Next.js, and modern AI tools in 49 days.', provider: { '@type': 'Organization', name: 'LearnHub' }, isAccessibleForFree: true, educationalLevel: 'Advanced', timeRequired: 'P49D', url: 'https://learnhubdev.com/course/ai-first-webdev-49day' } },
-    { '@type': 'ListItem', position: 5, item: { '@type': 'Course', name: 'Smart Business Analyst Roadmap', description: 'Structured path to become a business analyst with real-world skills.', provider: { '@type': 'Organization', name: 'LearnHub' }, isAccessibleForFree: true, url: 'https://learnhubdev.com/course/smart-ba-roadmap' } },
+    { '@type': 'ListItem', position: 1, item: { '@type': 'Course', name: '30-Day Node.js Mastery Plan', description: 'Master Node.js, Express, and backend development in 30 structured days.', provider: { '@type': 'Organization', name: 'LearnHub' }, isAccessibleForFree: true, educationalLevel: 'Intermediate', timeRequired: 'P30D', url: 'https://learnhubdev.com/courses/nodejs-30day' } },
+    { '@type': 'ListItem', position: 2, item: { '@type': 'Course', name: 'Frontend Development Roadmap', description: 'Master HTML, CSS, and JavaScript with a 60-day structured roadmap.', provider: { '@type': 'Organization', name: 'LearnHub' }, isAccessibleForFree: true, educationalLevel: 'Beginner', timeRequired: 'P60D', url: 'https://learnhubdev.com/courses/frontend-roadmap' } },
+    { '@type': 'ListItem', position: 3, item: { '@type': 'Course', name: 'SQL & MongoDB 20-Day Plan', description: 'Learn relational and NoSQL databases in 20 days.', provider: { '@type': 'Organization', name: 'LearnHub' }, isAccessibleForFree: true, educationalLevel: 'Beginner', timeRequired: 'P20D', url: 'https://learnhubdev.com/courses/sql-mongodb-20day' } },
+    { '@type': 'ListItem', position: 4, item: { '@type': 'Course', name: 'AI-First Web Dev — 49 Days', description: 'Build production AI apps with React, Next.js, and modern AI tools in 49 days.', provider: { '@type': 'Organization', name: 'LearnHub' }, isAccessibleForFree: true, educationalLevel: 'Advanced', timeRequired: 'P49D', url: 'https://learnhubdev.com/courses/ai-first-webdev-49day' } },
+    { '@type': 'ListItem', position: 5, item: { '@type': 'Course', name: 'Smart Business Analyst Roadmap', description: 'Structured path to become a business analyst with real-world skills.', provider: { '@type': 'Organization', name: 'LearnHub' }, isAccessibleForFree: true, url: 'https://learnhubdev.com/courses/smart-ba-roadmap' } },
+  ],
+}
+
+const HOME_FAQ_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is LearnHub?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'LearnHub is a free, structured learning platform for developers. It provides day-by-day roadmaps across 5 domains: Node.js, Frontend Development, SQL & MongoDB, AI-First Web Dev, and Business Analysis — all completely free with no credit card required.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How is LearnHub different from other coding platforms?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'LearnHub focuses on structured day-by-day roadmaps rather than random videos. Every course tells you exactly what to do each day, which resource to use, and what to build — eliminating decision fatigue and tutorial paralysis.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is LearnHub really free?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, completely free. All 5 courses, 200+ lessons, progress tracking, and certificates are free forever. No credit card, no trial period, no paywalls.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What courses does LearnHub offer?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'LearnHub offers 5 structured courses: 30-Day Node.js Mastery (Intermediate, 2-3 hrs/day), Frontend Development Roadmap (Beginner, 60 days, 2 hrs/day), SQL & MongoDB 20-Day Plan (Beginner, 2 hrs/day), AI-First Web Dev 49 Days (Advanced, 2-3 hrs/day), and the Smart Business Analyst Roadmap (Beginner, self-paced, 1-2 hrs/day).',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How long does it take to complete a LearnHub course?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Courses range from 20 days (SQL & MongoDB) to 60 days (Frontend Development) at 1-3 hours per day. The Business Analysis roadmap is self-paced. All courses can be completed at your own speed — there are no deadlines.',
+      },
+    },
   ],
 }
 
@@ -53,7 +100,7 @@ export default function HomePage() {
         description="Stop tutorial-hopping. LearnHub gives you day-by-day learning paths built for real-world skills — free, self-paced, and structured. Master Node.js, Frontend, Databases, AI, and more."
         path="/"
         keywords="learn programming, coding roadmap, nodejs course, frontend development, html css javascript, web development, free online courses, self-paced learning, developer roadmap"
-        jsonLd={[WEBSITE_SCHEMA, COURSE_LIST_SCHEMA]}
+        jsonLd={[WEBSITE_SCHEMA, COURSE_LIST_SCHEMA, HOME_FAQ_SCHEMA]}
       />
 
       <Navbar />
@@ -116,7 +163,7 @@ export default function HomePage() {
                   </div>
                   <h3>{c.title}</h3>
                   <p>{c.subtitle}</p>
-                  <Link to={`/course/${c.id}`} className="mkt-course-card__link" style={{ color: c.color }}>
+                  <Link to={`/courses/${c.id}`} className="mkt-course-card__link" style={{ color: c.color }}>
                     View Roadmap →
                   </Link>
                 </div>

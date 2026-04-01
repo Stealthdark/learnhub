@@ -8,59 +8,64 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://learnhubdev.com/courses.html</loc>
+    <loc>https://learnhubdev.com/courses</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://learnhubdev.com/roadmaps.html</loc>
+    <loc>https://learnhubdev.com/roadmaps</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://learnhubdev.com/features.html</loc>
+    <loc>https://learnhubdev.com/features</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://learnhubdev.com/pricing.html</loc>
+    <loc>https://learnhubdev.com/pricing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://learnhubdev.com/about.html</loc>
+    <loc>https://learnhubdev.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://learnhubdev.com/contact.html</loc>
+    <loc>https://learnhubdev.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://learnhubdev.com/blog.html</loc>
+    <loc>https://learnhubdev.com/blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Course landing pages -->
   <url>
-    <loc>https://learnhubdev.com/course/nodejs-30day.html</loc>
+    <loc>https://learnhubdev.com/course/nodejs-30day</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://learnhubdev.com/course/frontend-roadmap.html</loc>
+    <loc>https://learnhubdev.com/course/frontend-roadmap</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://learnhubdev.com/course/sql-mongodb-20day.html</loc>
+    <loc>https://learnhubdev.com/course/sql-mongodb-20day</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://learnhubdev.com/course/ai-first-webdev-49day.html</loc>
+    <loc>https://learnhubdev.com/course/ai-first-webdev-49day</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://learnhubdev.com/course/smart-ba-roadmap</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>

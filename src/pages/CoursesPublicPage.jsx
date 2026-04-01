@@ -98,7 +98,20 @@ const COURSES_SCHEMA = {
       isAccessibleForFree: true,
       educationalLevel: c.level,
       about: c.category,
-      url: `https://learnhubdev.com/course/${c.id}`,
+      url: `https://learnhubdev.com/courses/${c.id}`,
+      coursePrerequisites: c.prerequisites,
+      hasCourseInstance: {
+        '@type': 'CourseInstance',
+        courseMode: 'online',
+        courseWorkload: c.dailyEffort,
+      },
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+        url: `https://learnhubdev.com/courses/${c.id}`,
+      },
     },
   })),
 }
@@ -152,7 +165,7 @@ export default function CoursesPublicPage() {
                     ))}
                   </div>
                   <div style={{ padding: '0 24px 24px', display: 'flex', gap: 10 }}>
-                    <Link to={`/course/${c.id}`} className="btn btn-primary btn-full">View Roadmap →</Link>
+                    <Link to={`/courses/${c.id}`} className="btn btn-primary btn-full">View Roadmap →</Link>
                     <Link to="/sign-up" className="btn btn-ghost btn-sm">Enroll Free</Link>
                   </div>
                 </article>

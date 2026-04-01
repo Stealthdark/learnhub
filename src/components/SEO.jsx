@@ -14,6 +14,17 @@ const ORG_SCHEMA = {
   description: 'Free, structured learning roadmaps for developers. Master Node.js, Frontend, Databases, AI, and Business Analysis with day-by-day guided paths.',
   foundingDate: '2024',
   knowsAbout: ['Web Development', 'Node.js', 'Frontend Development', 'SQL', 'MongoDB', 'AI Development', 'Business Analysis'],
+  sameAs: [
+    'https://twitter.com/learnhubdev',
+    'https://github.com/learnhubdev',
+    'https://linkedin.com/company/learnhubdev',
+  ],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    url: `${SITE_URL}/contact`,
+    availableLanguage: 'English',
+  },
 }
 
 export default function SEO({

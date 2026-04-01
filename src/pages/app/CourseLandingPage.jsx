@@ -7,6 +7,42 @@ import { apiGetCourses, apiEnrollCourse } from '../../utils/api'
 
 const SITE_URL = 'https://learnhubdev.com'
 
+const COURSE_OG_IMAGES = {
+  'nodejs-30day':          '/assets/og/nodejs-og.png',
+  'frontend-roadmap':      '/assets/og/frontend-og.png',
+  'sql-mongodb-20day':     '/assets/og/sql-mongodb-og.png',
+  'ai-first-webdev-49day': '/assets/og/ai-first-webdev-og.png',
+  'smart-ba-roadmap':      '/assets/og/smart-ba-og.png',
+}
+
+const COURSE_SCHEMA_META = {
+  'nodejs-30day': {
+    teaches: ['Node.js runtime and event loop', 'Express.js middleware and routing', 'REST API design and implementation', 'JWT authentication', 'SQL and MongoDB integration', 'File uploads and email sending', 'Cloud deployment'],
+    coursePrerequisites: 'JavaScript ES6+',
+    competencyRequired: 'Basic JavaScript programming',
+  },
+  'frontend-roadmap': {
+    teaches: ['Semantic HTML5', 'CSS3 Flexbox and Grid', 'Responsive web design', 'Vanilla JavaScript ES6+', 'DOM manipulation', 'Web accessibility fundamentals', 'Frontend performance optimization'],
+    coursePrerequisites: 'None — beginner-friendly',
+    competencyRequired: 'None',
+  },
+  'sql-mongodb-20day': {
+    teaches: ['SQL queries, joins, and aggregations', 'Relational database schema design', 'MongoDB document modeling and CRUD', 'Database indexing and optimization', 'Node.js database integration'],
+    coursePrerequisites: 'Basic programming knowledge',
+    competencyRequired: 'Basic programming',
+  },
+  'ai-first-webdev-49day': {
+    teaches: ['React components and hooks', 'Next.js server-side rendering', 'Nuxt.js fundamentals', 'OpenAI and Claude API integration', 'AI-first application architecture', 'Playwright end-to-end testing', 'Production deployment of AI apps'],
+    coursePrerequisites: 'HTML, CSS, and JavaScript',
+    competencyRequired: 'Intermediate web development',
+  },
+  'smart-ba-roadmap': {
+    teaches: ['Business requirements gathering and documentation', 'User story writing', 'BPMN process modeling', 'Agile and Scrum methodology', 'Stakeholder management', 'JIRA, Confluence, and Visio', 'BA interview and certification preparation'],
+    coursePrerequisites: 'None — beginner-friendly',
+    competencyRequired: 'None',
+  },
+}
+
 const COURSE_BENEFITS = {
   'nodejs-30day': [
     'Build production-ready REST APIs with Node.js and Express',
@@ -121,7 +157,7 @@ export default function CourseLandingPage() {
         title={course.title}
         description={`${course.description?.slice(0, 150)} Free ${course.duration} structured roadmap on LearnHub.`}
         path={`/courses/${courseId}`}
-        image={course.image ? (course.image.startsWith('http') ? course.image : `${SITE_URL}${course.image.startsWith('/') ? '' : '/'}${course.image}`) : undefined}
+        image={`${SITE_URL}${COURSE_OG_IMAGES[courseId] || '/assets/og/learnhub-og.png'}`}
         keywords={`${course.title}, ${course.category}, free course, developer roadmap, ${course.level}`}
         breadcrumb={[{ name: 'Courses', path: '/courses' }, { name: course.title, path: `/courses/${courseId}` }]}
         jsonLd={{
@@ -129,12 +165,29 @@ export default function CourseLandingPage() {
           '@type': 'Course',
           name: course.title,
           description: course.description,
-          provider: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
+          url: `${SITE_URL}/course/${courseId}`,
+          provider: { '@type': 'Organization', name: 'LearnHub', url: SITE_URL },
           isAccessibleForFree: true,
           educationalLevel: course.level,
           about: course.category,
           timeRequired: course.duration,
-          hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'online', courseWorkload: course.dailyEffort },
+          teaches: COURSE_SCHEMA_META[courseId]?.teaches || [],
+          coursePrerequisites: COURSE_SCHEMA_META[courseId]?.coursePrerequisites || '',
+          competencyRequired: COURSE_SCHEMA_META[courseId]?.competencyRequired || '',
+          hasCourseInstance: {
+            '@type': 'CourseInstance',
+            courseMode: 'online',
+            courseWorkload: course.dailyEffort,
+          },
+          offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+            url: `${SITE_URL}/course/${courseId}`,
+            seller: { '@type': 'Organization', name: 'LearnHub' },
+          },
+          image: `${SITE_URL}${COURSE_OG_IMAGES[courseId] || '/assets/og/learnhub-og.png'}`,
         }}
       />
 

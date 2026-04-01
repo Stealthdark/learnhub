@@ -82,7 +82,7 @@ const ROADMAP_SCHEMA = {
       provider: { '@type': 'Organization', name: 'LearnHub' },
       isAccessibleForFree: true,
       educationalLevel: r.level,
-      url: `https://learnhubdev.com/course/${r.id}`,
+      url: `https://learnhubdev.com/courses/${r.id}`,
     },
   })),
 }
@@ -140,7 +140,7 @@ export default function RoadmapsPage() {
                     <div className="mkt-roadmap-card__outcome">
                       <span>🏆</span> <span><strong>Outcome:</strong> {r.outcome}</span>
                     </div>
-                    <Link to={`/course/${r.id}`} className="btn btn-primary btn-sm" style={{ marginTop: 16 }}>
+                    <Link to={`/courses/${r.id}`} className="btn btn-primary btn-sm" style={{ marginTop: 16 }}>
                       View Full Roadmap →
                     </Link>
                   </div>

@@ -17,22 +17,37 @@
 </head>
 <body>
 <h1>LearnHub — OG Image Generator</h1>
-<p>Open this file in a browser once to generate and download the OG PNG images. Place the downloaded files in <code>assets/og/</code>.</p>
+<p>Open this file in a browser to generate and download the OG PNG images. Place downloaded files in <code>assets/og/</code>.</p>
 <div class="grid">
   <div class="card">
     <h2>1. Main Site — learnhub-og.png</h2>
     <canvas id="c0" width="1200" height="630"></canvas>
-    <button onclick="download('c0','learnhub-og.png')">⬇ Download learnhub-og.png</button>
+    <button onclick="download('c0','learnhub-og.png')">&#8595; Download learnhub-og.png</button>
   </div>
   <div class="card">
     <h2>2. Node.js Course — nodejs-og.png</h2>
     <canvas id="c1" width="1200" height="630"></canvas>
-    <button onclick="download('c1','nodejs-og.png')">⬇ Download nodejs-og.png</button>
+    <button onclick="download('c1','nodejs-og.png')">&#8595; Download nodejs-og.png</button>
   </div>
   <div class="card">
     <h2>3. Frontend Roadmap — frontend-og.png</h2>
     <canvas id="c2" width="1200" height="630"></canvas>
-    <button onclick="download('c2','frontend-og.png')">⬇ Download frontend-og.png</button>
+    <button onclick="download('c2','frontend-og.png')">&#8595; Download frontend-og.png</button>
+  </div>
+  <div class="card">
+    <h2>4. SQL &amp; MongoDB — sql-mongodb-og.png</h2>
+    <canvas id="c3" width="1200" height="630"></canvas>
+    <button onclick="download('c3','sql-mongodb-og.png')">&#8595; Download sql-mongodb-og.png</button>
+  </div>
+  <div class="card">
+    <h2>5. AI-First Web Dev — ai-first-webdev-og.png</h2>
+    <canvas id="c4" width="1200" height="630"></canvas>
+    <button onclick="download('c4','ai-first-webdev-og.png')">&#8595; Download ai-first-webdev-og.png</button>
+  </div>
+  <div class="card">
+    <h2>6. Smart Business Analyst — smart-ba-og.png</h2>
+    <canvas id="c5" width="1200" height="630"></canvas>
+    <button onclick="download('c5','smart-ba-og.png')">&#8595; Download smart-ba-og.png</button>
   </div>
 </div>
 
@@ -40,71 +55,90 @@
 const W=1200,H=630;
 const logoImg=new Image();
 
+// ── Helpers ───────────────────────────────────────────────────
+
 function roundRect(ctx,x,y,w,h,r){
   ctx.beginPath();
-  ctx.moveTo(x+r,y);
-  ctx.lineTo(x+w-r,y);
-  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
-  ctx.lineTo(x+w,y+h-r);
-  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
-  ctx.lineTo(x+r,y+h);
-  ctx.quadraticCurveTo(x,y+h,x,y+h-r);
-  ctx.lineTo(x,y+r);
-  ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);
   ctx.closePath();
 }
 
 function drawBase(ctx,bgStart,bgEnd,accent){
-  // Background gradient
   const bg=ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,bgStart);
-  bg.addColorStop(1,bgEnd);
-  ctx.fillStyle=bg;
-  ctx.fillRect(0,0,W,H);
+  bg.addColorStop(0,bgStart);bg.addColorStop(1,bgEnd);
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
 
-  // Accent glow top-right
-  const radial=ctx.createRadialGradient(W*0.88,H*0.12,0,W*0.88,H*0.12,380);
-  radial.addColorStop(0,accent+'55');
-  radial.addColorStop(0.5,accent+'15');
-  radial.addColorStop(1,'transparent');
-  ctx.fillStyle=radial;
-  ctx.fillRect(0,0,W,H);
+  const r1=ctx.createRadialGradient(W*0.88,H*0.12,0,W*0.88,H*0.12,380);
+  r1.addColorStop(0,accent+'55');r1.addColorStop(0.5,accent+'15');r1.addColorStop(1,'transparent');
+  ctx.fillStyle=r1;ctx.fillRect(0,0,W,H);
 
-  // Accent glow bottom-left
   const r2=ctx.createRadialGradient(W*0.08,H*0.88,0,W*0.08,H*0.88,250);
-  r2.addColorStop(0,accent+'22');
-  r2.addColorStop(1,'transparent');
-  ctx.fillStyle=r2;
-  ctx.fillRect(0,0,W,H);
+  r2.addColorStop(0,accent+'22');r2.addColorStop(1,'transparent');
+  ctx.fillStyle=r2;ctx.fillRect(0,0,W,H);
 
-  // Grid pattern overlay (subtle)
-  ctx.strokeStyle='rgba(255,255,255,0.04)';
-  ctx.lineWidth=1;
+  ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
   for(let x=0;x<=W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
   for(let y=0;y<=H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
 }
 
-// Draws the real LearnHub logo PNG
-function drawLogo(ctx,x,y,size=80){
-  ctx.drawImage(logoImg,x,y,size,size);
-}
-
 function drawLogoWithText(ctx,x,y,size=80){
   ctx.drawImage(logoImg,x,y,size,size);
+  ctx.save();
   ctx.fillStyle='#ffffff';
   ctx.font='bold 28px system-ui,sans-serif';
-  ctx.fillText('LearnHubDev.com',x+size+14,y+(size+20)/2);
+  ctx.textBaseline='middle';
+  ctx.fillText('LearnHubDev.com',x+size+14,y+size/2);
+  ctx.restore();
 }
 
+// Badge: y is the TOP of the badge box
 function drawBadge(ctx,x,y,text,bg,color){
+  ctx.save();
   ctx.font='bold 18px system-ui,sans-serif';
   const tw=ctx.measureText(text).width;
-  const pw=20,ph=10,r=20;
-  roundRect(ctx,x,y-(ph),tw+pw*2,32+ph*0,r);
-  ctx.fillStyle=bg;
-  ctx.fill();
+  const pw=20,bh=32,r=16;
+  roundRect(ctx,x,y,tw+pw*2,bh,r);
+  ctx.fillStyle=bg;ctx.fill();
   ctx.fillStyle=color;
-  ctx.fillText(text,x+pw,y+4);
+  ctx.textBaseline='middle';
+  ctx.fillText(text,x+pw,y+bh/2);
+  ctx.restore();
+}
+
+// Draw a row of pills, returns final x position
+function drawPills(ctx,pills,startX,y){
+  const pillH=36;
+  pills.forEach(([label,color])=>{
+    ctx.save();
+    ctx.font='bold 15px system-ui,sans-serif';
+    const tw=ctx.measureText(label).width;
+    const pw=16,w=tw+pw*2;
+    roundRect(ctx,startX,y,w,pillH,18);
+    ctx.fillStyle=color+'28';ctx.fill();
+    roundRect(ctx,startX,y,w,pillH,18);
+    ctx.strokeStyle=color+'55';ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle=color;
+    ctx.textBaseline='middle';
+    ctx.fillText(label,startX+pw,y+pillH/2);
+    ctx.restore();
+    startX+=w+12;
+  });
+}
+
+// Draw enroll button with centered text
+function drawEnrollButton(ctx,by,color){
+  const bx=64,bw=220,bh=52;
+  roundRect(ctx,bx,by,bw,bh,12);
+  ctx.fillStyle=color;ctx.fill();
+  ctx.save();
+  ctx.fillStyle='#ffffff';
+  ctx.font='bold 20px system-ui,sans-serif';
+  ctx.textBaseline='middle';
+  ctx.fillText('Enroll Free \u2192',bx+40,by+bh/2);
+  ctx.restore();
 }
 
 // ── Card 0: Main Site ──────────────────────────────────────────
@@ -112,51 +146,41 @@ function drawCard0(){
   const ctx=document.getElementById('c0').getContext('2d');
   drawBase(ctx,'#0d1b2e','#0f2742','#1a73e8');
 
-  // Decorative circles
-  ctx.strokeStyle='rgba(26,115,232,0.15)';
-  ctx.lineWidth=1.5;
+  ctx.strokeStyle='rgba(26,115,232,0.15)';ctx.lineWidth=1.5;
   ctx.beginPath();ctx.arc(W-80,80,160,0,Math.PI*2);ctx.stroke();
   ctx.beginPath();ctx.arc(W-80,80,260,0,Math.PI*2);ctx.stroke();
 
-  // Logo
-  drawLogoWithText(ctx,64,44);
+  drawLogoWithText(ctx,64,40);
+  drawBadge(ctx,64,150,'Free Developer Courses','rgba(26,115,232,0.2)','#4d9fff');
 
-  // Main headline
-  ctx.fillStyle='#ffffff';
-  ctx.font='bold 72px system-ui,sans-serif';
-  ctx.fillText('Professional',64,240);
-  ctx.fillStyle='#1a73e8';
-  ctx.fillText('E-Learning',64,325);
-  ctx.fillStyle='#ffffff';
-  ctx.fillText('Platform.',64,410);
+  // Headline — 84px bold, 90px line steps
+  ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#ffffff';ctx.font='bold 84px system-ui,sans-serif';
+  ctx.fillText('Structured',64,268);
+  ctx.fillStyle='#1a73e8';ctx.fillText('Learning',64,358);
+  ctx.fillStyle='#ffffff';ctx.fillText('Roadmaps.',64,448);
+
+  // Accent rule (headline bottom ≈ 448+15 descent = 463, rule at 484)
+  ctx.fillStyle='rgba(26,115,232,0.7)';
+  ctx.fillRect(64,484,64,3);
 
   // Tagline
-  ctx.fillStyle='rgba(255,255,255,0.6)';
-  ctx.font='24px system-ui,sans-serif';
-  ctx.fillText('Master programming with structured roadmaps.',64,470);
+  ctx.fillStyle='rgba(255,255,255,0.65)';ctx.font='24px system-ui,sans-serif';
+  ctx.fillText('Free, self-paced developer courses built for real-world skills.',64,520);
 
   // Stats pills
-  const stats=[['Various Courses','#1a73e8'],['Self Paced Learning','#0d9488'],['Limited Slots','#7c3aed']];
-  let sx=64;
-  stats.forEach(([label,color])=>{
-    ctx.font='bold 16px system-ui,sans-serif';
-    const tw=ctx.measureText(label).width;
-    roundRect(ctx,sx,510,tw+32,36,18);
-    ctx.fillStyle=color+'30';
-    ctx.fill();
-    roundRect(ctx,sx,510,tw+32,36,18);
-    ctx.strokeStyle=color+'60';
-    ctx.lineWidth=1;
-    ctx.stroke();
-    ctx.fillStyle=color;
-    ctx.fillText(label,sx+16,534);
-    sx+=tw+32+12;
-  });
+  drawPills(ctx,[['5 Courses','#1a73e8'],['200+ Lessons','#0d9488'],['100% Free Forever','#7c3aed']],64,542);
 
-  // Footer
-  ctx.fillStyle='rgba(255,255,255,0.25)';
-  ctx.font='18px system-ui,sans-serif';
-  ctx.fillText('www.learnhubdev.com | 🌐 Crafted by Harshit | © learnhub.dev',64,598);
+  // Footer — two-tone
+  ctx.save();
+  ctx.font='16px system-ui,sans-serif';ctx.textBaseline='alphabetic';
+  const leftText='Crafted by Acute Circle \u00a9 2028  ';
+  ctx.fillStyle='rgba(255,255,255,0.45)';
+  ctx.fillText(leftText,64,608);
+  const leftW=ctx.measureText(leftText).width;
+  ctx.fillStyle='rgba(255,255,255,0.65)';
+  ctx.fillText('www.learnhubdev.com',64+leftW,608);
+  ctx.restore();
 }
 
 // ── Card 1: Node.js Course ─────────────────────────────────────
@@ -165,57 +189,25 @@ function drawCard1(){
   const accent='#22c55e';
   drawBase(ctx,'#0d1f12','#0a2517',accent);
 
-  // Decorative
-  ctx.strokeStyle='rgba(34,197,94,0.12)';
-  ctx.lineWidth=1.5;
+  ctx.strokeStyle='rgba(34,197,94,0.12)';ctx.lineWidth=1.5;
   ctx.beginPath();ctx.arc(W-60,H-60,200,0,Math.PI*2);ctx.stroke();
   ctx.beginPath();ctx.arc(W-60,H-60,310,0,Math.PI*2);ctx.stroke();
 
-  // Logo
   drawLogoWithText(ctx,64,40);
+  drawBadge(ctx,64,152,'30-Day Roadmap','rgba(34,197,94,0.2)','#22c55e');
 
-  // Course badge
-  drawBadge(ctx,64,162,'30-Day Roadmap','rgba(34,197,94,0.2)','#22c55e');
+  ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#ffffff';ctx.font='bold 68px system-ui,sans-serif';
+  ctx.fillText('Node.js',64,272);
+  ctx.fillStyle='#22c55e';ctx.fillText('Mastery',64,352);
+  ctx.fillStyle='rgba(255,255,255,0.55)';ctx.font='26px system-ui,sans-serif';
+  ctx.fillText('Build real-world APIs, CLIs & full-stack apps.',64,398);
 
-  // Title
-  ctx.fillStyle='#ffffff';
-  ctx.font='bold 68px system-ui,sans-serif';
-  ctx.fillText('Node.js',64,270);
-  ctx.fillStyle='#22c55e';
-  ctx.fillText('Mastery',64,350);
-  ctx.fillStyle='rgba(255,255,255,0.55)';
-  ctx.font='26px system-ui,sans-serif';
-  ctx.fillText('Build real-world APIs, CLIs & full-stack apps.',64,408);
+  drawPills(ctx,[['30 Days','#22c55e'],['2-3 hrs/day','#0ea5e9'],['Intermediate','#f59e0b']],64,420);
+  drawEnrollButton(ctx,478,accent);
 
-  // Stats
-  const stats=[['30 Days','#22c55e'],['2–3 hrs/day','#0ea5e9'],['Beginner Friendly','#f59e0b']];
-  let sx=64;
-  stats.forEach(([label,color])=>{
-    ctx.font='bold 16px system-ui,sans-serif';
-    const tw=ctx.measureText(label).width;
-    roundRect(ctx,sx,470,tw+32,36,18);
-    ctx.fillStyle=color+'28';
-    ctx.fill();
-    roundRect(ctx,sx,470,tw+32,36,18);
-    ctx.strokeStyle=color+'55';
-    ctx.lineWidth=1;
-    ctx.stroke();
-    ctx.fillStyle=color;
-    ctx.fillText(label,sx+16,494);
-    sx+=tw+32+12;
-  });
-
-  // Enroll badge
-  ctx.fillStyle='#22c55e';
-  roundRect(ctx,64,530,220,52,12);
-  ctx.fill();
-  ctx.fillStyle='#fff';
-  ctx.font='bold 20px system-ui,sans-serif';
-  ctx.fillText('Enroll Free →',64+40,562);
-
-  ctx.fillStyle='rgba(255,255,255,0.2)';
-  ctx.font='17px system-ui,sans-serif';
-  ctx.fillText('learnhub.dev',64,606);
+  ctx.save();ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='17px system-ui,sans-serif';
+  ctx.textBaseline='alphabetic';ctx.fillText('learnhubdev.com',64,566);ctx.restore();
 }
 
 // ── Card 2: Frontend Roadmap ───────────────────────────────────
@@ -224,89 +216,155 @@ function drawCard2(){
   const accent='#f97316';
   drawBase(ctx,'#1a0f00','#2a1500',accent);
 
-  // Decorative
-  ctx.strokeStyle='rgba(249,115,22,0.1)';
-  ctx.lineWidth=1.5;
+  ctx.strokeStyle='rgba(249,115,22,0.1)';ctx.lineWidth=1.5;
   ctx.beginPath();ctx.arc(W*0.9,H*0.15,200,0,Math.PI*2);ctx.stroke();
   ctx.beginPath();ctx.arc(W*0.9,H*0.15,320,0,Math.PI*2);ctx.stroke();
 
-  // Phase indicators top-right
+  // Phase indicator boxes top-right (H, C, J)
   const phases=[['H','#e44d26'],['C','#4b7bff'],['J','#f7df1e']];
+  const boxSz=52,boxGap=12;
   phases.forEach(([letter,color],i)=>{
-    const px=W-200+i*70;
+    const px=W-60-(phases.length-i)*(boxSz+boxGap);
+    ctx.save();
     ctx.fillStyle=color+'30';
-    roundRect(ctx,px,40,52,52,10);
-    ctx.fill();
+    roundRect(ctx,px,40,boxSz,boxSz,10);ctx.fill();
     ctx.fillStyle=color;
     ctx.font='bold 26px system-ui,sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText(letter,px+26,73);
-    ctx.textAlign='left';
+    ctx.textBaseline='middle';ctx.textAlign='center';
+    ctx.fillText(letter,px+boxSz/2,40+boxSz/2);
+    ctx.restore();
   });
 
-  // Logo
   drawLogoWithText(ctx,64,40);
+  drawBadge(ctx,64,152,'60-Day Roadmap','rgba(249,115,22,0.2)','#f97316');
 
-  // Badge
-  drawBadge(ctx,64,162,'60-Day Roadmap','rgba(249,115,22,0.2)','#f97316');
-
-  // Title
-  ctx.fillStyle='#ffffff';
-  ctx.font='bold 60px system-ui,sans-serif';
+  ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#ffffff';ctx.font='bold 60px system-ui,sans-serif';
   ctx.fillText('Frontend',64,268);
-  ctx.fillStyle='#f97316';
-  ctx.fillText('Mastery',64,344);
-  ctx.fillStyle='rgba(255,255,255,0.5)';
-  ctx.font='24px system-ui,sans-serif';
-  ctx.fillText('HTML · CSS · JavaScript — Zero to Production',64,396);
+  ctx.fillStyle='#f97316';ctx.fillText('Mastery',64,342);
+  ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='24px system-ui,sans-serif';
+  ctx.fillText('HTML \u00b7 CSS \u00b7 JavaScript \u2014 Zero to Production',64,388);
 
-  // Phase labels
-  const phaseLabels=[['HTML','#e44d26'],['CSS','#4b7bff'],['JavaScript','#f7df1e']];
-  let px=64;
-  phaseLabels.forEach(([label,color])=>{
-    ctx.font='bold 15px system-ui,sans-serif';
-    const tw=ctx.measureText(label).width;
-    roundRect(ctx,px,440,tw+28,34,17);
+  drawPills(ctx,[['HTML','#e44d26'],['CSS','#4b7bff'],['JavaScript','#f7df1e']],64,408);
+  drawEnrollButton(ctx,466,accent);
+
+  ctx.save();ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='17px system-ui,sans-serif';
+  ctx.textBaseline='alphabetic';ctx.fillText('learnhubdev.com',64,554);ctx.restore();
+}
+
+// ── Card 3: SQL & MongoDB ──────────────────────────────────────
+function drawCard3(){
+  const ctx=document.getElementById('c3').getContext('2d');
+  const accent='#007b83';
+  drawBase(ctx,'#0a1a1b','#0d2224',accent);
+
+  ctx.strokeStyle='rgba(0,180,196,0.11)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(W-70,H-70,180,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.arc(W-70,H-70,290,0,Math.PI*2);ctx.stroke();
+
+  drawLogoWithText(ctx,64,40);
+  drawBadge(ctx,64,152,'20-Day Roadmap','rgba(0,180,196,0.2)','#00b4c4');
+
+  ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#ffffff';ctx.font='bold 68px system-ui,sans-serif';
+  ctx.fillText('SQL &',64,272);
+  ctx.fillStyle='#00b4c4';ctx.font='bold 60px system-ui,sans-serif';
+  ctx.fillText('MongoDB',64,346);
+  ctx.fillStyle='rgba(255,255,255,0.55)';ctx.font='26px system-ui,sans-serif';
+  ctx.fillText('Relational + NoSQL \u2014 databases for developers.',64,392);
+
+  drawPills(ctx,[['20 Days','#00b4c4'],['2 hrs/day','#0ea5e9'],['Beginner Friendly','#f59e0b']],64,414);
+  drawEnrollButton(ctx,472,accent);
+
+  ctx.save();ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='17px system-ui,sans-serif';
+  ctx.textBaseline='alphabetic';ctx.fillText('learnhubdev.com',64,558);ctx.restore();
+}
+
+// ── Card 4: AI-First Web Dev ───────────────────────────────────
+function drawCard4(){
+  const ctx=document.getElementById('c4').getContext('2d');
+  const accent='#e37400';
+  drawBase(ctx,'#1a0e00','#2b1600',accent);
+
+  ctx.strokeStyle='rgba(243,121,0,0.11)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(W*0.88,H*0.15,200,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.arc(W*0.88,H*0.15,320,0,Math.PI*2);ctx.stroke();
+
+  // Tech stack boxes: R, N, AI
+  const techBoxes=[['R','#61dbfb'],['N','#e2e8f0'],['AI','#e37400']];
+  const boxSz=52,boxGap=12;
+  techBoxes.forEach(([letter,color],i)=>{
+    const px=W-60-(techBoxes.length-i)*(boxSz+boxGap);
+    ctx.save();
     ctx.fillStyle=color+'28';
-    ctx.fill();
-    ctx.strokeStyle=color+'50';
-    ctx.lineWidth=1;
-    roundRect(ctx,px,440,tw+28,34,17);
-    ctx.stroke();
+    roundRect(ctx,px,40,boxSz,boxSz,10);ctx.fill();
     ctx.fillStyle=color;
-    ctx.fillText(label,px+14,462);
-    px+=tw+28+10;
+    ctx.font='bold 26px system-ui,sans-serif';
+    ctx.textBaseline='middle';ctx.textAlign='center';
+    ctx.fillText(letter,px+boxSz/2,40+boxSz/2);
+    ctx.restore();
   });
 
-  // Enroll badge
-  ctx.fillStyle='#f97316';
-  roundRect(ctx,64,500,220,52,12);
-  ctx.fill();
-  ctx.fillStyle='#fff';
-  ctx.font='bold 20px system-ui,sans-serif';
-  ctx.fillText('Enroll Free →',64+40,532);
+  drawLogoWithText(ctx,64,40);
+  drawBadge(ctx,64,152,'49-Day Roadmap','rgba(227,116,0,0.2)','#f97316');
 
-  ctx.fillStyle='rgba(255,255,255,0.2)';
-  ctx.font='17px system-ui,sans-serif';
-  ctx.fillText('learnhub.dev',64,574);
+  ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#ffffff';ctx.font='bold 60px system-ui,sans-serif';
+  ctx.fillText('AI-First',64,268);
+  ctx.fillStyle='#f97316';ctx.fillText('Web Dev',64,342);
+  ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='24px system-ui,sans-serif';
+  ctx.fillText('React \u00b7 Next.js \u00b7 AI APIs \u2014 Zero to Production',64,388);
+
+  drawPills(ctx,[['React','#61dbfb'],['Next.js','#e2e8f0'],['AI APIs','#f97316']],64,408);
+  drawEnrollButton(ctx,466,accent);
+
+  ctx.save();ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='17px system-ui,sans-serif';
+  ctx.textBaseline='alphabetic';ctx.fillText('learnhubdev.com',64,554);ctx.restore();
+}
+
+// ── Card 5: Smart Business Analyst Roadmap ─────────────────────
+function drawCard5(){
+  const ctx=document.getElementById('c5').getContext('2d');
+  const accent='#137333';
+  drawBase(ctx,'#0a1a0d','#0e2312',accent);
+
+  ctx.strokeStyle='rgba(34,197,94,0.11)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(80,H-80,160,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.arc(80,H-80,260,0,Math.PI*2);ctx.stroke();
+
+  drawLogoWithText(ctx,64,40);
+  drawBadge(ctx,64,152,'Self-Paced Roadmap','rgba(19,115,51,0.3)','#22c55e');
+
+  ctx.textBaseline='alphabetic';
+  ctx.fillStyle='#ffffff';ctx.font='bold 60px system-ui,sans-serif';
+  ctx.fillText('Business',64,268);
+  ctx.fillStyle='#22c55e';ctx.font='bold 56px system-ui,sans-serif';
+  ctx.fillText('Analysis',64,340);
+  ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='24px system-ui,sans-serif';
+  ctx.fillText('Requirements \u00b7 Agile \u00b7 Stakeholders \u00b7 Career',64,386);
+
+  drawPills(ctx,[['Requirements','#22c55e'],['Agile/Scrum','#86efac'],['Career','#34d399']],64,406);
+  drawEnrollButton(ctx,464,accent);
+
+  ctx.save();ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='17px system-ui,sans-serif';
+  ctx.textBaseline='alphabetic';ctx.fillText('learnhubdev.com',64,550);ctx.restore();
 }
 
 // Load logo first, then render all canvases
 logoImg.onload=function(){
-  drawCard0();
-  drawCard1();
-  drawCard2();
+  drawCard0();drawCard1();drawCard2();drawCard3();drawCard4();drawCard5();
 };
 logoImg.onerror=function(){
-  console.error('Failed to load logo. Make sure logo/learnhub-logo.png exists relative to this file.');
+  console.error('Failed to load logo. Make sure logo/learnhub-logo.png exists.');
+  // Render without logo anyway
+  drawCard0();drawCard1();drawCard2();drawCard3();drawCard4();drawCard5();
 };
 logoImg.src='logo/learnhub-logo.png';
 
 function download(id,filename){
   const a=document.createElement('a');
   a.href=document.getElementById(id).toDataURL('image/png');
-  a.download=filename;
-  a.click();
+  a.download=filename;a.click();
 }
 </script>
 </body>

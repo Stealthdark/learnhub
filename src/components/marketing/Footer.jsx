@@ -17,11 +17,11 @@ export default function Footer() {
           <nav aria-label="Courses footer navigation">
             <h3 className="mkt-footer__heading">Courses</h3>
             <ul>
-              <li><Link to="/course/nodejs-30day">Node.js Mastery</Link></li>
-              <li><Link to="/course/frontend-roadmap">Frontend Development</Link></li>
-              <li><Link to="/course/sql-mongodb-20day">SQL &amp; MongoDB</Link></li>
-              <li><Link to="/course/ai-first-webdev-49day">AI-First Web Dev</Link></li>
-              <li><Link to="/course/smart-ba-roadmap">Business Analysis</Link></li>
+              <li><Link to="/courses/nodejs-30day">Node.js Mastery</Link></li>
+              <li><Link to="/courses/frontend-roadmap">Frontend Development</Link></li>
+              <li><Link to="/courses/sql-mongodb-20day">SQL &amp; MongoDB</Link></li>
+              <li><Link to="/courses/ai-first-webdev-49day">AI-First Web Dev</Link></li>
+              <li><Link to="/courses/smart-ba-roadmap">Business Analysis</Link></li>
             </ul>
           </nav>
 

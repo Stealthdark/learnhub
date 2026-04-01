@@ -15,7 +15,7 @@ import ContactPage from './pages/ContactPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 
-import CourseLandingPage from './pages/app/CourseLandingPage'
+import PublicCoursePage from './pages/PublicCoursePage'
 import DashboardPage from './pages/app/DashboardPage'
 import MyCoursesPage from './pages/app/MyCoursesPage'
 import CourseViewPage from './pages/app/CourseViewPage'
@@ -68,7 +68,7 @@ export default function App() {
             {/* Public marketing routes */}
             <Route path="/" element={<HomePage />} />
             <Route path="/courses" element={<CoursesPublicPage />} />
-            <Route path="/courses/:slug" element={<CourseLandingPage />} />
+            <Route path="/courses/:slug" element={<PublicCoursePage />} />
             <Route path="/roadmaps" element={<RoadmapsPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/blog" element={<BlogPage />} />
