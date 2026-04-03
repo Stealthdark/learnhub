@@ -1,13 +1,27 @@
-import { Link } from 'react-router-dom'
+import { useState, useMemo } from 'react'
 import Navbar from '../components/marketing/Navbar'
 import Footer from '../components/marketing/Footer'
 import SEO from '../components/SEO'
+import BlogCard from '../components/marketing/BlogCard'
+import { BLOGS } from '../data/blogs'
+
+const CATEGORIES = [
+  'All',
+  'Career & Learning',
+  'Node.js',
+  'Frontend',
+  'Database',
+  'AI & ML',
+  'Business Analysis',
+  'Full Stack',
+]
 
 const BLOG_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
   name: 'LearnHub Blog',
-  description: 'Developer learning tips, roadmap guides, career advice, and how to master Node.js, Frontend, Databases, and AI development.',
+  description:
+    'Developer learning tips, roadmap deep-dives, career advice, and practical guides for mastering Node.js, Frontend, Databases, AI development, and Business Analysis.',
   url: 'https://learnhubdev.com/blog',
   publisher: {
     '@type': 'Organization',
@@ -15,60 +29,72 @@ const BLOG_SCHEMA = {
     url: 'https://learnhubdev.com',
     logo: 'https://learnhubdev.com/assets/og/logo/learnhub-logo.png',
   },
-  blogPost: [
-    {
-      '@type': 'BlogPosting',
-      headline: 'How to learn Node.js in 30 days (without getting overwhelmed)',
-      description: 'A structured approach to mastering Node.js backend development in 30 days using the LearnHub roadmap.',
-      author: { '@type': 'Organization', name: 'LearnHub' },
-      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
-    },
-    {
-      '@type': 'BlogPosting',
-      headline: 'Frontend vs Backend: which should you learn first?',
-      description: 'An honest guide to choosing your first learning path as a developer — Frontend or Backend.',
-      author: { '@type': 'Organization', name: 'LearnHub' },
-      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
-    },
-    {
-      '@type': 'BlogPosting',
-      headline: 'The honest guide to SQL for JavaScript developers',
-      description: 'Learn SQL from a JavaScript developer perspective with practical examples and real-world queries.',
-      author: { '@type': 'Organization', name: 'LearnHub' },
-      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
-    },
-    {
-      '@type': 'BlogPosting',
-      headline: 'Building AI-powered apps with Next.js and OpenAI',
-      description: 'A practical walkthrough of integrating OpenAI APIs into a Next.js application, from setup to deployment.',
-      author: { '@type': 'Organization', name: 'LearnHub' },
-      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
-    },
-    {
-      '@type': 'BlogPosting',
-      headline: '5 signs your learning roadmap is actually working',
-      description: 'How to know when a structured learning path is genuinely moving your skills forward.',
-      author: { '@type': 'Organization', name: 'LearnHub' },
-      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
-    },
-    {
-      '@type': 'BlogPosting',
-      headline: 'From tutorial hell to real projects: a structured approach',
-      description: 'Why most self-taught developers get stuck and how structured roadmaps break the cycle.',
-      author: { '@type': 'Organization', name: 'LearnHub' },
-      publisher: { '@type': 'Organization', name: 'LearnHub', url: 'https://learnhubdev.com' },
-    },
-  ],
+  blogPost: BLOGS.map(b => ({
+    '@type': 'BlogPosting',
+    headline: b.title,
+    description: b.excerpt,
+    url: `https://learnhubdev.com/blog/${b.slug}`,
+    datePublished: b.dateISO,
+    author: { '@type': 'Organization', name: b.author },
+    keywords: b.tags.join(', '),
+    articleSection: b.category,
+  })),
 }
 
 export default function BlogPage() {
+  const [search, setSearch] = useState('')
+  const [activeCategory, setActiveCategory] = useState('All')
+  const [copiedSlug, setCopiedSlug] = useState(null)
+
+  const filteredPosts = useMemo(() => {
+    return BLOGS.filter(post => {
+      const matchCat = activeCategory === 'All' || post.category === activeCategory
+      const term = search.toLowerCase()
+      const matchSearch =
+        !term ||
+        post.title.toLowerCase().includes(term) ||
+        post.excerpt.toLowerCase().includes(term) ||
+        post.tags.some(t => t.toLowerCase().includes(term))
+      return matchCat && matchSearch
+    })
+  }, [search, activeCategory])
+
+  async function handleShare(post, e) {
+    e.preventDefault()
+    e.stopPropagation()
+    const url = `https://learnhubdev.com/blog/${post.slug}`
+    const shareData = { title: post.title, text: post.excerpt, url }
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData)
+      } catch (_) {
+        // user cancelled — no action needed
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url)
+      } catch (_) {
+        // execCommand fallback for older browsers
+        const el = document.createElement('input')
+        el.value = url
+        document.body.appendChild(el)
+        el.select()
+        document.execCommand('copy')
+        document.body.removeChild(el)
+      }
+      setCopiedSlug(post.slug)
+      setTimeout(() => setCopiedSlug(null), 2000)
+    }
+  }
+
   return (
     <>
       <SEO
         title="Blog — Developer Learning Tips & Roadmaps"
-        description="LearnHub blog: developer learning tips, roadmap guides, career advice, and how to master Node.js, Frontend, Databases, and AI development. Coming soon."
+        description="LearnHub blog: practical guides on Node.js, Frontend, SQL, AI development, and Business Analysis. Real advice for self-taught developers, updated every week."
         path="/blog"
-        keywords="developer blog, coding tips, learning roadmap blog, web development articles, programming career"
+        keywords="developer blog, coding tips, learning roadmap blog, Node.js tutorials, web development articles, programming career advice"
         breadcrumb={[{ name: 'Blog', path: '/blog' }]}
         jsonLd={BLOG_SCHEMA}
       />
@@ -76,55 +102,70 @@ export default function BlogPage() {
       <Navbar />
 
       <main>
+        {/* Hero */}
         <section className="mkt-page-hero">
           <div className="container">
             <h1>LearnHub Blog</h1>
             <p className="mkt-page-hero__sub">
-              Developer tips, roadmap guides, and learning strategies.
+              Practical guides, honest advice, and deep-dives for developers who are serious about learning.
             </p>
           </div>
         </section>
 
-        <section style={{ padding: '80px 0', textAlign: 'center' }}>
-          <div className="container">
-            <div style={{ maxWidth: 520, margin: '0 auto' }}>
-              <div style={{ fontSize: 64, marginBottom: 24 }}>✍️</div>
-              <h2 style={{ fontFamily: "'Google Sans',sans-serif", fontSize: 26, fontWeight: 700, marginBottom: 16 }}>
-                Blog coming soon
-              </h2>
-              <p style={{ color: 'var(--text2)', fontSize: 15, lineHeight: 1.7, marginBottom: 32 }}>
-                We're working on articles covering developer learning strategies, roadmap deep-dives, career advice, and technical tutorials. Sign up to be notified when we publish.
-              </p>
-              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link to="/sign-up" className="btn btn-primary btn-lg">Get Notified</Link>
-                <Link to="/courses" className="btn btn-ghost btn-lg">Browse Courses</Link>
-              </div>
-            </div>
-
-            {/* Upcoming topics */}
-            <div style={{ marginTop: 64, maxWidth: 640, margin: '64px auto 0' }}>
-              <h3 style={{ fontFamily: "'Google Sans',sans-serif", fontSize: 18, fontWeight: 700, marginBottom: 24, color: 'var(--text2)' }}>
-                Upcoming articles
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {[
-                  'How to learn Node.js in 30 days (without getting overwhelmed)',
-                  'Frontend vs Backend: which should you learn first?',
-                  'The honest guide to SQL for JavaScript developers',
-                  'Building AI-powered apps with Next.js and OpenAI',
-                  '5 signs your learning roadmap is actually working',
-                  'From tutorial hell to real projects: a structured approach',
-                ].map(title => (
-                  <div key={title} style={{ background: 'var(--bg)', borderRadius: 8, padding: '14px 18px', textAlign: 'left', display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <span style={{ fontSize: 18 }}>📝</span>
-                    <span style={{ fontSize: 14, color: 'var(--text2)' }}>{title}</span>
-                    <span className="chip chip-blue" style={{ fontSize: 10, marginLeft: 'auto', flexShrink: 0 }}>Soon</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+        {/* Filters */}
+        <div className="mkt-blog-filters">
+          <div className="mkt-blog-search">
+            <span className="mkt-blog-search__icon" aria-hidden="true">🔍</span>
+            <input
+              type="search"
+              placeholder="Search articles..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              aria-label="Search blog posts"
+            />
           </div>
-        </section>
+          <div className="mkt-blog-filter-chips" role="group" aria-label="Filter by category">
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                className={`mkt-blog-filter-chip${activeCategory === cat ? ' active' : ''}`}
+                onClick={() => setActiveCategory(cat)}
+                aria-pressed={activeCategory === cat}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Grid */}
+        <div className="mkt-blog-grid" aria-live="polite" aria-label="Blog posts">
+          {filteredPosts.length === 0 ? (
+            <div className="mkt-blog-empty">
+              <h3>No posts found</h3>
+              <p>
+                Try a different search term or category.{' '}
+                <button
+                  className="mkt-blog-filter-chip active"
+                  style={{ display: 'inline-flex', marginTop: 12 }}
+                  onClick={() => { setSearch(''); setActiveCategory('All') }}
+                >
+                  Clear filters
+                </button>
+              </p>
+            </div>
+          ) : (
+            filteredPosts.map((post, i) => (
+              <BlogCard
+                key={post.slug}
+                post={post}
+                featured={i === 0 && activeCategory === 'All' && !search}
+                onShare={handleShare}
+                copiedSlug={copiedSlug}
+              />
+            ))
+          )}
+        </div>
       </main>
 
       <Footer />

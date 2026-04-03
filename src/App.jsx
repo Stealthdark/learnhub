@@ -11,6 +11,7 @@ import PricingPage from './pages/PricingPage'
 import RoadmapsPage from './pages/RoadmapsPage'
 import AboutPage from './pages/AboutPage'
 import BlogPage from './pages/BlogPage'
+import BlogPostPage from './pages/BlogPostPage'
 import ContactPage from './pages/ContactPage'
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
@@ -72,6 +73,7 @@ export default function App() {
             <Route path="/roadmaps" element={<RoadmapsPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/features" element={<FeaturesPage />} />
             <Route path="/pricing" element={<PricingPage />} />
